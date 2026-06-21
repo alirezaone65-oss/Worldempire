@@ -6,32 +6,32 @@
     <title>امپراتوری جهانی 2027 | World Empire</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,'Segoe UI',Tahoma,sans-serif}
-        body{background:#0a0a1a;min-height:100vh;padding:10px;color:#e2e8f0;overflow-x:hidden}
-        .container{max-width:1050px;margin:0 auto;background:rgba(15,23,42,0.92);border-radius:1.5rem;overflow:hidden;border:2px solid #f59e0b;box-shadow:0 0 60px rgba(245,158,11,0.15),inset 0 0 60px rgba(245,158,11,0.05)}
-        .header{background:linear-gradient(135deg,#1a1a2e 0%,#0f0f23 100%);padding:1rem;text-align:center;position:relative;overflow:hidden}
-        .header-bg{position:absolute;top:0;left:0;right:0;bottom:0;background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.06"><text x="5" y="30" font-size="14" fill="%23fbbf24">WORLD</text><text x="5" y="55" font-size="18" fill="%23fbbf24" font-weight="bold">EMPIRE</text><text x="5" y="80" font-size="10" fill="%23f59e0b">2027</text></svg>');background-size:cover;background-position:center;pointer-events:none}
-        .header h2{position:relative;z-index:1;color:#fbbf24;text-shadow:0 0 40px rgba(245,158,11,0.3)}
+        body{background:#f0f4f8;min-height:100vh;padding:10px;color:#1e293b;overflow-x:hidden}
+        .container{max-width:1050px;margin:0 auto;background:rgba(255,255,255,0.95);border-radius:1.5rem;overflow:hidden;border:2px solid #f59e0b;box-shadow:0 0 60px rgba(245,158,11,0.15)}
+        .header{background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%);padding:1rem;text-align:center;position:relative;overflow:hidden}
+        .header-bg{position:absolute;top:0;left:0;right:0;bottom:0;background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.06"><text x="5" y="30" font-size="14" fill="%23f59e0b">WORLD</text><text x="5" y="55" font-size="18" fill="%23f59e0b" font-weight="bold">EMPIRE</text><text x="5" y="80" font-size="10" fill="%23f59e0b">2027</text></svg>');background-size:cover;background-position:center;pointer-events:none}
+        .header h2{position:relative;z-index:1;color:#1e293b;text-shadow:0 0 40px rgba(245,158,11,0.1)}
         .header .sub{position:relative;z-index:1;font-size:0.6rem;color:#f59e0b;letter-spacing:3px}
-        .sync-status{background:#0a0a1a;padding:4px;text-align:center;font-size:0.6rem;color:#fbbf24}
-        .login-box{padding:15px;background:#0a0a1a;display:flex;flex-direction:column;gap:10px}
-        .login-box input{padding:12px;border-radius:30px;border:1px solid #f59e0b33;text-align:center;font-size:1rem;background:#1a1a2e;color:white;outline:2px solid transparent;transition:0.3s}
+        .sync-status{background:#f1f5f9;padding:4px;text-align:center;font-size:0.6rem;color:#64748b}
+        .login-box{padding:15px;background:#f8fafc;display:flex;flex-direction:column;gap:10px}
+        .login-box input{padding:12px;border-radius:30px;border:1px solid #cbd5e1;text-align:center;font-size:1rem;background:#ffffff;color:#1e293b;outline:2px solid transparent;transition:0.3s}
         .login-box input:focus{outline-color:#f59e0b;border-color:#f59e0b}
         .login-box button{background:linear-gradient(135deg,#f59e0b,#d97706);border:none;padding:12px;border-radius:30px;font-weight:bold;cursor:pointer;color:#0f172a;font-size:1rem;transition:0.3s}
         .login-box button:hover{transform:scale(1.03);box-shadow:0 0 40px rgba(245,158,11,0.4)}
-        .res-bar{display:flex;justify-content:space-around;padding:8px;background:#0a0a1a;flex-wrap:wrap;gap:4px;font-size:0.55rem;border-bottom:1px solid #f59e0b44}
-        .res-item{background:#1a1a2e;padding:4px 12px;border-radius:20px;font-weight:bold;font-size:0.6rem;border:1px solid #f59e0b22}
-        .res-item span{color:#fbbf24}
-        .tabs{display:flex;background:#0a0a1a;border-bottom:1px solid #f59e0b44;flex-wrap:wrap;overflow-x:auto}
-        .tab{flex:1;text-align:center;padding:8px 4px;cursor:pointer;font-weight:bold;color:#94a3b8;min-width:40px;font-size:0.4rem;white-space:nowrap;transition:0.3s;border-bottom:2px solid transparent}
-        .tab.active{color:#fbbf24;background:#1a1a2e;border-bottom-color:#f59e0b}
-        .panel{display:none;padding:0.6rem;min-height:450px;background:rgba(10,10,26,0.8);border-radius:0 0 1.5rem 1.5rem}
+        .res-bar{display:flex;justify-content:space-around;padding:8px;background:#f8fafc;flex-wrap:wrap;gap:4px;font-size:0.55rem;border-bottom:1px solid #e2e8f0}
+        .res-item{background:#ffffff;padding:4px 12px;border-radius:20px;font-weight:bold;font-size:0.6rem;border:1px solid #e2e8f0}
+        .res-item span{color:#f59e0b}
+        .tabs{display:flex;background:#f8fafc;border-bottom:1px solid #e2e8f0;flex-wrap:wrap;overflow-x:auto}
+        .tab{flex:1;text-align:center;padding:8px 4px;cursor:pointer;font-weight:bold;color:#64748b;min-width:40px;font-size:0.4rem;white-space:nowrap;transition:0.3s;border-bottom:2px solid transparent}
+        .tab.active{color:#f59e0b;background:#ffffff;border-bottom-color:#f59e0b}
+        .panel{display:none;padding:0.6rem;min-height:450px;background:rgba(255,255,255,0.9);border-radius:0 0 1.5rem 1.5rem}
         .panel.active{display:block}
         .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
-        .card{background:#1a1a2e;border-radius:1rem;padding:10px;text-align:center;border:1px solid #f59e0b44;cursor:pointer;transition:0.2s;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
-        .card:hover{transform:scale(1.03);border-color:#fbbf24;box-shadow:0 0 30px rgba(245,158,11,0.1)}
+        .card{background:#ffffff;border-radius:1rem;padding:10px;text-align:center;border:1px solid #e2e8f0;cursor:pointer;transition:0.2s;box-shadow:0 4px 20px rgba(0,0,0,0.05)}
+        .card:hover{transform:scale(1.03);border-color:#f59e0b;box-shadow:0 0 30px rgba(245,158,11,0.1)}
         .card .icon{font-size:1.5rem}
-        .card .cost{font-size:0.55rem;color:#fbbf24;margin-top:4px}
-        .player-row{background:#0a0a1a;border-radius:1rem;padding:0.6rem;margin-bottom:0.5rem;border:1px solid #f59e0b44;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+        .card .cost{font-size:0.55rem;color:#f59e0b;margin-top:4px}
+        .player-row{background:#ffffff;border-radius:1rem;padding:0.6rem;margin-bottom:0.5rem;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
         .btn{transition:0.2s;cursor:pointer;border:none;padding:6px 14px;border-radius:20px;font-weight:bold;font-size:0.6rem;display:inline-flex;align-items:center;gap:4px}
         .btn:active{transform:scale(0.95)}
         .btn-attack{background:#ef4444;color:#fff}.btn-attack:hover{background:#dc2626}
@@ -45,7 +45,8 @@
         .btn-admin{background:#ef4444;color:#fff}.btn-admin:hover{background:#dc2626}
         .btn-naval{background:#0ea5e9;color:#fff}.btn-naval:hover{background:#0284c7}
         .btn-extend{background:#8b5cf6;color:#fff}.btn-extend:hover{background:#7c3aed}
-        .toast{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:#fbbf24;padding:10px 16px;border-radius:40px;border-right:4px solid #f59e0b;z-index:1000;animation:fadeOut 4s forwards;max-width:90%;font-size:0.75rem;box-shadow:0 10px 30px rgba(0,0,0,0.7)}
+        .btn-price{background:#f59e0b;color:#0f172a}.btn-price:hover{background:#d97706}
+        .toast{position:fixed;bottom:20px;right:20px;background:#1e293b;color:#fbbf24;padding:10px 16px;border-radius:40px;border-right:4px solid #f59e0b;z-index:1000;animation:fadeOut 4s forwards;max-width:90%;font-size:0.75rem;box-shadow:0 10px 30px rgba(0,0,0,0.7)}
         .toast.error{border-right-color:#ef4444;color:#fca5a5}
         .toast.war{background:#1a0a0a;border-right-color:#ef4444;color:#fca5a5}
         .toast.peace{background:#0a1a0a;border-right-color:#10b981;color:#4ade80}
@@ -55,10 +56,10 @@
         @keyframes fadeOut{0%{opacity:1}70%{opacity:1}100%{opacity:0;visibility:hidden}}
         button:disabled{opacity:0.5;cursor:not-allowed}
         .empty{text-align:center;padding:20px;color:#94a3b8}
-        .loading{text-align:center;padding:20px;color:#fbbf24}
-        .info-bar{background:#0a0a1a;padding:5px;border-radius:12px;text-align:center;font-size:0.45rem;margin-bottom:6px;color:#94a3b8;border:1px solid #334155}
-        .section-title{color:#fbbf24;margin:6px 0;font-size:0.65rem;border-bottom:1px solid #334155;padding-bottom:3px}
-        input,select{background:#1a1a2e;border:1px solid #334155;color:white;padding:5px;border-radius:8px;text-align:center;width:100%;margin:2px 0;font-size:0.55rem}
+        .loading{text-align:center;padding:20px;color:#f59e0b}
+        .info-bar{background:#f1f5f9;padding:5px;border-radius:12px;text-align:center;font-size:0.45rem;margin-bottom:6px;color:#64748b;border:1px solid #e2e8f0}
+        .section-title{color:#f59e0b;margin:6px 0;font-size:0.65rem;border-bottom:1px solid #e2e8f0;padding-bottom:3px}
+        input,select{background:#ffffff;border:1px solid #cbd5e1;color:#1e293b;padding:5px;border-radius:8px;text-align:center;width:100%;margin:2px 0;font-size:0.55rem}
         .inline-form{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
         .inline-form input,.inline-form select{flex:1;min-width:50px}
         .badge{display:inline-block;padding:2px 6px;border-radius:8px;font-size:0.4rem;font-weight:bold;margin:2px}
@@ -67,46 +68,46 @@
         .badge-yellow{background:#854d0e;color:#fbbf24}
         .badge-blue{background:#1e40af;color:#93c5fd}
         .badge-purple{background:#4c1d95;color:#c4b5fd}
-        .badge-gray{background:#334155;color:#94a3b8}
+        .badge-gray{background:#e2e8f0;color:#64748b}
         .badge-naval{background:#0ea5e9;color:#fff}
         .badge-orange{background:#b45309;color:#fbbf24}
-        .hp-bar{height:5px;background:#334155;border-radius:3px;margin:4px 0;overflow:hidden}
+        .hp-bar{height:5px;background:#e2e8f0;border-radius:3px;margin:4px 0;overflow:hidden}
         .hp-fill{height:100%;background:#4ade80;border-radius:3px}
-        .xp-bar{background:#1a1a2e;border-radius:20px;padding:3px 10px;display:inline-block;font-size:0.5rem;border:1px solid #8b5cf6}
-        .base-card{background:linear-gradient(135deg,#1a3a2a,#0a1a12);border-radius:1rem;padding:8px;border:2px solid #10b981;margin-bottom:6px}
-        .carrier-card{background:linear-gradient(135deg,#0a1a3a,#0a0a2a);border-radius:1rem;padding:8px;border:2px solid #0ea5e9;margin-bottom:6px}
+        .xp-bar{background:#f1f5f9;border-radius:20px;padding:3px 10px;display:inline-block;font-size:0.5rem;border:1px solid #8b5cf6}
+        .base-card{background:linear-gradient(135deg,#dcfce7,#f0fdf4);border-radius:1rem;padding:8px;border:2px solid #10b981;margin-bottom:6px}
+        .carrier-card{background:linear-gradient(135deg,#e0f2fe,#f0f9ff);border-radius:1rem;padding:8px;border:2px solid #0ea5e9;margin-bottom:6px}
         .fighter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:5px}
-        .fighter-card{background:#1a1a2e;border-radius:10px;padding:6px;text-align:center;border:2px solid #f59e0b44;transition:0.2s}
+        .fighter-card{background:#ffffff;border-radius:10px;padding:6px;text-align:center;border:2px solid #e2e8f0;transition:0.2s}
         .fighter-card:hover{transform:scale(1.02);border-color:#f59e0b}
         .fighter-card .icon{font-size:1.5rem}
-        .fighter-card .country{font-size:0.35rem;color:#94a3b8}
+        .fighter-card .country{font-size:0.35rem;color:#64748b}
         .fighter-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:4px;margin:6px 0}
-        .fighter-select-card{background:#1a1a2e;border-radius:8px;padding:5px;text-align:center;border:2px solid #334155;cursor:pointer;transition:0.2s}
+        .fighter-select-card{background:#ffffff;border-radius:8px;padding:5px;text-align:center;border:2px solid #e2e8f0;cursor:pointer;transition:0.2s}
         .fighter-select-card:hover{transform:scale(1.03);border-color:#f59e0b}
-        .fighter-select-card.selected{border-color:#10b981;background:#0a2a1a}
+        .fighter-select-card.selected{border-color:#10b981;background:#f0fdf4}
         .fighter-select-card .icon{font-size:1.2rem}
         .fighter-select-card .name{font-size:0.5rem;font-weight:bold}
-        .fighter-select-card .stats{font-size:0.4rem;color:#94a3b8}
+        .fighter-select-card .stats{font-size:0.4rem;color:#64748b}
         .carrier-fighter-list{display:flex;gap:3px;flex-wrap:wrap;margin:4px 0}
-        .carrier-fighter-tag{background:#0f172a;padding:2px 6px;border-radius:8px;font-size:0.4rem;border:1px solid #0ea5e9}
-        .defense-card{background:linear-gradient(135deg,#1a2a4a,#0f1a2a);border-radius:1rem;padding:8px;border:2px solid #3b82f6;margin-bottom:6px}
-        .war-declaration{background:#1a0a0a;border:2px solid #ef4444;border-radius:1rem;padding:8px;margin-bottom:6px}
+        .carrier-fighter-tag{background:#f1f5f9;padding:2px 6px;border-radius:8px;font-size:0.4rem;border:1px solid #0ea5e9}
+        .defense-card{background:linear-gradient(135deg,#e0f2fe,#f0f9ff);border-radius:1rem;padding:8px;border:2px solid #3b82f6;margin-bottom:6px}
+        .war-declaration{background:#fef2f2;border:2px solid #ef4444;border-radius:1rem;padding:8px;margin-bottom:6px}
         .bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
         ::-webkit-scrollbar{width:4px}
-        ::-webkit-scrollbar-track{background:#0a0a1a}
+        ::-webkit-scrollbar-track{#f1f5f9}
         ::-webkit-scrollbar-thumb{background:#f59e0b;border-radius:10px}
-        .fighter-legend{background:linear-gradient(135deg,#0f172a,#0a0a1a);border-radius:1rem;padding:6px;border:1px solid #f59e0b44;margin-bottom:6px;font-size:0.45rem;color:#94a3b8}
-        .fighter-legend span{color:#fbbf24}
-        .weapon-card{background:linear-gradient(135deg,#1a1a2e,#0a0a1a);border-radius:1rem;padding:8px;border:2px solid #8b5cf6;margin-bottom:6px}
-        .expire-card{background:linear-gradient(135deg,#1a0a0a,#0a1a0a);border-radius:1rem;padding:8px;border:2px solid #f59e0b;margin-bottom:6px}
-        .expire-card.urgent{border-color:#ef4444;background:#1a0a0a}
-        .expire-card.warning{border-color:#f59e0b;background:#1a1a0a}
-        .expire-card.safe{border-color:#10b981;background:#0a1a0a}
-        .admin-player-card{background:#1a1a2e;border-radius:1rem;padding:8px;border:1px solid #f59e0b44;margin-bottom:6px}
-        .admin-player-card .details{font-size:0.55rem;color:#94a3b8}
-        .admin-player-card .pass{color:#fbbf24;font-weight:bold;font-size:0.65rem}
-        .admin-player-card .ip{color:#7dd3fc;font-size:0.5rem}
-        .mine-card{background:linear-gradient(135deg,#1a2a1a,#0a1a0a);border-radius:1rem;padding:8px;border:2px solid #f59e0b;margin-bottom:6px}
+        .fighter-legend{background:#f8fafc;border-radius:1rem;padding:6px;border:1px solid #e2e8f0;margin-bottom:6px;font-size:0.45rem;color:#64748b}
+        .fighter-legend span{color:#f59e0b}
+        .weapon-card{background:linear-gradient(135deg,#faf5ff,#f3e8ff);border-radius:1rem;padding:8px;border:2px solid #8b5cf6;margin-bottom:6px}
+        .expire-card{background:#fefce8;border-radius:1rem;padding:8px;border:2px solid #f59e0b;margin-bottom:6px}
+        .expire-card.urgent{border-color:#ef4444;background:#fef2f2}
+        .expire-card.warning{border-color:#f59e0b;background:#fefce8}
+        .expire-card.safe{border-color:#10b981;background:#f0fdf4}
+        .admin-player-card{background:#ffffff;border-radius:1rem;padding:8px;border:1px solid #e2e8f0;margin-bottom:6px}
+        .admin-player-card .details{font-size:0.55rem;color:#64748b}
+        .admin-player-card .pass{color:#f59e0b;font-weight:bold;font-size:0.65rem}
+        .admin-player-card .ip{color:#3b82f6;font-size:0.5rem}
+        .mine-card{background:linear-gradient(135deg,#fefce8,#fffbeb);border-radius:1rem;padding:8px;border:2px solid #f59e0b;margin-bottom:6px}
         .mine-card .amount{color:#4ade80;font-size:0.8rem;font-weight:bold}
     </style>
 </head>
@@ -160,7 +161,7 @@
 // ========== کانفیگ ==========
 const BOT_TOKEN = "8909027468:AAFLHya_9KhgazMKK1N6GG9RBRBuPH_T-5o";
 const CHANNEL_ID = "@pudgyparty7";
-const DATA_KEY = "EMPIRE_DATA_V21";
+const DATA_KEY = "EMPIRE_DATA_V23";
 const ATTACK_COOLDOWN = 60;
 const XP_PER_LEVEL = 10;
 const DAILY_XP = 1;
@@ -176,7 +177,7 @@ const EXTEND_COST_PER_DAY = 1500;
 const EXTEND_MIN_DAYS = 14;
 const EXTEND_SELL_PERCENT = 70;
 const MINE_MAX = 5000;
-const PROTECTION_HOURS = 48;
+const PROTECTION_HOURS = 0;
 
 // ========== دریافت IP کاربر ==========
 async function getUserIP() {
@@ -276,6 +277,8 @@ const M_DB = {
 // ========== متغیرها ==========
 let player = null, allPlayers = [], isConnected = false, msgId = null, saveQueue = [], saving = false;
 let globalWeaponSales = [], marketOffers = [], diplomacyMessages = [], unPeaceMessages = [], militaryMarket = [];
+let mineInterval = null;
+let lastMineTick = 0;
 
 // ========== توابع کمکی ==========
 function toast(m, e = false, type = "") {
@@ -442,7 +445,8 @@ function createPlayer(n, p, i) {
         shieldUntil: 0,
         lastExtensionCheck: 0,
         lastSellTime: 0,
-        mineLevel: 1
+        mineLevel: 1,
+        lastMineTick: ts()
     };
 }
 
@@ -459,17 +463,20 @@ function calcProduction(p) {
     };
 }
 
-function calcMine(p) {
-    const h = Math.min((ts() - (p.lastMineCollect || ts())) / 3600000, 24);
-    const level = p.mineLevel || 1;
-    const goldPerHour = level * 50;
-    const metalPerHour = level * 30;
-    const collected = Math.min(h, 1);
-    return {
-        gold: Math.floor(goldPerHour * collected),
-        metal: Math.floor(metalPerHour * collected),
-        canCollect: h >= 1
-    };
+// تیک معدن ثانیه‌ای
+function calcMineTick(player) {
+    const now = ts();
+    const elapsed = (now - (player.lastMineTick || now)) / 1000;
+    if (elapsed < 1) return { gold: 0, metal: 0, oil: 0 };
+    const seconds = Math.floor(Math.min(elapsed, 5)); // حداکثر 5 ثانیه در هر تیک
+    const goldPerSec = 10;
+    const metalPerSec = 20;
+    const oilPerSec = 5; // نفت ثانیه‌ای
+    const gold = seconds * goldPerSec;
+    const metal = seconds * metalPerSec;
+    const oil = seconds * oilPerSec;
+    player.lastMineTick = now;
+    return { gold, metal, oil };
 }
 
 function storageCap(p) { return (p.buildings.warehouse || 1) * 5000; }
@@ -563,7 +570,8 @@ function getMissileGlobal(n) {
     return c;
 }
 
-function isProtected(p) { return (ts() - p.createdAt) < PROTECTION_HOURS * 3600000; }
+function isProtected(p) { return false; }
+
 function canAttack(p, tId) {
     const last = p.attackedRecently?.[tId] || 0;
     return (ts() - last) > ATTACK_COOLDOWN * 1000;
@@ -654,7 +662,8 @@ function checkMilitaryMarket() {
     militaryMarket = militaryMarket.filter(item => (now - item.addedAt) < 3600000);
 }
 
-window.extendFighter = async function(name) {
+// ========== سیستم قیمت‌گذاری شخصی ==========
+window.setFighterPrice = async function(name) {
     if (!player || !player.fighters || !player.fighters[name]) {
         toast("جنگنده یافت نشد", true);
         return;
@@ -664,27 +673,11 @@ window.extendFighter = async function(name) {
         toast("این جنگنده موجود نیست", true);
         return;
     }
-    const cost = EXTEND_COST_PER_DAY * EXTEND_MIN_DAYS;
-    if ((player.gold || 0) < cost) {
-        toast(`💰 ${cost.toLocaleString()} طلا برای تمدید ۱۴ روز نیاز است`, true);
-        return;
-    }
-    player.gold -= cost;
-    data.createdAt = ts();
-    toast(`✅ ${name} به مدت ۱۴ روز تمدید شد! (${cost.toLocaleString()} طلا)`, false, "peace");
-    await saveCurrent();
-    renderStorage();
-    updateUI();
-};
-
-window.sellFighterToMarket = async function(name) {
-    if (!player || !player.fighters || !player.fighters[name]) {
-        toast("جنگنده یافت نشد", true);
-        return;
-    }
-    const data = player.fighters[name];
-    if (data.count <= 0) {
-        toast("این جنگنده موجود نیست", true);
+    const priceInput = prompt(`قیمت ${name} را به طلا وارد کنید (حداقل 100):`);
+    if (priceInput === null) return;
+    const price = parseInt(priceInput);
+    if (isNaN(price) || price < 100) {
+        toast("قیمت باید عدد و حداقل 100 باشد", true);
         return;
     }
     const now = ts();
@@ -697,7 +690,6 @@ window.sellFighterToMarket = async function(name) {
         toast("داده‌های جنگنده یافت نشد", true);
         return;
     }
-    const price = Math.floor(fData.c.g * EXTEND_SELL_PERCENT / 100);
     militaryMarket.push({
         fighterName: name,
         sellerId: player.id,
@@ -764,42 +756,21 @@ window.buyFromMarket = async function(index) {
     updateUI();
 };
 
-// ========== معدن ==========
-window.collectMine = async function() {
-    if (!player) return;
-    const mine = calcMine(player);
-    if (!mine.canCollect) {
-        toast("⏳ هنوز ۱ ساعت نگذشته! صبر کنید", true);
-        return;
-    }
-    const cap = 5000;
-    if ((player.gold || 0) >= cap && (player.metal || 0) >= cap) {
-        toast("📦 انبار پر است! ابتدا مصرف کنید", true);
-        return;
-    }
-    player.gold = Math.min(cap, (player.gold || 0) + mine.gold);
-    player.metal = Math.min(cap, (player.metal || 0) + mine.metal);
-    player.lastMineCollect = ts();
-    toast(`🪙 معدن: +${mine.gold} طلا و +${mine.metal} فلز! (سقف ${cap})`, false, "peace");
-    await saveCurrent();
-    renderMine();
-    updateUI();
-};
-
-window.upgradeMine = async function() {
-    if (!player) return;
-    const cost = (player.mineLevel || 1) * 2000;
-    if ((player.gold || 0) < cost) {
-        toast(`💰 ${cost.toLocaleString()} طلا برای ارتقا نیاز است`, true);
-        return;
-    }
-    player.gold -= cost;
-    player.mineLevel = (player.mineLevel || 1) + 1;
-    toast(`⬆️ معدن به سطح ${player.mineLevel} ارتقا یافت! (+${player.mineLevel * 50} طلا/ساعت)`, false, "peace");
-    await saveCurrent();
-    renderMine();
-    updateUI();
-};
+// ========== معدن ثانیه‌ای ==========
+function startMineTick() {
+    if (mineInterval) clearInterval(mineInterval);
+    mineInterval = setInterval(() => {
+        if (!player) return;
+        const tick = calcMineTick(player);
+        if (tick.gold > 0 || tick.metal > 0 || tick.oil > 0) {
+            const cap = 5000;
+            player.gold = Math.min(cap, (player.gold || 0) + tick.gold);
+            player.metal = Math.min(cap, (player.metal || 0) + tick.metal);
+            player.oil = Math.min(cap, (player.oil || 0) + tick.oil);
+            updateUI();
+        }
+    }, 1000);
+}
 
 // ========== پنل ادمین ==========
 function isAdmin(p) { return p && p.name === "Admin" && p.password === ADMIN_PASSWORD; }
@@ -1105,7 +1076,7 @@ window.confirmAttack = async function(tid) {
     target.shieldUntil = ts() + 15 * 60 * 1000;
     const idx = allPlayers.findIndex(p => p.id === tid);
     if (idx !== -1) allPlayers[idx] = target;
-    let logHTML = `<div class="war-declaration"><div style="color:#fbbf24;font-weight:bold">⚔️ گزارش نبرد</div><div style="font-size:0.65rem;color:#94a3b8">🎯 هدف: ${target.name}</div><div style="font-size:0.65rem;color:#94a3b8">🛩️ تعداد: ${totalF}</div><div style="font-size:0.65rem;color:#94a3b8">⚡ قدرت: ${Math.floor(totalPower)}</div><hr><div style="font-size:0.65rem;color:#4ade80">💰 غارت: ${stolenG.toLocaleString()} طلا | ${stolenO.toLocaleString()} نفت | ${stolenM.toLocaleString()} فلز</div><div style="font-size:0.65rem;color:#fbbf24">⭐ XP: ${xp}</div><div style="font-size:0.65rem;color:#ef4444">🛡️ پدافند نابود شده: ${defDestroyed}</div>${attackLog.map(l => `<div style="font-size:0.55rem;color:#fca5a5">${l}</div>`).join("")}<hr><div style="font-size:0.55rem;color:#fbbf24">🛡️ سپر ۱۵ دقیقه‌ای فعال شد</div><button class="btn-gold" onclick="renderMilitary()" style="margin-top:4px">🔄 بازگشت</button></div>`;
+    let logHTML = `<div class="war-declaration"><div style="color:#f59e0b;font-weight:bold">⚔️ گزارش نبرد</div><div style="font-size:0.65rem;color:#475569">🎯 هدف: ${target.name}</div><div style="font-size:0.65rem;color:#475569">🛩️ تعداد: ${totalF}</div><div style="font-size:0.65rem;color:#475569">⚡ قدرت: ${Math.floor(totalPower)}</div><hr><div style="font-size:0.65rem;color:#10b981">💰 غارت: ${stolenG.toLocaleString()} طلا | ${stolenO.toLocaleString()} نفت | ${stolenM.toLocaleString()} فلز</div><div style="font-size:0.65rem;color:#f59e0b">⭐ XP: ${xp}</div><div style="font-size:0.65rem;color:#ef4444">🛡️ پدافند نابود شده: ${defDestroyed}</div>${attackLog.map(l => `<div style="font-size:0.55rem;color:#ef4444">${l}</div>`).join("")}<hr><div style="font-size:0.55rem;color:#f59e0b">🛡️ سپر ۱۵ دقیقه‌ای فعال شد</div><button class="btn-gold" onclick="renderMilitary()" style="margin-top:4px">🔄 بازگشت</button></div>`;
     document.getElementById("militaryContent").innerHTML = logHTML;
     await saveCurrent();
     await queueSave();
@@ -1401,10 +1372,17 @@ window.removeDefense = async function(idx) {
 // ========== رندرها ==========
 function updateUI() {
     if (!player) return;
-    const p = calcProduction(player);
-    document.getElementById("rGold").innerText = Math.floor((player.gold || 0) + (p.gold || 0)).toLocaleString();
-    document.getElementById("rOil").innerText = Math.floor((player.oil || 0) + (p.oil || 0)).toLocaleString();
-    document.getElementById("rMetal").innerText = Math.floor((player.metal || 0) + (p.metal || 0)).toLocaleString();
+    // اعمال تیک معدن ثانیه‌ای
+    const tick = calcMineTick(player);
+    if (tick.gold > 0 || tick.metal > 0 || tick.oil > 0) {
+        const cap = 5000;
+        player.gold = Math.min(cap, (player.gold || 0) + tick.gold);
+        player.metal = Math.min(cap, (player.metal || 0) + tick.metal);
+        player.oil = Math.min(cap, (player.oil || 0) + tick.oil);
+    }
+    document.getElementById("rGold").innerText = Math.floor(player.gold || 0).toLocaleString();
+    document.getElementById("rOil").innerText = Math.floor(player.oil || 0).toLocaleString();
+    document.getElementById("rMetal").innerText = Math.floor(player.metal || 0).toLocaleString();
     document.getElementById("rXP").innerText = player.xp || 0;
     checkFighterExtensions();
     checkMilitaryMarket();
@@ -1428,22 +1406,17 @@ function renderCity() {
 function renderMine() {
     const c = document.getElementById("mineContent");
     if (!player) { c.innerHTML = '<div class="loading">در حال بارگذاری...</div>'; return; }
-    const mine = calcMine(player);
-    const cap = 5000;
-    const canCollect = mine.canCollect && (mine.gold > 0 || mine.metal > 0);
     c.innerHTML = `
-        <div class="section-title">🪙 معدن</div>
+        <div class="section-title">🪙 معدن ثانیه‌ای</div>
         <div class="mine-card">
             <div style="font-size:1.2rem">⛏️</div>
-            <div style="font-size:0.8rem;color:#fbbf24">سطح: ${player.mineLevel || 1}</div>
-            <div style="font-size:0.7rem;color:#94a3b8">تولید: ${(player.mineLevel || 1) * 50} طلا/ساعت | ${(player.mineLevel || 1) * 30} فلز/ساعت</div>
-            <div style="font-size:0.7rem;color:#4ade80">📦 موجودی آماده: ${mine.gold > 0 ? '+' : ''}${mine.gold.toLocaleString()} طلا | ${mine.metal > 0 ? '+' : ''}${mine.metal.toLocaleString()} فلز</div>
-            <div style="font-size:0.6rem;color:#94a3b8">⏳ ${mine.canCollect ? '✅ قابل جمع‌آوری' : '⏳ منتظر بمانید...'}</div>
+            <div style="font-size:0.8rem;color:#f59e0b">سطح: ${player.mineLevel || 1}</div>
+            <div style="font-size:0.7rem;color:#475569">💰 تولید: ۱۰ طلا/ثانیه | ⛏️ ۲۰ فلز/ثانیه | 🛢️ ۵ نفت/ثانیه</div>
+            <div style="font-size:0.7rem;color:#10b981">📦 سقف انبار: ۵,۰۰۰</div>
             <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">
-                <button class="btn-gold" onclick="collectMine()" ${canCollect ? '' : 'disabled'}>🪙 جمع‌آوری</button>
                 <button class="btn-gold" onclick="upgradeMine()">⬆️ ارتقا (${((player.mineLevel || 1) * 2000).toLocaleString()} طلا)</button>
             </div>
-            <div style="font-size:0.5rem;color:#94a3b8;margin-top:4px">سقف انبار: ${cap.toLocaleString()} برای هر منبع</div>
+            <div style="font-size:0.5rem;color:#94a3b8;margin-top:4px">⏳ دریافت خودکار هر ثانیه (فقط هنگام آنلاین بودن)</div>
         </div>
     `;
 }
@@ -1452,10 +1425,10 @@ function renderMilitary() {
     const c = document.getElementById("militaryContent");
     if (!player) { c.innerHTML = '<div class="loading">در حال بارگذاری...</div>'; return; }
     const others = allPlayers.filter(p => p.id !== player.id);
-    let html = `<div class="section-title">⚔️ سیستم نظامی</div><div class="xp-bar">🎖️ سطح: ${player.militaryLevel || 1} | XP: ${player.xp || 0}/${(player.militaryLevel || 1) * XP_PER_LEVEL}</div><div class="hp-bar"><div class="hp-fill" style="width:${((player.xp || 0) % XP_PER_LEVEL) / XP_PER_LEVEL * 100}%"></div></div><div style="font-size:0.55rem;color:#94a3b8">🛩️ کل جنگنده‌ها: ${getTotalFighters(player)} | ⚡ قدرت: ${militaryPower(player)}</div><div class="section-title">🎯 حمله به کشورها</div><div class="info-bar">⏳ کول‌داون ۱ دقیقه | 🛡️ سپر ۱۵ دقیقه‌ای</div>`;
+    let html = `<div class="section-title">⚔️ سیستم نظامی</div><div class="xp-bar">🎖️ سطح: ${player.militaryLevel || 1} | XP: ${player.xp || 0}/${(player.militaryLevel || 1) * XP_PER_LEVEL}</div><div class="hp-bar"><div class="hp-fill" style="width:${((player.xp || 0) % XP_PER_LEVEL) / XP_PER_LEVEL * 100}%"></div></div><div style="font-size:0.55rem;color:#475569">🛩️ کل جنگنده‌ها: ${getTotalFighters(player)} | ⚡ قدرت: ${militaryPower(player)}</div><div class="section-title">🎯 حمله به کشورها</div><div class="info-bar">⏳ کول‌داون ۱ دقیقه | 🛡️ سپر ۱۵ دقیقه‌ای</div>`;
     others.forEach(p => {
         const shield = p.shieldUntil && ts() < p.shieldUntil;
-        html += `<div class="player-row"><div><strong>${p.name}</strong> ${isProtected(p) ? '<span class="badge badge-green">🛡️ محافظت</span>' : ''} ${shield ? '<span class="badge badge-blue">🛡️ سپر</span>' : ''}<div style="font-size:0.5rem;color:#94a3b8">⚡ ${militaryPower(p)} | 🛩️ ${getTotalFighters(p)}</div></div><div><button class="btn-attack" onclick="attackPlayer('${p.id}')" ${shield || isProtected(p) ? 'disabled' : ''}>⚔️ حمله</button></div></div>`;
+        html += `<div class="player-row"><div><strong>${p.name}</strong> ${shield ? '<span class="badge badge-blue">🛡️ سپر</span>' : ''}<div style="font-size:0.5rem;color:#64748b">⚡ ${militaryPower(p)} | 🛩️ ${getTotalFighters(p)}</div></div><div><button class="btn-attack" onclick="attackPlayer('${p.id}')" ${shield || isProtected(p) ? 'disabled' : ''}>⚔️ حمله</button></div></div>`;
     });
     c.innerHTML = html;
 }
@@ -1476,7 +1449,7 @@ function renderWeapons() {
         const expiry = player.fighters?.[n] ? getFighterExpiry(player.fighters[n]) : null;
         const needAv = d.r;
         const hasAv = player.research?.aviation || 0;
-        html += `<div class="fighter-card" style="border-color:${can ? '#10b981' : (hasAv < needAv ? '#f59e0b' : '#ef4444')}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div class="country">${d.n}</div><div style="font-size:0.45rem;color:#fbbf24">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#94a3b8">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()} 🛢️${d.c.o.toLocaleString()} ⛏️${d.c.m.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned} ❤️${health}% ${expiry ? expiry.message : ""}</div>` : ""}${can ? `<button class="btn-green" onclick="buildFighter('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : (hasAv < needAv ? `هوانوردی ${needAv}` : 'نیازها')}</span>`}</div>`;
+        html += `<div class="fighter-card" style="border-color:${can ? '#10b981' : (hasAv < needAv ? '#f59e0b' : '#ef4444')}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div class="country">${d.n}</div><div style="font-size:0.45rem;color:#f59e0b">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#64748b">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#f59e0b">💰${d.c.g.toLocaleString()} 🛢️${d.c.o.toLocaleString()} ⛏️${d.c.m.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned} ❤️${health}% ${expiry ? expiry.message : ""}</div>` : ""}${can ? `<button class="btn-green" onclick="buildFighter('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : (hasAv < needAv ? `هوانوردی ${needAv}` : 'نیازها')}</span>`}</div>`;
     }
     html += `</div>`;
     
@@ -1486,7 +1459,7 @@ function renderWeapons() {
         const can = canBuildNormal(player, n),
             owned = player.normalFighters?.[n]?.count || 0,
             health = player.normalFighters?.[n]?.health || 100;
-        html += `<div class="fighter-card" style="border-color:${can ? '#10b981' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div class="country">${d.n}</div><div style="font-size:0.45rem;color:#fbbf24">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()} 🛢️${d.c.o.toLocaleString()} ⛏️${d.c.m.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned} ❤️${health}%</div>` : ""}${can ? `<button class="btn-green" onclick="buildNormalFighter('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">نیازها</span>`}</div>`;
+        html += `<div class="fighter-card" style="border-color:${can ? '#10b981' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div class="country">${d.n}</div><div style="font-size:0.45rem;color:#f59e0b">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#f59e0b">💰${d.c.g.toLocaleString()} 🛢️${d.c.o.toLocaleString()} ⛏️${d.c.m.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned} ❤️${health}%</div>` : ""}${can ? `<button class="btn-green" onclick="buildNormalFighter('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">نیازها</span>`}</div>`;
     }
     html += `</div>`;
     
@@ -1496,7 +1469,7 @@ function renderWeapons() {
         const can = canBuildMissile(player, n),
             gc = getMissileGlobal(n),
             owned = player.missiles?.[n] || 0;
-        html += `<div class="fighter-card" style="border-color:${can ? '#ef4444' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div style="font-size:0.45rem;color:#fbbf24">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#94a3b8">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned}</div>` : ""}${can ? `<button class="btn-missile" onclick="buildMissile('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : 'نیازها'}</span>`}</div>`;
+        html += `<div class="fighter-card" style="border-color:${can ? '#ef4444' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div style="font-size:0.45rem;color:#f59e0b">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#64748b">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#f59e0b">💰${d.c.g.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned}</div>` : ""}${can ? `<button class="btn-missile" onclick="buildMissile('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : 'نیازها'}</span>`}</div>`;
     }
     html += `</div>`;
     
@@ -1505,7 +1478,7 @@ function renderWeapons() {
     for (const [n, d] of Object.entries(C_DB)) {
         const can = canBuildCarrier(player, n),
             gc = getCarrierGlobal(n);
-        html += `<div class="fighter-card" style="border-color:${can ? '#0ea5e9' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div style="font-size:0.4rem;color:#94a3b8">قدرت: ${d.p} | 🛩️ ${d.sl}</div><div style="font-size:0.4rem;color:#94a3b8">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()}</div>${can ? `<button class="btn-naval" onclick="buildCarrier('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : 'نیازها'}</span>`}</div>`;
+        html += `<div class="fighter-card" style="border-color:${can ? '#0ea5e9' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div style="font-size:0.4rem;color:#64748b">قدرت: ${d.p} | 🛩️ ${d.sl}</div><div style="font-size:0.4rem;color:#64748b">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#f59e0b">💰${d.c.g.toLocaleString()}</div>${can ? `<button class="btn-naval" onclick="buildCarrier('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : 'نیازها'}</span>`}</div>`;
     }
     html += `</div>`;
     
@@ -1527,7 +1500,7 @@ function renderWeapons() {
         html += `<div class="empty">هیچ ناوی ندارید</div>`;
     } else {
         player.carriers.forEach((cr, ci) => {
-            html += `<div class="carrier-card"><div><strong>${cr.name}</strong> <span class="badge badge-naval">${cr.status}</span></div><div style="font-size:0.5rem;color:#94a3b8">❤️ ${cr.health}%</div><div style="font-size:0.5rem;color:#7dd3fc">🛩️ ${cr.fighters?.length || 0}/${CARRIER_SLOTS}</div><div class="carrier-fighter-list">${cr.fighters?.map((f, fi) => `<span class="carrier-fighter-tag">${F_DB[f.name]?.i || "🛩️"} ${f.name}</span>`).join("") || "<span style='font-size:0.4rem;color:#94a3b8'>خالی</span>"}</div><div><button class="btn-blue" onclick="document.getElementById('carrierMenu_${ci}').style.display='block'">🛩️ مدیریت</button><div id="carrierMenu_${ci}" style="display:none;background:#0f172a;padding:6px;border-radius:8px;margin-top:4px"><div style="font-size:0.5rem;color:#7dd3fc">اضافه کردن:</div><div class="inline-form"><select id="cfSel_${ci}">${Object.keys(player.fighters || {}).filter(f => player.fighters[f].count > 0 && player.fighters[f].health > 30).map(f => `<option value="${f}">${f} (${player.fighters[f].count})</option>`).join("")}</select><button class="btn-green" onclick="deployToCarrier(${ci},document.getElementById('cfSel_${ci}').value)">➕</button></div><div style="font-size:0.5rem;color:#ef4444">حذف:</div>${cr.fighters?.map((f, fi) => `<div class="player-row" style="padding:3px"><span>${F_DB[f.name]?.i || "🛩️"} ${f.name}</span><button class="btn-red" onclick="removeFromCarrier(${ci},${fi})">🗑️</button></div>`).join("") || "<div style='font-size:0.4rem;color:#94a3b8'>خالی</div>"}<button class="btn-red" onclick="document.getElementById('carrierMenu_${ci}').style.display='none'">❌ بستن</button></div></div></div>`;
+            html += `<div class="carrier-card"><div><strong>${cr.name}</strong> <span class="badge badge-naval">${cr.status}</span></div><div style="font-size:0.5rem;color:#475569">❤️ ${cr.health}%</div><div style="font-size:0.5rem;color:#3b82f6">🛩️ ${cr.fighters?.length || 0}/${CARRIER_SLOTS}</div><div class="carrier-fighter-list">${cr.fighters?.map((f, fi) => `<span class="carrier-fighter-tag">${F_DB[f.name]?.i || "🛩️"} ${f.name}</span>`).join("") || "<span style='font-size:0.4rem;color:#94a3b8'>خالی</span>"}</div><div><button class="btn-blue" onclick="document.getElementById('carrierMenu_${ci}').style.display='block'">🛩️ مدیریت</button><div id="carrierMenu_${ci}" style="display:none;background:#f1f5f9;padding:6px;border-radius:8px;margin-top:4px"><div style="font-size:0.5rem;color:#3b82f6">اضافه کردن:</div><div class="inline-form"><select id="cfSel_${ci}">${Object.keys(player.fighters || {}).filter(f => player.fighters[f].count > 0 && player.fighters[f].health > 30).map(f => `<option value="${f}">${f} (${player.fighters[f].count})</option>`).join("")}</select><button class="btn-green" onclick="deployToCarrier(${ci},document.getElementById('cfSel_${ci}').value)">➕</button></div><div style="font-size:0.5rem;color:#ef4444">حذف:</div>${cr.fighters?.map((f, fi) => `<div class="player-row" style="padding:3px"><span>${F_DB[f.name]?.i || "🛩️"} ${f.name}</span><button class="btn-red" onclick="removeFromCarrier(${ci},${fi})">🗑️</button></div>`).join("") || "<div style='font-size:0.4rem;color:#94a3b8'>خالی</div>"}<button class="btn-red" onclick="document.getElementById('carrierMenu_${ci}').style.display='none'">❌ بستن</button></div></div></div>`;
         });
     }
     
@@ -1552,13 +1525,36 @@ function renderStorage() {
                 const cost = EXTEND_COST_PER_DAY * EXTEND_MIN_DAYS;
                 const cls = expiry.status === "urgent" ? "urgent" : expiry.status === "warning" ? "warning" : "safe";
                 const canSell = (ts() - (player.lastSellTime || 0)) >= 900000;
-                html += `<div class="expire-card ${cls}"><div><strong>${fData.i} ${n}</strong> x${d.count}</div><div style="font-size:0.55rem">${expiry.message}</div><div style="font-size:0.5rem;color:#94a3b8">💰 تمدید ${EXTEND_MIN_DAYS} روز: ${cost.toLocaleString()} طلا</div><div><button class="btn-extend" onclick="extendFighter('${n}')">🔄 تمدید</button><button class="btn-gold" onclick="sellFighterToMarket('${n}')" ${canSell ? '' : 'disabled'}>📤 فروش به بازار (۱۵ دقیقه)</button></div></div>`;
+                html += `<div class="expire-card ${cls}"><div><strong>${fData.i} ${n}</strong> x${d.count}</div><div style="font-size:0.55rem">${expiry.message}</div><div style="font-size:0.5rem;color:#475569">💰 تمدید ${EXTEND_MIN_DAYS} روز: ${cost.toLocaleString()} طلا</div><div><button class="btn-extend" onclick="extendFighter('${n}')">🔄 تمدید</button><button class="btn-price" onclick="setFighterPrice('${n}')" ${canSell ? '' : 'disabled'}>💰 قیمت‌گذاری و فروش</button></div></div>`;
             });
         }
     }
     html += `<div class="info-bar">⏳ هر ۱۵ دقیقه یک جنگنده قابل فروش است</div>`;
     c.innerHTML = html;
 }
+
+window.extendFighter = async function(name) {
+    if (!player || !player.fighters || !player.fighters[name]) {
+        toast("جنگنده یافت نشد", true);
+        return;
+    }
+    const data = player.fighters[name];
+    if (data.count <= 0) {
+        toast("این جنگنده موجود نیست", true);
+        return;
+    }
+    const cost = EXTEND_COST_PER_DAY * EXTEND_MIN_DAYS;
+    if ((player.gold || 0) < cost) {
+        toast(`💰 ${cost.toLocaleString()} طلا برای تمدید ۱۴ روز نیاز است`, true);
+        return;
+    }
+    player.gold -= cost;
+    data.createdAt = ts();
+    toast(`✅ ${name} به مدت ۱۴ روز تمدید شد! (${cost.toLocaleString()} طلا)`, false, "peace");
+    await saveCurrent();
+    renderStorage();
+    updateUI();
+};
 
 function renderMarket() {
     const c = document.getElementById("marketContent");
@@ -1573,7 +1569,7 @@ function renderMarket() {
         militaryMarket.forEach((item, i) => {
             const fData = F_DB[item.fighterName];
             const timeLeft = Math.max(0, 60 - Math.floor((now - item.addedAt) / 60000));
-            html += `<div class="weapon-card"><div><strong>${fData?.i || "✈️"} ${item.fighterName}</strong></div><div style="font-size:0.55rem">💰 قیمت: ${item.price.toLocaleString()} طلا (${EXTEND_SELL_PERCENT}٪)</div><div style="font-size:0.5rem;color:#94a3b8">⏳ ${timeLeft} دقیقه باقی | فروشنده: ${item.sellerName}</div>${item.sellerId !== player.id ? `<button class="btn-green" onclick="buyFromMarket(${i})">🛒 خرید</button>` : '<span class="badge badge-gray">آگهی شما</span>'}</div>`;
+            html += `<div class="weapon-card"><div><strong>${fData?.i || "✈️"} ${item.fighterName}</strong></div><div style="font-size:0.55rem">💰 قیمت: ${item.price.toLocaleString()} طلا (تنظیم شده توسط فروشنده)</div><div style="font-size:0.5rem;color:#64748b">⏳ ${timeLeft} دقیقه باقی | فروشنده: ${item.sellerName}</div>${item.sellerId !== player.id ? `<button class="btn-green" onclick="buyFromMarket(${i})">🛒 خرید</button>` : '<span class="badge badge-gray">آگهی شما</span>'}</div>`;
         });
     }
     c.innerHTML = html;
@@ -1600,7 +1596,7 @@ function renderBases() {
     for (const [n, d] of Object.entries(D_DB)) {
         const can = (player.gold || 0) >= d.c.g && (player.oil || 0) >= d.c.o && (player.metal || 0) >= d.c.m;
         const cnt = base.defenses?.filter(dd => dd.name === n).length || 0;
-        html += `<div class="fighter-card" style="border-color:${can ? '#10b981' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.55rem">${n}</div><div style="font-size:0.4rem;color:#fbbf24">دفاع: ${d.def}</div><div style="font-size:0.4rem;color:#94a3b8">${cnt}/${d.max}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()}</div>${can && cnt < d.max ? `<button class="btn-defense" onclick="buildDefense('${n}')">🔨 نصب</button>` : `<span class="badge badge-red">${cnt >= d.max ? 'سقف' : 'نیازها'}</span>`}</div>`;
+        html += `<div class="fighter-card" style="border-color:${can ? '#10b981' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.55rem">${n}</div><div style="font-size:0.4rem;color:#f59e0b">دفاع: ${d.def}</div><div style="font-size:0.4rem;color:#64748b">${cnt}/${d.max}</div><div style="font-size:0.4rem;color:#f59e0b">💰${d.c.g.toLocaleString()}</div>${can && cnt < d.max ? `<button class="btn-defense" onclick="buildDefense('${n}')">🔨 نصب</button>` : `<span class="badge badge-red">${cnt >= d.max ? 'سقف' : 'نیازها'}</span>`}</div>`;
     }
     html += `</div>`;
     c.innerHTML = html;
@@ -1680,6 +1676,21 @@ window.claimDailyXP = async function() {
     toast("⭐ ۱ XP دریافت شد!");
 };
 
+window.upgradeMine = async function() {
+    if (!player) return;
+    const cost = (player.mineLevel || 1) * 2000;
+    if ((player.gold || 0) < cost) {
+        toast(`💰 ${cost.toLocaleString()} طلا برای ارتقا نیاز است`, true);
+        return;
+    }
+    player.gold -= cost;
+    player.mineLevel = (player.mineLevel || 1) + 1;
+    toast(`⬆️ معدن به سطح ${player.mineLevel} ارتقا یافت! (+${player.mineLevel * 10} طلا/ثانیه, +${player.mineLevel * 20} فلز/ثانیه, +${player.mineLevel * 5} نفت/ثانیه)`, false, "peace");
+    await saveCurrent();
+    renderMine();
+    updateUI();
+};
+
 window.upgradeBase = async function() {
     if (!player.base) player.base = { level: 1, storage: 0, maxStorage: 10000, defense: 10, fighters: [], defenses: [] };
     const cost = player.base.level * 1500;
@@ -1738,7 +1749,7 @@ async function saveCurrent() {
     updateUI();
 }
 
-// ========== بک‌گراند ==========
+// ========== بک‌گراند (سفید) ==========
 const canvas = document.getElementById("bgCanvas"),
     ctx = canvas.getContext("2d");
 let stars = [],
@@ -1751,12 +1762,12 @@ function resizeCanvas() {
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
-for (let i = 0; i < 200; i++) {
+for (let i = 0; i < 80; i++) {
     stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         r: Math.random() * 1.5 + 0.5,
-        a: Math.random() * 0.8 + 0.2,
+        a: Math.random() * 0.5 + 0.1,
         speed: Math.random() * 0.02 + 0.005
     });
 }
@@ -1776,18 +1787,18 @@ function createShootingStar() {
 function drawBg() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const grad = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width * 0.7);
-    grad.addColorStop(0, "#1a1a3e");
-    grad.addColorStop(0.5, "#0f0f23");
-    grad.addColorStop(1, "#050510");
+    grad.addColorStop(0, "#f8fafc");
+    grad.addColorStop(0.5, "#f1f5f9");
+    grad.addColorStop(1, "#e2e8f0");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     stars.forEach(s => {
         s.a += s.speed;
-        if (s.a > 1) s.a = 0.2;
+        if (s.a > 1) s.a = 0.1;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${s.a * 0.6})`;
+        ctx.fillStyle = `rgba(100,116,139,${s.a * 0.3})`;
         ctx.fill();
     });
 
@@ -1803,26 +1814,14 @@ function drawBg() {
         ctx.beginPath();
         ctx.moveTo(ss.x, ss.y);
         ctx.lineTo(ss.x - ss.len * Math.cos(ss.angle), ss.y - ss.len * Math.sin(ss.angle));
-        ctx.strokeStyle = `rgba(255,220,180,${ss.life * 0.8})`;
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = `rgba(245,158,11,${ss.life * 0.5})`;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(ss.x, ss.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${ss.life * 0.5})`;
-        ctx.fill();
 
         if (ss.life <= 0 || ss.x > canvas.width || ss.y > canvas.height) {
             shootingStars.splice(idx, 1);
         }
     });
-
-    const grd = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, canvas.width * 0.3, canvas.width / 2, canvas.height / 2, canvas.width * 0.9);
-    grd.addColorStop(0, "rgba(245,158,11,0.02)");
-    grd.addColorStop(0.5, "rgba(245,158,11,0.04)");
-    grd.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     requestAnimationFrame(drawBg);
 }
@@ -1870,6 +1869,7 @@ async function startGame() {
         player = createPlayer(n, p);
         player.ip = userIP;
         toast(`🏴 کشور ${n} تأسیس شد! +۱ XP`);
+        startMineTick();
     }
 
     document.getElementById("loginBox").style.display = "none";
