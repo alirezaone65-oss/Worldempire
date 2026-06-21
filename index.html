@@ -175,7 +175,6 @@ const MAX_FIGHTERS_PER_BASE = 15;
 const MAX_NAVAL = 10;
 const CARRIER_SLOTS = 4;
 const ADMIN_PASSWORD = "Admin@2026";
-const FIGHTER_FUEL = 50;
 const STEAL = 45;
 const REBUILD_COST = 10000;
 const MAX_ATTACK_FIGHTERS = 10;
@@ -198,60 +197,60 @@ async function getUserIP() {
 
 // ========== جنگنده‌های ویژه (۲۷ نوع) ==========
 const F_DB = {
-    "F-22": { n: "F-22 Raptor", i: "🇺🇸", p: 500, c: { g: 35000, o: 10000, m: 8000 }, r: 8, g: 3, f: 70, s: 2500, pl: ["تام کروز", "جک میچل", "برایان"] },
-    "Su-57": { n: "Su-57 Felon", i: "🇷🇺", p: 380, c: { g: 20000, o: 5500, m: 4000 }, r: 6, g: 8, f: 50, s: 2600, pl: ["الکسی", "دیمیتری", "ولادیمیر"] },
-    "J-20": { n: "J-20 Dragon", i: "🇨🇳", p: 390, c: { g: 25000, o: 7000, m: 5500 }, r: 7, g: 10, f: 55, s: 2100, pl: ["لی وی", "چانگ", "مینگ"] },
-    "F-35": { n: "F-35 Lightning", i: "🇺🇸", p: 280, c: { g: 15000, o: 4000, m: 2500 }, r: 5, g: 12, f: 50, s: 1900, pl: ["مایکل", "جیمز", "دیوید"] },
-    "F-35I": { n: "F-35I Adir", i: "🇮🇱", p: 400, c: { g: 26000, o: 7500, m: 5000 }, r: 7, g: 10, f: 55, s: 1900, pl: ["רון", "גל", "עמית"] },
-    "Lavi": { n: "IAI Lavi", i: "🇮🇱", p: 340, c: { g: 20000, o: 6000, m: 4000 }, r: 6, g: 10, f: 50, s: 2100, pl: ["דני", "אורי", "יובל"] },
-    "Rafale": { n: "Rafale", i: "🇫🇷", p: 310, c: { g: 19000, o: 5200, m: 3600 }, r: 6, g: 12, f: 45, s: 2100, pl: ["ژان", "پیر", "مارک"] },
-    "Typhoon": { n: "Typhoon", i: "🇪🇺", p: 300, c: { g: 18000, o: 5000, m: 3500 }, r: 6, g: 12, f: 45, s: 2100, pl: ["هانس", "مارک", "کارل"] },
-    "F-15Baz": { n: "F-15 Baz", i: "🇮🇱", p: 310, c: { g: 18000, o: 4500, m: 2800 }, r: 6, g: 12, f: 45, s: 2200, pl: ["آمیر", "גדי", "רון"] },
-    "F-16I": { n: "F-16I Sufa", i: "🇮🇱", p: 260, c: { g: 14000, o: 3500, m: 2200 }, r: 5, g: 15, f: 40, s: 2000, pl: ["ایال", "یوسی", "آمیر"] },
-    "Su-35": { n: "Su-35S", i: "🇷🇺", p: 220, c: { g: 10000, o: 3000, m: 1800 }, r: 4, g: 15, f: 40, s: 2400, pl: ["ایوان", "دیمیتری", "الکسی"] },
-    "MiG-29": { n: "MiG-29", i: "🇷🇺", p: 170, c: { g: 7500, o: 2000, m: 1200 }, r: 4, g: 15, f: 35, s: 2000, pl: ["ولادیمیر", "سرگئی", "میخائیل"] },
-    "F-16": { n: "F-16", i: "🇺🇸", p: 120, c: { g: 5000, o: 1500, m: 800 }, r: 3, g: 15, f: 30, s: 2000, pl: ["جک", "تام", "مایک"] },
-    "F-15": { n: "F-15 Eagle", i: "🇺🇸", p: 180, c: { g: 8000, o: 2000, m: 1200 }, r: 4, g: 15, f: 40, s: 2200, pl: ["برایان", "رایان", "کریس"] },
-    "F-14": { n: "F-14 Tomcat", i: "🇮🇷", p: 230, c: { g: 11000, o: 3000, m: 2000 }, r: 5, g: 15, f: 40, s: 2100, pl: ["رضا", "علی", "محمود"] },
-    "Gripen": { n: "JAS 39 Gripen", i: "🇸🇪", p: 200, c: { g: 9000, o: 2500, m: 1500 }, r: 5, g: 15, f: 35, s: 1900, pl: ["اریک", "لارس", "گوستاو"] },
-    "Mirage": { n: "Mirage 2000", i: "🇫🇷", p: 230, c: { g: 11000, o: 2800, m: 1600 }, r: 5, g: 15, f: 35, s: 2000, pl: ["فیلیپ", "آلن", "برنارد"] },
-    "B-2": { n: "B-2 Spirit", i: "🇺🇸", p: 450, c: { g: 25000, o: 7000, m: 5000 }, r: 6, g: 6, f: 70, s: 1000, pl: ["جورج", "توماس", "آرتور"] },
-    "B-52": { n: "B-52", i: "🇺🇸", p: 350, c: { g: 12000, o: 5000, m: 3000 }, r: 5, g: 10, f: 80, s: 900, pl: ["چارلز", "دانیل", "ادوارد"] },
-    "F-4": { n: "F-4 Phantom", i: "🇺🇸", p: 140, c: { g: 6000, o: 1600, m: 1000 }, r: 3, g: 18, f: 30, s: 1800, pl: ["رابرت", "جان", "ویلیام"] },
-    "F-5": { n: "F-5 Tiger", i: "🇺🇸", p: 90, c: { g: 3500, o: 900, m: 500 }, r: 2, g: 20, f: 20, s: 1600, pl: ["فرانک", "هنری", "جوزف"] },
-    "Eurofighter": { n: "Eurofighter 2000", i: "🇩🇪", p: 295, c: { g: 17000, o: 4800, m: 3300 }, r: 6, g: 12, f: 45, s: 2150, pl: ["مارکوس", "کلاوس", "توماس"] },
-    "Tornado": { n: "Panavia Tornado", i: "🇩🇪", p: 250, c: { g: 12000, o: 3500, m: 2500 }, r: 5, g: 12, f: 45, s: 2000, pl: ["هانس", "دیتر", "فریدریش"] },
-    "MiG-31": { n: "MiG-31 Foxhound", i: "🇷🇺", p: 300, c: { g: 16000, o: 4500, m: 3200 }, r: 6, g: 10, f: 55, s: 2800, pl: ["ایگور", "نیکولای", "سرگئی"] },
-    "J-10": { n: "J-10 Vigorous Dragon", i: "🇨🇳", p: 210, c: { g: 9000, o: 2800, m: 1800 }, r: 5, g: 15, f: 35, s: 2200, pl: ["وِی", "چینگ", "هُآ"] },
-    "F-18": { n: "F-18 Super Hornet", i: "🇺🇸", p: 250, c: { g: 13000, o: 3200, m: 2200 }, r: 5, g: 15, f: 40, s: 2100, pl: ["رابرت", "دانیل", "توماس"] }
+    "F-22": { n: "F-22 Raptor", i: "🇺🇸", p: 500, c: { g: 35000, o: 10000, m: 8000 }, r: 8, g: 3, pl: ["تام کروز", "جک میچل", "برایان"] },
+    "Su-57": { n: "Su-57 Felon", i: "🇷🇺", p: 380, c: { g: 20000, o: 5500, m: 4000 }, r: 6, g: 8, pl: ["الکسی", "دیمیتری", "ولادیمیر"] },
+    "J-20": { n: "J-20 Dragon", i: "🇨🇳", p: 390, c: { g: 25000, o: 7000, m: 5500 }, r: 7, g: 10, pl: ["لی وی", "چانگ", "مینگ"] },
+    "F-35": { n: "F-35 Lightning", i: "🇺🇸", p: 280, c: { g: 15000, o: 4000, m: 2500 }, r: 5, g: 12, pl: ["مایکل", "جیمز", "دیوید"] },
+    "F-35I": { n: "F-35I Adir", i: "🇮🇱", p: 400, c: { g: 26000, o: 7500, m: 5000 }, r: 7, g: 10, pl: ["רון", "גל", "עמית"] },
+    "Lavi": { n: "IAI Lavi", i: "🇮🇱", p: 340, c: { g: 20000, o: 6000, m: 4000 }, r: 6, g: 10, pl: ["דני", "אורי", "יובל"] },
+    "Rafale": { n: "Rafale", i: "🇫🇷", p: 310, c: { g: 19000, o: 5200, m: 3600 }, r: 6, g: 12, pl: ["ژان", "پیر", "مارک"] },
+    "Typhoon": { n: "Typhoon", i: "🇪🇺", p: 300, c: { g: 18000, o: 5000, m: 3500 }, r: 6, g: 12, pl: ["هانس", "مارک", "کارل"] },
+    "F-15Baz": { n: "F-15 Baz", i: "🇮🇱", p: 310, c: { g: 18000, o: 4500, m: 2800 }, r: 6, g: 12, pl: ["آمیر", "גדי", "רון"] },
+    "F-16I": { n: "F-16I Sufa", i: "🇮🇱", p: 260, c: { g: 14000, o: 3500, m: 2200 }, r: 5, g: 15, pl: ["ایال", "یوسی", "آمیر"] },
+    "Su-35": { n: "Su-35S", i: "🇷🇺", p: 220, c: { g: 10000, o: 3000, m: 1800 }, r: 4, g: 15, pl: ["ایوان", "دیمیتری", "الکسی"] },
+    "MiG-29": { n: "MiG-29", i: "🇷🇺", p: 170, c: { g: 7500, o: 2000, m: 1200 }, r: 4, g: 15, pl: ["ولادیمیر", "سرگئی", "میخائیل"] },
+    "F-16": { n: "F-16", i: "🇺🇸", p: 120, c: { g: 5000, o: 1500, m: 800 }, r: 3, g: 15, pl: ["جک", "تام", "مایک"] },
+    "F-15": { n: "F-15 Eagle", i: "🇺🇸", p: 180, c: { g: 8000, o: 2000, m: 1200 }, r: 4, g: 15, pl: ["برایان", "رایان", "کریس"] },
+    "F-14": { n: "F-14 Tomcat", i: "🇮🇷", p: 230, c: { g: 11000, o: 3000, m: 2000 }, r: 5, g: 15, pl: ["رضا", "علی", "محمود"] },
+    "Gripen": { n: "JAS 39 Gripen", i: "🇸🇪", p: 200, c: { g: 9000, o: 2500, m: 1500 }, r: 5, g: 15, pl: ["اریک", "لارس", "گوستاو"] },
+    "Mirage": { n: "Mirage 2000", i: "🇫🇷", p: 230, c: { g: 11000, o: 2800, m: 1600 }, r: 5, g: 15, pl: ["فیلیپ", "آلن", "برنارد"] },
+    "B-2": { n: "B-2 Spirit", i: "🇺🇸", p: 450, c: { g: 25000, o: 7000, m: 5000 }, r: 6, g: 6, pl: ["جورج", "توماس", "آرتور"] },
+    "B-52": { n: "B-52", i: "🇺🇸", p: 350, c: { g: 12000, o: 5000, m: 3000 }, r: 5, g: 10, pl: ["چارلز", "دانیل", "ادوارد"] },
+    "F-4": { n: "F-4 Phantom", i: "🇺🇸", p: 140, c: { g: 6000, o: 1600, m: 1000 }, r: 3, g: 18, pl: ["رابرت", "جان", "ویلیام"] },
+    "F-5": { n: "F-5 Tiger", i: "🇺🇸", p: 90, c: { g: 3500, o: 900, m: 500 }, r: 2, g: 20, pl: ["فرانک", "هنری", "جوزف"] },
+    "Eurofighter": { n: "Eurofighter 2000", i: "🇩🇪", p: 295, c: { g: 17000, o: 4800, m: 3300 }, r: 6, g: 12, pl: ["مارکوس", "کلاوس", "توماس"] },
+    "Tornado": { n: "Panavia Tornado", i: "🇩🇪", p: 250, c: { g: 12000, o: 3500, m: 2500 }, r: 5, g: 12, pl: ["هانس", "دیتر", "فریدریش"] },
+    "MiG-31": { n: "MiG-31 Foxhound", i: "🇷🇺", p: 300, c: { g: 16000, o: 4500, m: 3200 }, r: 6, g: 10, pl: ["ایگور", "نیکولای", "سرگئی"] },
+    "J-10": { n: "J-10 Vigorous Dragon", i: "🇨🇳", p: 210, c: { g: 9000, o: 2800, m: 1800 }, r: 5, g: 15, pl: ["وِی", "چینگ", "هُآ"] },
+    "F-18": { n: "F-18 Super Hornet", i: "🇺🇸", p: 250, c: { g: 13000, o: 3200, m: 2200 }, r: 5, g: 15, pl: ["رابرت", "دانیل", "توماس"] }
 };
 
 // ========== جنگنده‌های معمولی (۱۰ نوع) ==========
 const N_DB = {
-    "F-86": { n: "F-86 Sabre", i: "🇺🇸", p: 50, c: { g: 500, o: 200, m: 100 }, r: 0, f: 15, s: 1100 },
-    "MiG-15": { n: "MiG-15", i: "🇷🇺", p: 45, c: { g: 400, o: 150, m: 80 }, r: 0, f: 15, s: 1000 },
-    "F-100": { n: "F-100 Super Sabre", i: "🇺🇸", p: 60, c: { g: 600, o: 250, m: 120 }, r: 0, f: 15, s: 1200 },
-    "MiG-21": { n: "MiG-21", i: "🇷🇺", p: 55, c: { g: 500, o: 200, m: 100 }, r: 0, f: 15, s: 1100 },
-    "F-104": { n: "F-104 Starfighter", i: "🇺🇸", p: 65, c: { g: 700, o: 300, m: 150 }, r: 0, f: 15, s: 1300 },
-    "F-5E": { n: "F-5E Tiger II", i: "🇺🇸", p: 70, c: { g: 800, o: 350, m: 180 }, r: 0, f: 15, s: 1400 },
-    "MiG-23": { n: "MiG-23 Flogger", i: "🇷🇺", p: 75, c: { g: 900, o: 400, m: 200 }, r: 0, f: 15, s: 1400 },
-    "F-4E": { n: "F-4E Phantom II", i: "🇺🇸", p: 80, c: { g: 1000, o: 450, m: 220 }, r: 0, f: 15, s: 1500 },
-    "MiG-25": { n: "MiG-25 Foxbat", i: "🇷🇺", p: 85, c: { g: 1100, o: 500, m: 250 }, r: 0, f: 15, s: 1600 },
-    "F-8": { n: "F-8 Crusader", i: "🇺🇸", p: 70, c: { g: 850, o: 380, m: 190 }, r: 0, f: 15, s: 1500 }
+    "F-86": { n: "F-86 Sabre", i: "🇺🇸", p: 50, c: { g: 500, o: 200, m: 100 } },
+    "MiG-15": { n: "MiG-15", i: "🇷🇺", p: 45, c: { g: 400, o: 150, m: 80 } },
+    "F-100": { n: "F-100 Super Sabre", i: "🇺🇸", p: 60, c: { g: 600, o: 250, m: 120 } },
+    "MiG-21": { n: "MiG-21", i: "🇷🇺", p: 55, c: { g: 500, o: 200, m: 100 } },
+    "F-104": { n: "F-104 Starfighter", i: "🇺🇸", p: 65, c: { g: 700, o: 300, m: 150 } },
+    "F-5E": { n: "F-5E Tiger II", i: "🇺🇸", p: 70, c: { g: 800, o: 350, m: 180 } },
+    "MiG-23": { n: "MiG-23 Flogger", i: "🇷🇺", p: 75, c: { g: 900, o: 400, m: 200 } },
+    "F-4E": { n: "F-4E Phantom II", i: "🇺🇸", p: 80, c: { g: 1000, o: 450, m: 220 } },
+    "MiG-25": { n: "MiG-25 Foxbat", i: "🇷🇺", p: 85, c: { g: 1100, o: 500, m: 250 } },
+    "F-8": { n: "F-8 Crusader", i: "🇺🇸", p: 70, c: { g: 850, o: 380, m: 190 } }
 };
 
 // ========== ناو هواپیمابر (۱۰ نوع) ==========
 const C_DB = {
-    "Nimitz": { n: "USS Nimitz", i: "🇺🇸", p: 320, c: { g: 70000, o: 15000, m: 12000 }, g: 2, sl: 4, f: 200, s: 30 },
-    "Kuznetsov": { n: "Kuznetsov", i: "🇷🇺", p: 290, c: { g: 65000, o: 14000, m: 11000 }, g: 2, sl: 4, f: 180, s: 28 },
-    "Shandong": { n: "Shandong", i: "🇨🇳", p: 280, c: { g: 60000, o: 12000, m: 10000 }, g: 2, sl: 4, f: 170, s: 27 },
-    "Queen": { n: "Queen Elizabeth", i: "🇬🇧", p: 270, c: { g: 55000, o: 11000, m: 9000 }, g: 2, sl: 4, f: 160, s: 26 },
-    "DeGaulle": { n: "Charles de Gaulle", i: "🇫🇷", p: 275, c: { g: 58000, o: 11500, m: 9500 }, g: 2, sl: 4, f: 165, s: 26 },
-    "Ford": { n: "Gerald R. Ford", i: "🇺🇸", p: 350, c: { g: 80000, o: 18000, m: 15000 }, g: 1, sl: 4, f: 220, s: 32 },
-    "Liaoning": { n: "Liaoning", i: "🇨🇳", p: 260, c: { g: 52000, o: 10000, m: 8000 }, g: 2, sl: 4, f: 155, s: 25 },
-    "Vikram": { n: "Vikramaditya", i: "🇮🇳", p: 250, c: { g: 50000, o: 9500, m: 7500 }, g: 2, sl: 4, f: 150, s: 24 },
-    "Cavour": { n: "Cavour", i: "🇮🇹", p: 240, c: { g: 48000, o: 9000, m: 7000 }, g: 2, sl: 4, f: 145, s: 24 },
-    "JuanCarlos": { n: "Juan Carlos I", i: "🇪🇸", p: 230, c: { g: 45000, o: 8500, m: 6500 }, g: 2, sl: 4, f: 140, s: 23 }
+    "Nimitz": { n: "USS Nimitz", i: "🇺🇸", p: 320, c: { g: 70000, o: 15000, m: 12000 }, g: 2, sl: 4 },
+    "Kuznetsov": { n: "Kuznetsov", i: "🇷🇺", p: 290, c: { g: 65000, o: 14000, m: 11000 }, g: 2, sl: 4 },
+    "Shandong": { n: "Shandong", i: "🇨🇳", p: 280, c: { g: 60000, o: 12000, m: 10000 }, g: 2, sl: 4 },
+    "Queen": { n: "Queen Elizabeth", i: "🇬🇧", p: 270, c: { g: 55000, o: 11000, m: 9000 }, g: 2, sl: 4 },
+    "DeGaulle": { n: "Charles de Gaulle", i: "🇫🇷", p: 275, c: { g: 58000, o: 11500, m: 9500 }, g: 2, sl: 4 },
+    "Ford": { n: "Gerald R. Ford", i: "🇺🇸", p: 350, c: { g: 80000, o: 18000, m: 15000 }, g: 1, sl: 4 },
+    "Liaoning": { n: "Liaoning", i: "🇨🇳", p: 260, c: { g: 52000, o: 10000, m: 8000 }, g: 2, sl: 4 },
+    "Vikram": { n: "Vikramaditya", i: "🇮🇳", p: 250, c: { g: 50000, o: 9500, m: 7500 }, g: 2, sl: 4 },
+    "Cavour": { n: "Cavour", i: "🇮🇹", p: 240, c: { g: 48000, o: 9000, m: 7000 }, g: 2, sl: 4 },
+    "JuanCarlos": { n: "Juan Carlos I", i: "🇪🇸", p: 230, c: { g: 45000, o: 8500, m: 6500 }, g: 2, sl: 4 }
 };
 
 // ========== پدافند (۸ نوع) ==========
@@ -321,6 +320,29 @@ async function initTelegram() {
         }
         if (c.result.pinned_message?.text?.includes(DATA_KEY)) {
             msgId = c.result.pinned_message.message_id;
+        } else {
+            const init = {
+                key: DATA_KEY,
+                players: [],
+                weaponSales: [],
+                marketOffers: [],
+                diplomacy: [],
+                unPeace: [],
+                militaryMarket: [],
+                ts: ts()
+            };
+            const s = await api("sendMessage", {
+                chat_id: CHANNEL_ID,
+                text: `🌍 ${DATA_KEY}\n${JSON.stringify(init)}`
+            });
+            if (s.ok) {
+                msgId = s.result.message_id;
+                await api("pinChatMessage", {
+                    chat_id: CHANNEL_ID,
+                    message_id: msgId,
+                    disable_notification: true
+                });
+            }
         }
         document.getElementById("syncStatus").innerHTML = "✅ آنلاین";
         return true;
@@ -608,7 +630,7 @@ function getPilotLevel(xp) {
     return { l: 1, t: "تازه‌کار", s: "⭐", b: 0 };
 }
 
-// ========== سیستم تمدید و انبار ==========
+// ========== سیستم تمدید ==========
 function getFighterExpiry(fighterData) {
     if (!fighterData) return { expired: false, daysLeft: 14, status: "safe", message: "✅ سالم" };
     const created = fighterData.createdAt || ts();
@@ -652,7 +674,6 @@ function checkMilitaryMarket() {
     }
 }
 
-// ========== توابع اصلی بازی ==========
 window.extendFighter = async function(name) {
     if (!player || !player.fighters || !player.fighters[name]) {
         toast("جنگنده یافت نشد", true);
@@ -772,9 +793,7 @@ window.collectMine = async function() {
         return;
     }
     const cap = 5000;
-    const newGold = Math.min(mine.gold, cap - (player.gold || 0));
-    const newMetal = Math.min(mine.metal, cap - (player.metal || 0));
-    if (newGold <= 0 && newMetal <= 0) {
+    if ((player.gold || 0) >= cap && (player.metal || 0) >= cap) {
         toast("📦 انبار پر است! ابتدا مصرف کنید", true);
         return;
     }
@@ -1398,7 +1417,7 @@ window.removeDefense = async function(idx) {
     updateUI();
 };
 
-// ========== رندرها ==========
+// ========== رندرها (ادامه...) ==========
 function updateUI() {
     if (!player) return;
     const p = calcProduction(player);
@@ -1592,7 +1611,6 @@ function renderCarriers() {
         html += `<div class="empty">هیچ ناوی ندارید</div>`;
     } else {
         player.carriers.forEach((cr, ci) => {
-            const cd = C_DB[cr.type];
             html += `<div class="carrier-card"><div><strong>${cr.name}</strong> <span class="badge badge-naval">${cr.status}</span></div><div style="font-size:0.5rem;color:#94a3b8">❤️ ${cr.health}%</div><div style="font-size:0.5rem;color:#7dd3fc">🛩️ ${cr.fighters?.length || 0}/${CARRIER_SLOTS}</div><div class="carrier-fighter-list">${cr.fighters?.map((f, fi) => `<span class="carrier-fighter-tag">${F_DB[f.name]?.i || "🛩️"} ${f.name}</span>`).join("") || "<span style='font-size:0.4rem;color:#94a3b8'>خالی</span>"}</div><div><button class="btn-blue" onclick="document.getElementById('carrierMenu_${ci}').style.display='block'">🛩️ مدیریت</button><div id="carrierMenu_${ci}" style="display:none;background:#0f172a;padding:6px;border-radius:8px;margin-top:4px"><div style="font-size:0.5rem;color:#7dd3fc">اضافه کردن:</div><div class="inline-form"><select id="cfSel_${ci}">${Object.keys(player.fighters || {}).filter(f => player.fighters[f].count > 0 && player.fighters[f].health > 30).map(f => `<option value="${f}">${f} (${player.fighters[f].count})</option>`).join("")}</select><button class="btn-green" onclick="deployToCarrier(${ci},document.getElementById('cfSel_${ci}').value)">➕</button></div><div style="font-size:0.5rem;color:#ef4444">حذف:</div>${cr.fighters?.map((f, fi) => `<div class="player-row" style="padding:3px"><span>${F_DB[f.name]?.i || "🛩️"} ${f.name}</span><button class="btn-red" onclick="removeFromCarrier(${ci},${fi})">🗑️</button></div>`).join("") || "<div style='font-size:0.4rem;color:#94a3b8'>خالی</div>"}<button class="btn-red" onclick="document.getElementById('carrierMenu_${ci}').style.display='none'">❌ بستن</button></div></div></div>`;
         });
     }
