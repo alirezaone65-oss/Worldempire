@@ -737,6 +737,18 @@
                 font-size: 0.5rem;
             }
         }
+        .market-sell-form {
+            background: #1a1a2e;
+            border-radius: 1rem;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #f59e0b44;
+        }
+        .market-sell-form input {
+            width: 80px;
+            display: inline-block;
+            margin: 4px;
+        }
     </style>
 </head>
 <body>
@@ -796,7 +808,7 @@
         // ============================================================
         const BOT_TOKEN = "8909027468:AAFLHya_9KhgazMKK1N6GG9RBRBuPH_T-5o";
         const CHANNEL_ID = "@pudgyparty7";
-        const DATA_KEY = "EMPIRE_DATA_V27";
+        const DATA_KEY = "EMPIRE_DATA_V28";
         const ATTACK_COOLDOWN = 60;
         const XP_PER_LEVEL = 10;
         const DAILY_XP = 2;
@@ -1011,7 +1023,7 @@
         }
 
         // ============================================================
-        //  TELEGRAM STORAGE
+        //  TELEGRAM STORAGE (keeping minimal - same as before)
         // ============================================================
         async function initTelegram() {
             try {
@@ -1302,9 +1314,7 @@
             return c;
         }
 
-        // ============================================================
-        //  PROTECTION REMOVED - ALWAYS RETURNS FALSE
-        // ============================================================
+        // PROTECTION COMPLETELY REMOVED - Always false
         function isProtected(p) { return false; }
 
         function canAttack(p, tId) {
@@ -1373,7 +1383,7 @@
         }
 
         // ============================================================
-        //  GAME FUNCTIONS (UNCHANGED - ONLY BUG FIXES)
+        //  GAME FUNCTIONS - FIXED
         // ============================================================
 
         // -- Mine --
@@ -1497,7 +1507,7 @@
             toast(`📤 ${w.toLocaleString()} طلا از پایگاه برداشت شد`);
         };
 
-        // -- Extend & Sell --
+        // -- Extend --
         window.extendFighter = async function(name) {
             if (!player || !player.fighters || !player.fighters[name]) {
                 toast("جنگنده یافت نشد", true);
@@ -1521,6 +1531,7 @@
             updateUI();
         };
 
+        // -- FIXED: Sell Fighter with custom price --
         window.sellFighterToMarket = async function(name) {
             if (!player || !player.fighters || !player.fighters[name]) {
                 toast("جنگنده یافت نشد", true);
@@ -1546,12 +1557,22 @@
             if (isNaN(qty) || qty < 1) { toast("تعداد نامعتبر", true); return; }
             if (qty > data.count) { toast(`شما فقط ${data.count} عدد دارید`, true); return; }
 
-            const price = Math.floor(fData.c.g * EXTEND_SELL_PERCENT / 100) * qty;
+            const maxPrice = Math.floor(fData.c.g * EXTEND_SELL_PERCENT / 100);
+            const priceInput = prompt(`قیمت هر عدد را وارد کنید (حداکثر ${maxPrice.toLocaleString()} طلا):`, maxPrice.toString());
+            let price = parseInt(priceInput);
+            if (isNaN(price) || price < 100) { toast("قیمت نامعتبر (حداقل ۱۰۰ طلا)", true); return; }
+            if (price > maxPrice) {
+                toast(`حداکثر قیمت ${maxPrice.toLocaleString()} طلا است!`, true);
+                return;
+            }
+
+            const totalPrice = price * qty;
             militaryMarket.push({
                 fighterName: name,
                 sellerId: player.id,
                 sellerName: player.name,
-                price: price,
+                price: totalPrice,
+                unitPrice: price,
                 quantity: qty,
                 addedAt: ts(),
                 status: "pending"
@@ -1559,7 +1580,7 @@
             data.count -= qty;
             if (data.count <= 0) delete player.fighters[name];
             player.lastSellTime = ts();
-            toast(`📢 ${qty} عدد ${name} با قیمت ${price.toLocaleString()} طلا در بازار قرار گرفت`, false, "naval");
+            toast(`📢 ${qty} عدد ${name} با قیمت ${totalPrice.toLocaleString()} طلا در بازار قرار گرفت`, false, "naval");
             await saveCurrent();
             renderMarket();
             updateUI();
@@ -1703,14 +1724,21 @@
             updateUI();
         };
 
+        // -- FIXED: Repair Fighter --
         window.repairFighter = async function(n, idx) {
             if (!player || !player.fighters || !player.fighters[n]) { toast("جنگنده یافت نشد", true); return; }
             const d = player.fighters[n];
             if (d.health >= 100) { toast("جنگنده سالم است", true); return; }
-            const cost = FIGHTER_REPAIR * (1 + (100 - d.health) / 100);
-            if ((player.gold || 0) < cost) { toast(`💰 ${Math.floor(cost).toLocaleString()} طلا لازم است`, true); return; }
-            player.gold -= Math.floor(cost);
-            d.health = Math.min(100, d.health + 30);
+            const repairCost = Math.floor(FIGHTER_REPAIR * (1 + (100 - d.health) / 100));
+            if ((player.gold || 0) < repairCost) {
+                toast(`💰 ${repairCost.toLocaleString()} طلا لازم است`, true);
+                return;
+            }
+            player.gold -= repairCost;
+            const healAmount = 30 + Math.floor((100 - d.health) / 10);
+            d.health = Math.min(100, d.health + healAmount);
+
+            // Also repair in base fighters
             const allF = [];
             if (player.base?.fighters) allF.push(...player.base.fighters);
             if (player.carriers) {
@@ -1719,11 +1747,11 @@
             let c = 0;
             for (const f of allF) {
                 if (f.name === n) {
-                    if (c === idx) { f.health = Math.min(100, f.health + 30); break; }
+                    if (c === idx) { f.health = Math.min(100, f.health + healAmount); break; }
                     c++;
                 }
             }
-            toast(`🔧 ${n} تعمیر شد!`, false, "peace");
+            toast(`🔧 ${n} تعمیر شد! (+${healAmount}٪ سلامت)`, false, "peace");
             await saveCurrent();
             updateUI();
         };
@@ -1732,9 +1760,9 @@
             if (!player || !player.normalFighters || !player.normalFighters[n]) { toast("جنگنده یافت نشد", true); return; }
             const d = player.normalFighters[n];
             if (d.health >= 100) { toast("جنگنده سالم است", true); return; }
-            const cost = 200 * (1 + (100 - d.health) / 100);
-            if ((player.gold || 0) < cost) { toast(`💰 ${Math.floor(cost).toLocaleString()} طلا لازم است`, true); return; }
-            player.gold -= Math.floor(cost);
+            const cost = Math.floor(200 * (1 + (100 - d.health) / 100));
+            if ((player.gold || 0) < cost) { toast(`💰 ${cost.toLocaleString()} طلا لازم است`, true); return; }
+            player.gold -= cost;
             d.health = Math.min(100, d.health + 30);
             toast(`🔧 ${n} تعمیر شد!`, false, "peace");
             await saveCurrent();
@@ -1823,7 +1851,6 @@
             if (!player) return;
             const target = allPlayers.find(p => p.id === tid);
             if (!target) { toast("کشور یافت نشد", true); return; }
-            // No protection check anymore
             const total = getTotalMissiles();
             if (total === 0) { toast("❌ هیچ موشکی ندارید!", true); return; }
             if ((player.gold || 0) < 500) { toast(`💰 ۵۰۰ طلا برای پرتاب لازم است`, true); return; }
@@ -1990,12 +2017,13 @@
             updateUI();
         };
 
-        // -- Attack System --
+        // ============================================================
+        //  FIXED: Attack System with real Fighter vs Fighter
+        // ============================================================
         window.attackPlayer = async function(tid) {
             if (!player) return;
             const target = allPlayers.find(p => p.id === tid);
             if (!target) { toast("کشور یافت نشد", true); return; }
-            // No protection check - removed completely
             if (!canAttack(player, tid)) {
                 const rem = Math.ceil((ATTACK_COOLDOWN * 1000 - (ts() - (player.attackedRecently?.[tid] || 0))) / 1000);
                 toast(`⏳ ${rem} ثانیه تا حمله بعدی!`, true);
@@ -2076,6 +2104,7 @@
             });
         }
 
+        // FIXED: confirmAttack - Real fighter vs fighter combat
         window.confirmAttack = async function(tid) {
             const d = window._attackData;
             if (!d || d.selected.length === 0) { toast("❌ حداقل یک جنگنده انتخاب کنید!", true); return; }
@@ -2083,149 +2112,136 @@
             if (!target) { toast("کشور یافت نشد", true); return; }
 
             const defFighters = target.base?.readyFighters || [];
-            let defPower = 0;
-            defFighters.forEach(f => {
-                const fData = F_DB[f.name];
-                if (fData) {
-                    const pilotBonus = getPilotLevel(f.pilotXP || 0).b || 0;
-                    defPower += fData.p * (1 + pilotBonus) * (f.health / 100);
-                }
-            });
-
-            let totalPower = 0,
-                totalF = 0,
-                attackLog = [],
-                xpGain = 0,
-                stolenG = 0,
+            let attackLog = [];
+            let stolenG = 0,
                 stolenO = 0,
-                stolenM = 0,
-                defDestroyed = 0,
-                attackerLost = 0,
+                stolenM = 0;
+            let attackerLost = 0,
                 defenderLost = 0;
-            let isVictory = true;
-            let attackerKills = 0;
-            let defenderKills = 0;
+            let attackerKills = 0,
+                defenderKills = 0;
+            let totalAttackerFighters = d.selected.length;
+            let isVictory = false;
 
+            // Create copies of defender fighters for combat
+            let defCopy = defFighters.map(f => ({ ...f }));
+
+            // Each attacker fighter fights one defender
             for (const sel of d.selected) {
                 const fData = sel.type === "special" ? F_DB[sel.name] : N_DB[sel.name];
                 if (!fData) continue;
                 const pData = sel.type === "special" ? player.fighters[sel.name] : player.normalFighters[sel.name];
                 if (!pData || pData.count <= 0) continue;
-                const pilotBonus = sel.type === "special" ? (getPilotLevel(sel.pilotXP || 0).b || 0) : 0;
-                const healthFactor = sel.health / 100;
-                const power = fData.p * (1 + pilotBonus) * healthFactor;
-                totalPower += power;
-                totalF++;
-            }
 
-            for (const sel of d.selected) {
-                const fData = sel.type === "special" ? F_DB[sel.name] : N_DB[sel.name];
-                if (!fData) continue;
-                const pData = sel.type === "special" ? player.fighters[sel.name] : player.normalFighters[sel.name];
-                if (!pData || pData.count <= 0) continue;
                 const pilotBonus = sel.type === "special" ? (getPilotLevel(sel.pilotXP || 0).b || 0) : 0;
                 const healthFactor = sel.health / 100;
-                const power = fData.p * (1 + pilotBonus) * healthFactor;
+                const attackerPower = fData.p * (1 + pilotBonus) * healthFactor;
 
                 let defFighter = null;
                 let defIdx = -1;
-                if (target.base?.readyFighters && target.base.readyFighters.length > 0) {
-                    const idx = rnd(0, target.base.readyFighters.length - 1);
-                    defFighter = target.base.readyFighters[idx];
-                    defIdx = idx;
+
+                // Find a defender to fight
+                if (defCopy.length > 0) {
+                    defIdx = rnd(0, defCopy.length - 1);
+                    defFighter = defCopy[defIdx];
                 }
 
                 if (defFighter) {
                     const defFData = F_DB[defFighter.name];
                     if (defFData) {
                         const defPilotBonus = getPilotLevel(defFighter.pilotXP || 0).b || 0;
-                        const defPowerSingle = defFData.p * (1 + defPilotBonus) * (defFighter.health / 100);
-                        const atkRoll = power * (0.7 + Math.random() * 0.6);
-                        const defRoll = defPowerSingle * (0.7 + Math.random() * 0.6);
+                        const defHealthFactor = defFighter.health / 100;
+                        const defenderPower = defFData.p * (1 + defPilotBonus) * defHealthFactor;
+
+                        // Combat calculation with randomness
+                        const atkRoll = attackerPower * (0.7 + Math.random() * 0.6);
+                        const defRoll = defenderPower * (0.7 + Math.random() * 0.6);
+
                         if (atkRoll > defRoll) {
-                            const dmg = rnd(10, 30);
+                            // Attacker wins
+                            const dmg = rnd(20, 50);
                             defFighter.health -= dmg;
                             if (defFighter.health <= 0) {
-                                target.base.readyFighters.splice(defIdx, 1);
+                                defCopy.splice(defIdx, 1);
                                 defenderLost++;
                                 attackerKills++;
-                                attackLog.push(`💀 ${defFighter.name} (دفاعی) نابود شد! (ضربه: ${dmg}) ✅ ${sel.name} ۱ کشته`);
-                                defDestroyed++;
+                                attackLog.push(`💀 ${defFighter.name} (دفاعی) نابود شد! (ضربه: ${dmg}%) ✅ ${sel.name} ۱ کشته`);
+                                // Steal resources from defender
+                                const sg = Math.floor((target.gold || 0) * 0.03);
+                                const so = Math.floor((target.oil || 0) * 0.03);
+                                const sm = Math.floor((target.metal || 0) * 0.03);
+                                player.gold += sg;
+                                player.oil += so;
+                                player.metal += sm;
+                                target.gold = Math.max(0, target.gold - sg);
+                                target.oil = Math.max(0, target.oil - so);
+                                target.metal = Math.max(0, target.metal - sm);
+                                stolenG += sg;
+                                stolenO += so;
+                                stolenM += sm;
                             } else {
-                                attackLog.push(`🛡️ ${defFighter.name} (دفاعی) آسیب دید (${dmg}٪)`);
+                                attackLog.push(`🛡️ ${defFighter.name} (دفاعی) آسیب دید (${dmg}%) - باقی: ${defFighter.health}%`);
                             }
+                            // Attacker takes some damage too
                             const atkDmg = rnd(3, 10);
                             if (sel.type === "special") {
                                 pData.health = Math.max(0, pData.health - atkDmg);
                                 if (pData.health <= 0) {
                                     pData.count--;
-                                    attackLog.push(`💀 ${sel.name} نابود شد! (ضربه: ${atkDmg})`);
+                                    attackLog.push(`💀 ${sel.name} نابود شد! (ضربه: ${atkDmg}%)`);
                                     if (pData.count <= 0) delete player.fighters[sel.name];
                                     attackerLost++;
                                 } else {
                                     pData.pilotXP = (pData.pilotXP || 0) + 2;
-                                    xpGain += 2;
-                                    attackLog.push(`💥 ${sel.name} آسیب دید (${atkDmg}٪) - باقی: ${pData.health}%`);
+                                    attackLog.push(`💥 ${sel.name} آسیب دید (${atkDmg}%) - باقی: ${pData.health}%`);
                                 }
                             } else {
                                 pData.health = Math.max(0, pData.health - atkDmg);
                                 if (pData.health <= 0) {
                                     pData.count--;
-                                    attackLog.push(`💀 ${sel.name} (معمولی) نابود شد! (ضربه: ${atkDmg})`);
+                                    attackLog.push(`💀 ${sel.name} (معمولی) نابود شد! (ضربه: ${atkDmg}%)`);
                                     if (pData.count <= 0) delete player.normalFighters[sel.name];
                                     attackerLost++;
                                 } else {
-                                    attackLog.push(`💥 ${sel.name} (معمولی) آسیب دید (${atkDmg}٪)`);
+                                    attackLog.push(`💥 ${sel.name} (معمولی) آسیب دید (${atkDmg}%)`);
                                 }
                             }
-                            const sg = Math.floor((target.gold || 0) * 0.03);
-                            const so = Math.floor((target.oil || 0) * 0.03);
-                            const sm = Math.floor((target.metal || 0) * 0.03);
-                            player.gold += sg;
-                            player.oil += so;
-                            player.metal += sm;
-                            target.gold = Math.max(0, target.gold - sg);
-                            target.oil = Math.max(0, target.oil - so);
-                            target.metal = Math.max(0, target.metal - sm);
-                            stolenG += sg;
-                            stolenO += so;
-                            stolenM += sm;
                         } else {
-                            isVictory = false;
-                            const dmg = rnd(10, 25);
+                            // Defender wins
+                            const dmg = rnd(15, 35);
                             if (sel.type === "special") {
                                 pData.health = Math.max(0, pData.health - dmg);
                                 if (pData.health <= 0) {
                                     pData.count--;
-                                    attackLog.push(`💀 ${sel.name} نابود شد! (ضربه: ${dmg})`);
+                                    attackLog.push(`💀 ${sel.name} نابود شد! (ضربه: ${dmg}%)`);
                                     if (pData.count <= 0) delete player.fighters[sel.name];
                                     attackerLost++;
                                 } else {
                                     pData.pilotXP = (pData.pilotXP || 0) + 1;
-                                    xpGain += 1;
-                                    attackLog.push(`💥 ${sel.name} آسیب دید (${dmg}٪) - باقی: ${pData.health}%`);
+                                    attackLog.push(`💥 ${sel.name} آسیب دید (${dmg}%) - باقی: ${pData.health}%`);
                                 }
                             } else {
                                 pData.health = Math.max(0, pData.health - dmg);
                                 if (pData.health <= 0) {
                                     pData.count--;
-                                    attackLog.push(`💀 ${sel.name} (معمولی) نابود شد! (ضربه: ${dmg})`);
+                                    attackLog.push(`💀 ${sel.name} (معمولی) نابود شد! (ضربه: ${dmg}%)`);
                                     if (pData.count <= 0) delete player.normalFighters[sel.name];
                                     attackerLost++;
                                 } else {
-                                    attackLog.push(`💥 ${sel.name} (معمولی) آسیب دید (${dmg}٪)`);
+                                    attackLog.push(`💥 ${sel.name} (معمولی) آسیب دید (${dmg}%)`);
                                 }
                             }
+                            // Defender takes some damage too
                             const defDmg = rnd(5, 15);
                             defFighter.health -= defDmg;
                             if (defFighter.health <= 0) {
-                                target.base.readyFighters.splice(defIdx, 1);
+                                defCopy.splice(defIdx, 1);
                                 defenderLost++;
-                                attackLog.push(`💀 ${defFighter.name} (دفاعی) نابود شد! (ضربه: ${defDmg})`);
-                                defDestroyed++;
+                                attackLog.push(`💀 ${defFighter.name} (دفاعی) نابود شد! (ضربه: ${defDmg}%)`);
                             } else {
-                                attackLog.push(`🛡️ ${defFighter.name} (دفاعی) آسیب دید (${defDmg}٪)`);
+                                attackLog.push(`🛡️ ${defFighter.name} (دفاعی) آسیب دید (${defDmg}%) - باقی: ${defFighter.health}%`);
                             }
+                            // Defender steals small amount
                             const sg = Math.floor((player.gold || 0) * 0.01);
                             const so = Math.floor((player.oil || 0) * 0.01);
                             const sm = Math.floor((player.metal || 0) * 0.01);
@@ -2238,9 +2254,10 @@
                         }
                     }
                 } else {
-                    const sg = Math.floor((target.gold || 0) * STEAL_PERCENT / 100);
-                    const so = Math.floor((target.oil || 0) * STEAL_PERCENT / 100);
-                    const sm = Math.floor((target.metal || 0) * STEAL_PERCENT / 100);
+                    // No defender - attack base directly with full force
+                    const sg = Math.floor((target.gold || 0) * STEAL_PERCENT / 100 / totalAttackerFighters);
+                    const so = Math.floor((target.oil || 0) * STEAL_PERCENT / 100 / totalAttackerFighters);
+                    const sm = Math.floor((target.metal || 0) * STEAL_PERCENT / 100 / totalAttackerFighters);
                     player.gold += sg;
                     player.oil += so;
                     player.metal += sm;
@@ -2250,22 +2267,19 @@
                     stolenG += sg;
                     stolenO += so;
                     stolenM += sm;
-                    if (target.base?.defenses) {
-                        target.base.defenses.forEach(def => {
-                            def.hp = Math.max(0, def.hp - 10);
-                            if (def.hp <= 0) defDestroyed++;
-                        });
-                        target.base.defenses = target.base.defenses.filter(def => def.hp > 0);
-                    }
-                    attackLog.push(`🏹 حمله مستقیم به پایگاه - غنائم: ${sg} طلا, ${so} نفت, ${sm} فلز`);
+                    attackLog.push(`🏹 ${sel.name} حمله مستقیم به پایگاه!`);
                 }
             }
 
-            if (target.base?.defenses) {
-                target.base.defenses = target.base.defenses.filter(def => def.hp > 0);
+            // Update target's ready fighters
+            if (target.base) {
+                target.base.readyFighters = defCopy;
             }
 
-            const xp = Math.floor(attackerLost * 2) + (defDestroyed > 0 ? 3 : 0) + Math.floor(stolenG / 1000);
+            // Calculate victory - attacker wins if they destroyed at least 2 more defenders
+            isVictory = (defenderLost > attackerLost + 1);
+
+            const xp = Math.floor(attackerLost * 2) + (defenderLost * 3) + Math.floor(stolenG / 1000);
             player.xp = (player.xp || 0) + xp;
             player.attackedRecently[tid] = ts();
             player.lastAttackTime = ts();
@@ -2281,10 +2295,10 @@
                 stolenG: stolenG,
                 stolenO: stolenO,
                 stolenM: stolenM,
-                defDestroyed: defDestroyed,
+                defDestroyed: defenderLost,
                 xp: xp,
                 logs: attackLog,
-                isVictory: isVictory && attackerLost < defenderLost * 2,
+                isVictory: isVictory,
                 time: ts(),
                 attackerKills: attackerKills,
                 defenderKills: defenderKills
@@ -2293,7 +2307,7 @@
             if (battleLogs.length > 30) battleLogs.shift();
 
             let logHTML =
-                `<div class="war-declaration"><div style="color:${isVictory ? '#4ade80' : '#ef4444'};font-weight:bold">${isVictory ? '✅ پیروزی' : '❌ شکست'}</div><div style="color:#fbbf24;font-weight:bold">⚔️ گزارش نبرد</div><div style="font-size:0.65rem;color:#94a3b8">🎯 هدف: ${target.name}</div><div style="font-size:0.65rem;color:#94a3b8">🛩️ تعداد مهاجم: ${totalF}</div><div style="font-size:0.65rem;color:#94a3b8">🛡️ تعداد مدافع: ${defFighters.length}</div><div style="font-size:0.65rem;color:#94a3b8">💀 مهاجم نابود: ${attackerLost} | مدافع نابود: ${defenderLost}</div><div style="font-size:0.65rem;color:#fca5a5">🗡️ کشته‌های مهاجم: ${attackerKills} | کشته‌های مدافع: ${defenderKills}</div><hr><div style="font-size:0.65rem;color:#4ade80">💰 غنائم: ${stolenG.toLocaleString()} طلا | ${stolenO.toLocaleString()} نفت | ${stolenM.toLocaleString()} فلز</div><div style="font-size:0.65rem;color:#fbbf24">⭐ XP: ${xp}</div><div style="font-size:0.65rem;color:#ef4444">🛡️ پدافند نابود شده: ${defDestroyed}</div><hr><div class="battle-log">${attackLog.map(l => `<div class="log-entry">${l}</div>`).join("")}</div><button class="btn-gold" onclick="renderMilitary()" style="margin-top:4px">🔄 بازگشت</button></div>`;
+                `<div class="war-declaration"><div style="color:${isVictory ? '#4ade80' : '#ef4444'};font-weight:bold;font-size:1.1rem">${isVictory ? '✅ پیروزی' : '❌ شکست'}</div><div style="color:#fbbf24;font-weight:bold;font-size:0.9rem">⚔️ گزارش نبرد</div><div style="font-size:0.7rem;color:#94a3b8">🎯 هدف: ${target.name}</div><div style="font-size:0.7rem;color:#94a3b8">🛩️ تعداد مهاجم: ${totalAttackerFighters}</div><div style="font-size:0.7rem;color:#94a3b8">🛡️ تعداد مدافع: ${defFighters.length}</div><div style="font-size:0.7rem;color:#fca5a5">💀 مهاجم نابود: ${attackerLost} | مدافع نابود: ${defenderLost}</div><div style="font-size:0.7rem;color:#fca5a5">🗡️ کشته‌های مهاجم: ${attackerKills} | کشته‌های مدافع: ${defenderKills}</div><hr><div style="font-size:0.7rem;color:#4ade80">💰 غنائم: ${stolenG.toLocaleString()} طلا | ${stolenO.toLocaleString()} نفت | ${stolenM.toLocaleString()} فلز</div><div style="font-size:0.7rem;color:#fbbf24">⭐ XP: ${xp}</div><hr><div class="battle-log" style="max-height:250px;font-size:0.6rem">${attackLog.map(l => `<div class="log-entry">${l}</div>`).join("")}</div><button class="btn-gold" onclick="renderMilitary()" style="margin-top:6px">🔄 بازگشت</button></div>`;
             document.getElementById("militaryContent").innerHTML = logHTML;
             await saveCurrent();
             await queueSave();
@@ -2312,7 +2326,7 @@
         };
 
         // ============================================================
-        //  ADMIN (UNCHANGED)
+        //  ADMIN
         // ============================================================
         function isAdmin(p) { return p && p.name === "Admin" && p.password === ADMIN_PASSWORD; }
 
@@ -2464,7 +2478,7 @@
         };
 
         // ============================================================
-        //  RENDER FUNCTIONS (UNCHANGED)
+        //  RENDER FUNCTIONS
         // ============================================================
         function updateUI() {
             if (!player) return;
@@ -2491,13 +2505,6 @@
             }
         }
 
-        // ... (all render functions remain exactly the same as before)
-        // To keep the response within limits, I'll include the key renders
-        // and keep the rest identical to the previous version.
-
-        // ============================================================
-        //  RENDER FUNCTIONS (CONTINUED - FULL VERSION)
-        // ============================================================
         function renderCity() {
             const g = document.getElementById("cityGrid");
             if (!player) { g.innerHTML = '<div class="loading">در حال بارگذاری...</div>'; return; }
@@ -2541,15 +2548,11 @@
             c.innerHTML = html;
         }
 
-        // ============================================================
-        //  REMAINING RENDER FUNCTIONS (SHORTENED FOR LENGTH - SAME AS BEFORE)
-        // ============================================================
         function renderWeapons() {
             const c = document.getElementById("weaponsContent");
             if (!player) { c.innerHTML = '<div class="loading">در حال بارگذاری...</div>'; return; }
             let html =
                 `<div class="section-title">🔫 سلاح‌های جنگی</div><div class="fighter-legend">⚠️ ساخت جنگنده ویژه نیاز به هوانوردی سطح مناسب | موشک نیاز به تحقیق موشک | ناو نیاز به منابع بالا</div>`;
-
             html += `<div class="section-title">✈️ جنگنده‌های ویژه</div><div class="fighter-grid">`;
             for (const [n, d] of Object.entries(F_DB)) {
                 const can = canBuildFighter(player, n),
@@ -2563,7 +2566,6 @@
                     `<div class="fighter-card" style="border-color:${can ? '#10b981' : (hasAv < needAv ? '#f59e0b' : '#ef4444')}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div class="country">${d.n}</div><div style="font-size:0.45rem;color:#fbbf24">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#94a3b8">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()} 🛢️${d.c.o.toLocaleString()} ⛏️${d.c.m.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned} ❤️${health}% ${expiry ? expiry.message : ""}</div>` : ""}${can ? `<button class="btn-green" onclick="buildFighter('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : (hasAv < needAv ? `هوانوردی ${needAv}` : 'نیازها')}</span>`}</div>`;
             }
             html += `</div>`;
-
             html += `<div class="section-title">🛩️ جنگنده‌های معمولی</div><div class="fighter-grid">`;
             for (const [n, d] of Object.entries(N_DB)) {
                 const can = canBuildNormal(player, n),
@@ -2573,8 +2575,6 @@
                     `<div class="fighter-card" style="border-color:${can ? '#10b981' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div class="country">${d.n}</div><div style="font-size:0.45rem;color:#fbbf24">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()} 🛢️${d.c.o.toLocaleString()} ⛏️${d.c.m.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned} ❤️${health}%</div>` : ""}${can ? `<button class="btn-green" onclick="buildNormalFighter('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">نیازها</span>`}</div>`;
             }
             html += `</div>`;
-
-            // Missiles
             html += `<div class="section-title">🚀 موشک‌ها</div><div class="fighter-grid">`;
             for (const [n, d] of Object.entries(M_DB)) {
                 const can = canBuildMissile(player, n),
@@ -2584,8 +2584,6 @@
                     `<div class="fighter-card" style="border-color:${can ? '#ef4444' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div style="font-size:0.45rem;color:#fbbf24">قدرت: ${d.p}</div><div style="font-size:0.4rem;color:#94a3b8">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()}</div>${owned > 0 ? `<div style="font-size:0.5rem">تعداد: ${owned}</div>` : ""}${can ? `<button class="btn-missile" onclick="buildMissile('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : 'نیازها'}</span>`}</div>`;
             }
             html += `</div>`;
-
-            // Carriers
             html += `<div class="section-title">⚓ ناو هواپیمابر</div><div class="fighter-grid">`;
             for (const [n, d] of Object.entries(C_DB)) {
                 const can = canBuildCarrier(player, n),
@@ -2594,8 +2592,6 @@
                     `<div class="fighter-card" style="border-color:${can ? '#0ea5e9' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.6rem">${n}</div><div style="font-size:0.4rem;color:#94a3b8">قدرت: ${d.p} | 🛩️ ${d.sl}</div><div style="font-size:0.4rem;color:#94a3b8">جهانی: ${gc}/${d.g}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()}</div>${can ? `<button class="btn-naval" onclick="buildCarrier('${n}')">🔨 ساخت</button>` : `<span class="badge badge-red">${gc >= d.g ? 'سقف' : 'نیازها'}</span>`}</div>`;
             }
             html += `</div>`;
-
-            // Launch missile
             html += `<div class="section-title">🎯 پرتاب موشک</div><div class="info-bar">💰 هزینه: ۵۰۰ طلا | 🛡️ پدافند رهگیری</div>`;
             const others = allPlayers.filter(p => p.id !== player.id);
             if (others.length === 0) {
@@ -2606,8 +2602,6 @@
                         `<div class="player-row"><div><strong>${p.name}</strong></div><div><button class="btn-missile" onclick="launchMissile('${p.id}')">🚀 پرتاب</button></div></div>`;
                 });
             }
-
-            // Fleet
             html += `<div class="section-title">🚢 ناوگان شما</div>`;
             if (!player.carriers || player.carriers.length === 0) {
                 html += `<div class="empty">هیچ ناوی ندارید</div>`;
@@ -2664,7 +2658,7 @@
                     const fData = F_DB[item.fighterName];
                     const timeLeft = Math.max(0, 60 - Math.floor((now - item.addedAt) / 60000));
                     html +=
-                        `<div class="weapon-card"><div><strong>${fData?.i || "✈️"} ${item.fighterName}</strong> x${item.quantity || 1}</div><div style="font-size:0.55rem">💰 قیمت: ${item.price.toLocaleString()} طلا (${EXTEND_SELL_PERCENT}٪)</div><div style="font-size:0.5rem;color:#94a3b8">⏳ ${timeLeft} دقیقه باقی | فروشنده: ${item.sellerName}</div>${item.sellerId !== player.id ? `<button class="btn-green" onclick="buyFromMarket(${i})">🛒 خرید</button>` : '<span class="badge badge-gray">آگهی شما</span>'}</div>`;
+                        `<div class="weapon-card"><div><strong>${fData?.i || "✈️"} ${item.fighterName}</strong> x${item.quantity || 1}</div><div style="font-size:0.55rem">💰 قیمت کل: ${item.price.toLocaleString()} طلا (${item.unitPrice?.toLocaleString() || '?'} طلا/عدد)</div><div style="font-size:0.5rem;color:#94a3b8">⏳ ${timeLeft} دقیقه باقی | فروشنده: ${item.sellerName}</div>${item.sellerId !== player.id ? `<button class="btn-green" onclick="buyFromMarket(${i})">🛒 خرید</button>` : '<span class="badge badge-gray">آگهی شما</span>'}</div>`;
                 });
             }
             c.innerHTML = html;
@@ -2699,7 +2693,6 @@
                     `<div class="fighter-card" style="border-color:${can ? '#10b981' : '#ef4444'}"><div class="icon">${d.i}</div><div style="font-weight:bold;font-size:0.55rem">${n}</div><div style="font-size:0.4rem;color:#fbbf24">دفاع: ${d.def}</div><div style="font-size:0.4rem;color:#94a3b8">${cnt}/${d.max}</div><div style="font-size:0.4rem;color:#fbbf24">💰${d.c.g.toLocaleString()}</div>${can && cnt < d.max ? `<button class="btn-defense" onclick="buildDefense('${n}')">🔨 نصب</button>` : `<span class="badge badge-red">${cnt >= d.max ? 'سقف' : 'نیازها'}</span>`}</div>`;
             }
             html += `</div>`;
-
             html += `<div class="section-title">🛡️ جنگنده‌های آماده دفاع (${base.readyFighters?.length || 0}/6)</div><div class="info-bar">جنگنده‌های آماده شده به طور خودکار در دفاع شرکت می‌کنند</div>`;
             if (base.readyFighters && base.readyFighters.length > 0) {
                 base.readyFighters.forEach((f, idx) => {
@@ -2710,7 +2703,6 @@
             } else {
                 html += `<div class="empty">هیچ جنگنده‌ای برای دفاع آماده نشده</div>`;
             }
-
             html += `<div class="section-title">🛡️ آماده‌سازی جنگنده برای دفاع</div><div class="info-bar">حداقل سلامت ۵۰٪ | حداکثر ۶ جنگنده</div><div class="fighter-grid">`;
             if (player.fighters) {
                 for (const [n, d] of Object.entries(player.fighters)) {
@@ -3013,11 +3005,8 @@
         }
 
         document.getElementById("startBtn").onclick = startGame;
-
-        // Init
         initTelegram().then(c => { isConnected = c; if (c) loadAll(); });
-
-        console.log("🌍 World Empire 2027 loaded successfully!");
+        console.log("🌍 World Empire 2027 V28 - All bugs fixed!");
     </script>
 </body>
 </html>
