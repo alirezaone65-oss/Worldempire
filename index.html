@@ -1304,9 +1304,9 @@
         }
 
         function canClaimDaily(p) {
-            const d = new Date(),
-                today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-            return (p.lastDailyXP || 0) < new Date(today).getTime();
+            const d = new Date();
+            const startOfToday = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+            return (p.lastDailyXP || 0) < startOfToday;
         }
 
         function getPilotLevel(xp) {
@@ -1324,6 +1324,7 @@
             const now = ts();
             const daysPassed = (now - created) / (24 * 3600000);
             const daysLeft = Math.max(0, 14 - daysPassed);
+            if (daysLeft <= 0) return { expired: true, daysLeft: 0, status: "expired", message: "💀 منقضی شده" };
             if (daysLeft <= 1) return { expired: false, daysLeft, status: "urgent", message: "🔴 ۱ روز مانده" };
             if (daysLeft <= 3) return { expired: false, daysLeft, status: "warning", message: "🟡 ۳ روز مانده" };
             return { expired: false, daysLeft, status: "safe", message: "✅ " + Math.floor(daysLeft) + " روز مانده" };
@@ -1513,6 +1514,7 @@
             }
             const price = Math.floor(fData.c.g * EXTEND_SELL_PERCENT / 100);
             militaryMarket.push({
+                id: "mk_" + ts().toString(36) + "_" + Math.random().toString(36).substr(2, 5),
                 fighterName: name,
                 sellerId: player.id,
                 sellerName: player.name,
@@ -1521,7 +1523,6 @@
                 status: "pending"
             });
             data.count--;
-            if (data.count <= 0) delete player.fighters[name];
             player.lastSellTime = ts();
             toast(`📢 ${name} با قیمت ${price.toLocaleString()} طلا در بازار قرار گرفت`, false, "naval");
             await saveCurrent();
@@ -1529,8 +1530,9 @@
             updateUI();
         };
 
-        window.buyFromMarket = async function(index) {
+        window.buyFromMarket = async function(itemId) {
             if (!player) return;
+            const index = militaryMarket.findIndex(it => it.id === itemId);
             const item = militaryMarket[index];
             if (!item) {
                 toast("آگهی حذف شده", true);
@@ -1573,7 +1575,6 @@
             if (si !== -1) allPlayers[si] = seller;
             toast(`🛒 ${item.fighterName} خریداری شد!`, false, "naval");
             await saveCurrent();
-            await queueSave();
             renderMarket();
             updateUI();
         };
@@ -1653,6 +1654,13 @@
                 toast(`⛏️ ${REBUILD_COST.toLocaleString()} فلز برای بازسازی نیاز است!`, true);
                 return;
             }
+            if (!player.base) player.base = { level: 1, storage: 0, maxStorage: 10000, defense: 10, fighters: [],
+                defenses: [] };
+            if (!player.base.fighters) player.base.fighters = [];
+            if (player.base.fighters.length >= MAX_FIGHTERS_PER_BASE) {
+                toast("❌ پایگاه پر است!", true);
+                return;
+            }
             player.metal -= REBUILD_COST;
             player.fighters[n].count = 1;
             player.fighters[n].health = 80;
@@ -1660,10 +1668,10 @@
             const fData = F_DB[n];
             const pn = fData.pl ? fData.pl[rnd(0, fData.pl.length - 1)] : "خلبان";
             player.fighters[n].pilotName = pn;
-            if (!player.base.fighters) player.base.fighters = [];
             player.base.fighters.push({ name: n, health: 80, createdAt: ts() });
             toast(`🔧 ${n} بازسازی شد!`, false, "peace");
             await saveCurrent();
+            renderStorage();
             updateUI();
         };
 
@@ -1689,6 +1697,7 @@
             }
             toast(`🔧 ${n} تعمیر شد!`, false, "peace");
             await saveCurrent();
+            renderStorage();
             updateUI();
         };
 
@@ -1702,6 +1711,7 @@
             d.health = Math.min(100, d.health + 30);
             toast(`🔧 ${n} تعمیر شد!`, false, "peace");
             await saveCurrent();
+            renderStorage();
             updateUI();
         };
 
@@ -1736,7 +1746,6 @@
             }
             if (player.fighters[n].health < 30) { toast("❌ سلامت جنگنده کم است!", true); return; }
             player.fighters[n].count--;
-            if (player.fighters[n].count <= 0) delete player.fighters[n];
             const fData = F_DB[n];
             const pn = fData.pl ? fData.pl[rnd(0, fData.pl.length - 1)] : "خلبان";
             cr.fighters.push({ name: n, health: 100, pilotName: pn, pilotXP: 0, createdAt: ts() });
@@ -1828,7 +1837,6 @@
             if (idx !== -1) allPlayers[idx] = target;
             toast(`🚀 موشک ${mn} اصابت کرد! 💰 ${sg.toLocaleString()} طلا غارت شد`, false, "missile");
             await saveCurrent();
-            await queueSave();
             updateUI();
         };
 
@@ -2006,7 +2014,6 @@
                     if (pData.health <= 0) {
                         pData.count--;
                         attackLog.push(`💀 ${sel.name} نابود شد!`);
-                        if (pData.count <= 0) delete player.fighters[sel.name];
                     } else {
                         pData.pilotXP = (pData.pilotXP || 0) + 2;
                         xpGain += 2;
@@ -2049,6 +2056,7 @@
 
             const xp = Math.floor(totalF * 2) + (defDestroyed > 0 ? 3 : 0);
             player.xp = (player.xp || 0) + xp;
+            if (!player.attackedRecently) player.attackedRecently = {};
             player.attackedRecently[tid] = ts();
             player.lastAttackTime = ts();
             target.shieldUntil = ts() + 15 * 60 * 1000;
@@ -2060,7 +2068,6 @@
                 `<div class="war-declaration"><div style="color:#fbbf24;font-weight:bold">⚔️ گزارش نبرد</div><div style="font-size:0.65rem;color:#94a3b8">🎯 هدف: ${target.name}</div><div style="font-size:0.65rem;color:#94a3b8">🛩️ تعداد: ${totalF}</div><div style="font-size:0.65rem;color:#94a3b8">⚡ قدرت: ${Math.floor(totalPower)}</div><hr><div style="font-size:0.65rem;color:#4ade80">💰 غارت: ${stolenG.toLocaleString()} طلا | ${stolenO.toLocaleString()} نفت | ${stolenM.toLocaleString()} فلز</div><div style="font-size:0.65rem;color:#fbbf24">⭐ XP: ${xp}</div><div style="font-size:0.65rem;color:#ef4444">🛡️ پدافند نابود شده: ${defDestroyed}</div>${attackLog.map(l => `<div style="font-size:0.55rem;color:#fca5a5">${l}</div>`).join("")}<hr><div style="font-size:0.55rem;color:#fbbf24">🛡️ سپر ۱۵ دقیقه‌ای فعال شد</div><button class="btn-gold" onclick="renderMilitary()" style="margin-top:4px">🔄 بازگشت</button></div>`;
             document.getElementById("militaryContent").innerHTML = logHTML;
             await saveCurrent();
-            await queueSave();
             updateUI();
         };
 
@@ -2103,7 +2110,7 @@
             }
         };
 
-        window.adminAddGold = function() {
+        window.adminAddGold = async function() {
             if (!isAdmin(player)) return;
             const t = document.getElementById("adminTargetPlayer")?.value;
             const a = parseInt(document.getElementById("adminGoldAmount")?.value) || 0;
@@ -2112,12 +2119,12 @@
             if (!tg) { toast("بازیکن یافت نشد", true); return; }
             tg.gold = (tg.gold || 0) + a;
             toast(`✅ ${a.toLocaleString()} طلا به ${tg.name} اضافه شد`);
-            saveCurrent();
+            await saveCurrent();
             renderAdmin();
             updateUI();
         };
 
-        window.adminRemoveGold = function() {
+        window.adminRemoveGold = async function() {
             if (!isAdmin(player)) return;
             const t = document.getElementById("adminTargetPlayer")?.value;
             const a = parseInt(document.getElementById("adminGoldAmount")?.value) || 0;
@@ -2126,12 +2133,12 @@
             if (!tg) { toast("بازیکن یافت نشد", true); return; }
             tg.gold = Math.max(0, (tg.gold || 0) - a);
             toast(`✅ ${a.toLocaleString()} طلا از ${tg.name} کم شد`);
-            saveCurrent();
+            await saveCurrent();
             renderAdmin();
             updateUI();
         };
 
-        window.adminAddResource = function() {
+        window.adminAddResource = async function() {
             if (!isAdmin(player)) return;
             const t = document.getElementById("adminTargetPlayer")?.value;
             const r = document.getElementById("adminResType")?.value;
@@ -2142,12 +2149,12 @@
             if (r === "oil") tg.oil = (tg.oil || 0) + a;
             else if (r === "metal") tg.metal = (tg.metal || 0) + a;
             toast(`✅ ${a.toLocaleString()} ${r} به ${tg.name} اضافه شد`);
-            saveCurrent();
+            await saveCurrent();
             renderAdmin();
             updateUI();
         };
 
-        window.adminRemoveResource = function() {
+        window.adminRemoveResource = async function() {
             if (!isAdmin(player)) return;
             const t = document.getElementById("adminTargetPlayer")?.value;
             const r = document.getElementById("adminResType")?.value;
@@ -2158,12 +2165,12 @@
             if (r === "oil") tg.oil = Math.max(0, (tg.oil || 0) - a);
             else if (r === "metal") tg.metal = Math.max(0, (tg.metal || 0) - a);
             toast(`✅ ${a.toLocaleString()} ${r} از ${tg.name} کم شد`);
-            saveCurrent();
+            await saveCurrent();
             renderAdmin();
             updateUI();
         };
 
-        window.adminDeletePlayer = function() {
+        window.adminDeletePlayer = async function() {
             if (!isAdmin(player)) return;
             const t = document.getElementById("adminDeleteTarget")?.value;
             if (t === player.id) { toast("نمی‌توانید خودتان را حذف کنید", true); return; }
@@ -2172,12 +2179,12 @@
             if (idx === -1) { toast("بازیکن یافت نشد", true); return; }
             allPlayers.splice(idx, 1);
             toast("🗑️ بازیکن حذف شد");
-            saveCurrent();
+            await saveCurrent();
             renderAdmin();
             updateUI();
         };
 
-        window.adminBroadcast = function() {
+        window.adminBroadcast = async function() {
             if (!isAdmin(player)) return;
             const msg = document.getElementById("adminBroadcastMsg")?.value.trim();
             if (!msg) { toast("پیام را وارد کنید", true); return; }
@@ -2188,7 +2195,7 @@
                 }
             });
             toast("📢 پیام سراسری ارسال شد");
-            saveCurrent();
+            await saveCurrent();
             renderAdmin();
             updateUI();
         };
@@ -2236,7 +2243,8 @@
             renderMarket();
             renderResearch();
             renderBases();
-            renderAdmin();
+            const adminPanelEl = document.getElementById("panelAdmin");
+            if (adminPanelEl && adminPanelEl.classList.contains("active")) renderAdmin();
         }
 
         function renderCity() {
@@ -2383,12 +2391,38 @@
                         const cls = expiry.status === "urgent" ? "urgent" : expiry.status === "warning" ?
                             "warning" : "safe";
                         const canSell = (ts() - (player.lastSellTime || 0)) >= 900000;
+                        const health = d.health || 100;
+                        const repairCost = Math.floor(FIGHTER_REPAIR * (1 + (100 - health) / 100));
                         html +=
-                            `<div class="expire-card ${cls}"><div><strong>${fData.i} ${n}</strong> x${d.count}</div><div style="font-size:0.55rem">${expiry.message}</div><div style="font-size:0.5rem;color:#94a3b8">💰 تمدید ${EXTEND_MIN_DAYS} روز: ${cost.toLocaleString()} طلا</div><div><button class="btn-extend" onclick="extendFighter('${n}')">🔄 تمدید</button><button class="btn-gold" onclick="sellFighterToMarket('${n}')" ${canSell ? '' : 'disabled'}>📤 فروش به بازار (۱۵ دقیقه)</button></div></div>`;
+                            `<div class="expire-card ${cls}"><div><strong>${fData.i} ${n}</strong> x${d.count} | ❤️${health}%</div><div style="font-size:0.55rem">${expiry.message}</div><div style="font-size:0.5rem;color:#94a3b8">💰 تمدید ${EXTEND_MIN_DAYS} روز: ${cost.toLocaleString()} طلا</div><div><button class="btn-extend" onclick="extendFighter('${n}')">🔄 تمدید</button><button class="btn-gold" onclick="sellFighterToMarket('${n}')" ${canSell ? '' : 'disabled'}>📤 فروش به بازار (۱۵ دقیقه)</button>${health < 100 ? `<button class="btn-green" onclick="repairFighter('${n}',0)">🔧 تعمیر (${repairCost.toLocaleString()} طلا)</button>` : ''}</div></div>`;
+                    });
+                }
+                const destroyed = Object.entries(player.fighters).filter(([n, d]) => (d.count || 0) <= 0 && F_DB[n]);
+                if (destroyed.length > 0) {
+                    html += `<div class="section-title">💀 جنگنده‌های نابود شده (قابل بازسازی)</div>`;
+                    destroyed.forEach(([n, d]) => {
+                        const fData = F_DB[n];
+                        if (!fData) return;
+                        html +=
+                            `<div class="expire-card urgent"><div><strong>${fData.i} ${n}</strong></div><div style="font-size:0.5rem;color:#94a3b8">⛏️ هزینه بازسازی: ${REBUILD_COST.toLocaleString()} فلز</div><div><button class="btn-green" onclick="rebuildFighter('${n}')">🔧 بازسازی</button></div></div>`;
                     });
                 }
             }
             html += `<div class="info-bar">⏳ هر ۱۵ دقیقه یک جنگنده قابل فروش است</div>`;
+
+            const normalEntries = player.normalFighters ? Object.entries(player.normalFighters).filter(([n, d]) => d
+                .count > 0) : [];
+            if (normalEntries.length > 0) {
+                html += `<div class="section-title">🛩️ جنگنده‌های معمولی</div>`;
+                normalEntries.forEach(([n, d]) => {
+                    const fData = N_DB[n];
+                    if (!fData) return;
+                    const health = d.health || 100;
+                    const repairCost = Math.floor(200 * (1 + (100 - health) / 100));
+                    html +=
+                        `<div class="expire-card safe"><div><strong>${fData.i} ${n}</strong> x${d.count} | ❤️${health}%</div>${health < 100 ? `<div><button class="btn-green" onclick="repairNormalFighter('${n}',0)">🔧 تعمیر (${repairCost.toLocaleString()} طلا)</button></div>` : ''}</div>`;
+                });
+            }
             c.innerHTML = html;
         }
 
@@ -2403,11 +2437,11 @@
             if (militaryMarket.length === 0) {
                 html += `<div class="empty">هیچ جنگنده‌ای در بازار نیست</div>`;
             } else {
-                militaryMarket.forEach((item, i) => {
+                militaryMarket.forEach((item) => {
                     const fData = F_DB[item.fighterName];
                     const timeLeft = Math.max(0, 60 - Math.floor((now - item.addedAt) / 60000));
                     html +=
-                        `<div class="weapon-card"><div><strong>${fData?.i || "✈️"} ${item.fighterName}</strong></div><div style="font-size:0.55rem">💰 قیمت: ${item.price.toLocaleString()} طلا (${EXTEND_SELL_PERCENT}٪)</div><div style="font-size:0.5rem;color:#94a3b8">⏳ ${timeLeft} دقیقه باقی | فروشنده: ${item.sellerName}</div>${item.sellerId !== player.id ? `<button class="btn-green" onclick="buyFromMarket(${i})">🛒 خرید</button>` : '<span class="badge badge-gray">آگهی شما</span>'}</div>`;
+                        `<div class="weapon-card"><div><strong>${fData?.i || "✈️"} ${item.fighterName}</strong></div><div style="font-size:0.55rem">💰 قیمت: ${item.price.toLocaleString()} طلا (${EXTEND_SELL_PERCENT}٪)</div><div style="font-size:0.5rem;color:#94a3b8">⏳ ${timeLeft} دقیقه باقی | فروشنده: ${item.sellerName}</div>${item.sellerId !== player.id ? `<button class="btn-green" onclick="buyFromMarket('${item.id}')">🛒 خرید</button>` : '<span class="badge badge-gray">آگهی شما</span>'}</div>`;
                 });
             }
             c.innerHTML = html;
@@ -2570,10 +2604,35 @@
             const now = ts();
             if ((now - (player.lastExtensionCheck || 0)) < 3600000) return;
             player.lastExtensionCheck = now;
+
+            // Prune stale attack-cooldown entries so this map doesn't grow forever
+            // (it's irrelevant for sync size once the cooldown window has passed).
+            if (player.attackedRecently) {
+                for (const tid of Object.keys(player.attackedRecently)) {
+                    if ((now - player.attackedRecently[tid]) > ATTACK_COOLDOWN * 1000) {
+                        delete player.attackedRecently[tid];
+                    }
+                }
+            }
+
             if (!player.fighters) return;
             for (const [name, data] of Object.entries(player.fighters)) {
                 if (data.count <= 0) continue;
                 const expiry = getFighterExpiry(data);
+                if (expiry.status === "expired") {
+                    const lost = data.count;
+                    data.count = 0;
+                    if (player.base?.fighters) {
+                        player.base.fighters = player.base.fighters.filter(f => f.name !== name);
+                    }
+                    if (player.carriers) {
+                        player.carriers.forEach(c => {
+                            if (c.fighters) c.fighters = c.fighters.filter(f => f.name !== name);
+                        });
+                    }
+                    toast(`💀 ${name} (×${lost}) به دلیل عدم تمدید منقضی و نابود شد! برای بازسازی به انبار بروید`, true);
+                    continue;
+                }
                 if (expiry.status === "urgent") {
                     toast(`⚠️ ${name} فردا منقضی میشود! برای تمدید به انبار بروید`, false, "warning");
                 }
@@ -2581,6 +2640,7 @@
                     toast(`⚠️ ${name} ۳ روز دیگر منقضی میشود`, false, "warning");
                 }
             }
+            saveCurrent();
         }
 
         function checkMilitaryMarket() {
@@ -2689,6 +2749,15 @@
             setInterval(async () => {
                 if (player) {
                     await loadAll();
+                    const fresh = allPlayers.find(p => p.id === player.id);
+                    if (fresh) {
+                        const seen = player._seenChatCount || 0;
+                        if (Array.isArray(fresh.diplomacyChat) && fresh.diplomacyChat.length > seen) {
+                            fresh.diplomacyChat.slice(seen).forEach(m => toast(m.msg, false, "warning"));
+                        }
+                        fresh._seenChatCount = fresh.diplomacyChat?.length || 0;
+                        player = { ...fresh };
+                    }
                     checkFighterExtensions();
                     checkMilitaryMarket();
                     updateUI();
