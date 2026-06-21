@@ -118,6 +118,13 @@
         @keyframes fly{0%{transform:translate(0,0) scale(0.5);opacity:1}100%{transform:translate(300px,-200px) scale(1.5);opacity:0}}
         .explosion{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;z-index:1000;animation:boom 1s ease-out forwards;pointer-events:none}
         @keyframes boom{0%{transform:translate(-50%,-50%) scale(0.5);opacity:1}100%{transform:translate(-50%,-50%) scale(3);opacity:0}}
+        .missile-effect{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
+        .missile-effect .rocket{position:absolute;font-size:2.5rem;animation:missileFly 1.2s ease-in forwards}
+        @keyframes missileFly{0%{transform:translate(0,0) rotate(45deg);opacity:1}100%{transform:translate(500px,-300px) rotate(45deg);opacity:0}}
+        .big-boom{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;z-index:1000;animation:bigBoom 1.5s ease-out forwards;pointer-events:none}
+        @keyframes bigBoom{0%{transform:translate(-50%,-50%) scale(0.3);opacity:1}50%{transform:translate(-50%,-50%) scale(2);opacity:1}100%{transform:translate(-50%,-50%) scale(4);opacity:0}}
+        .red-flash{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,0,0,0.3);z-index:998;animation:flash 0.5s ease-out forwards;pointer-events:none}
+        @keyframes flash{0%{opacity:1}100%{opacity:0}}
     </style>
 </head>
 <body>
@@ -153,7 +160,7 @@
             <div class="tab" data-tab="rank">🏆 رتبه</div>
             <div class="tab" data-tab="admin">👑 ادمین</div>
         </div>
-        <div id="panelCity" class="panel active"><div class="grid2" id="cityGrid"></div><button onclick="collectAll()" class="btn btn-gold" style="width:100%;padding:8px;border-radius:30px;font-size:0.7rem">📥 جمع‌آوری همه</button></div>
+        <div id="panelCity" class="panel active"><div class="grid2" id="cityGrid"></div></div>
         <div id="panelMine" class="panel"><div id="mineContent"></div></div>
         <div id="panelMilitary" class="panel"><div id="militaryContent"></div></div>
         <div id="panelWeapons" class="panel"><div id="weaponsContent"></div></div>
@@ -170,7 +177,7 @@
 // ========== کانفیگ ==========
 const BOT_TOKEN = "8909027468:AAFLHya_9KhgazMKK1N6GG9RBRBuPH_T-5o";
 const CHANNEL_ID = "@pudgyparty7";
-const DATA_KEY = "EMPIRE_DATA_V25";
+const DATA_KEY = "EMPIRE_DATA_V26";
 const ATTACK_COOLDOWN = 30;
 const XP_PER_LEVEL = 10;
 const DAILY_XP = 1;
@@ -185,7 +192,6 @@ const FIGHTER_REPAIR = 500;
 const EXTEND_COST_PER_DAY = 1500;
 const EXTEND_MIN_DAYS = 14;
 const EXTEND_SELL_PERCENT = 70;
-const MINE_MAX = 100000000;
 const PROTECTION_HOURS = 0;
 
 // ========== دریافت IP کاربر ==========
@@ -242,7 +248,6 @@ const N_DB = {
     "F-4E": { n: "F-4E Phantom II", i: "🇺🇸", p: 80, c: { g: 1000, o: 450, m: 220 } },
     "MiG-25": { n: "MiG-25 Foxbat", i: "🇷🇺", p: 85, c: { g: 1100, o: 500, m: 250 } },
     "F-8": { n: "F-8 Crusader", i: "🇺🇸", p: 70, c: { g: 850, o: 380, m: 190 } },
-    // 10 تا جدید ارزان و ضعیف
     "J-7": { n: "J-7 Fishbed", i: "🇨🇳", p: 35, c: { g: 200, o: 80, m: 40 } },
     "Q-5": { n: "Q-5 Fantan", i: "🇨🇳", p: 40, c: { g: 250, o: 100, m: 50 } },
     "Mirage III": { n: "Mirage III", i: "🇫🇷", p: 45, c: { g: 300, o: 120, m: 60 } },
@@ -468,7 +473,6 @@ function createPlayer(n, p, i) {
         shieldUntil: 0,
         lastExtensionCheck: 0,
         lastSellTime: 0,
-        mineLevel: 1,
         lastMineTick: ts(),
         battleLog: []
     };
@@ -487,7 +491,7 @@ function calcProduction(p) {
     };
 }
 
-// تیک معدن ثانیه‌ای (افزایش قابل توجه)
+// تیک معدن ثانیه‌ای (بدون لول)
 function calcMineTick(player) {
     const now = ts();
     const elapsed = (now - (player.lastMineTick || now)) / 1000;
@@ -685,9 +689,79 @@ function checkMilitaryMarket() {
     militaryMarket = militaryMarket.filter(item => (now - item.addedAt) < 3600000);
 }
 
-// ========== افکت و صدا ==========
+// ========== افکت و صدای واقعی ==========
+function playFighterSound() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // صدای جت واقعی
+        const bufferSize = audioCtx.sampleRate * 0.3;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            const t = i / audioCtx.sampleRate;
+            data[i] = (Math.sin(2 * Math.PI * (200 + t * 600) * t) * 0.3 + 
+                       Math.sin(2 * Math.PI * (300 + t * 400) * t) * 0.2) * 
+                       Math.exp(-t * 4);
+        }
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.5;
+        source.connect(gain);
+        gain.connect(audioCtx.destination);
+        source.start();
+        setTimeout(() => { try { source.stop(); } catch(e) {} }, 300);
+    } catch(e) {}
+}
+
+function playMissileSound() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // صدای موشک ترسناک
+        const bufferSize = audioCtx.sampleRate * 0.8;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            const t = i / audioCtx.sampleRate;
+            data[i] = (Math.sin(2 * Math.PI * (100 + t * 900) * t) * 0.4 + 
+                       Math.sin(2 * Math.PI * (50 + t * 700) * t) * 0.3) * 
+                       Math.exp(-t * 3) * (1 + Math.sin(t * 30) * 0.3);
+        }
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.7;
+        source.connect(gain);
+        gain.connect(audioCtx.destination);
+        source.start();
+        setTimeout(() => { try { source.stop(); } catch(e) {} }, 800);
+    } catch(e) {}
+}
+
+function playBoomSound() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // صدای بمب
+        const bufferSize = audioCtx.sampleRate * 0.6;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            const t = i / audioCtx.sampleRate;
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 5) * (1 + Math.sin(t * 50) * 0.5);
+        }
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.8;
+        source.connect(gain);
+        gain.connect(audioCtx.destination);
+        source.start();
+        setTimeout(() => { try { source.stop(); } catch(e) {} }, 600);
+    } catch(e) {}
+}
+
+// افکت حمله هوایی
 function playBattleEffect() {
-    // افکت پرواز جنگنده
     const effectDiv = document.createElement('div');
     effectDiv.className = 'fighter-effect';
     const jets = ['✈️', '🛩️', '🚀'];
@@ -704,28 +778,49 @@ function playBattleEffect() {
     document.body.appendChild(effectDiv);
     setTimeout(() => effectDiv.remove(), 2000);
 
-    // انفجار
     const exp = document.createElement('div');
     exp.className = 'explosion';
     exp.textContent = '💥';
     document.body.appendChild(exp);
     setTimeout(() => exp.remove(), 1000);
 
-    // صدا (با Web Audio API)
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.type = 'sawtooth';
-        oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.3);
-        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-        oscillator.start(audioCtx.currentTime);
-        oscillator.stop(audioCtx.currentTime + 0.5);
-    } catch(e) {}
+    playFighterSound();
+    setTimeout(playBoomSound, 500);
+}
+
+// افکت موشکی ترسناک
+function playMissileEffect() {
+    const effectDiv = document.createElement('div');
+    effectDiv.className = 'missile-effect';
+    const rockets = ['🚀', '🔥', '💫'];
+    for (let i = 0; i < 3; i++) {
+        const rocket = document.createElement('div');
+        rocket.className = 'rocket';
+        rocket.textContent = rockets[rnd(0, rockets.length - 1)];
+        rocket.style.left = rnd(10, 70) + '%';
+        rocket.style.top = rnd(10, 60) + '%';
+        rocket.style.animationDelay = (i * 0.3) + 's';
+        rocket.style.fontSize = rnd(2, 3.5) + 'rem';
+        effectDiv.appendChild(rocket);
+    }
+    document.body.appendChild(effectDiv);
+    setTimeout(() => effectDiv.remove(), 1500);
+
+    // فلاش قرمز
+    const flash = document.createElement('div');
+    flash.className = 'red-flash';
+    document.body.appendChild(flash);
+    setTimeout(() => flash.remove(), 500);
+
+    const bigBoom = document.createElement('div');
+    bigBoom.className = 'big-boom';
+    bigBoom.textContent = '💥💥💥';
+    document.body.appendChild(bigBoom);
+    setTimeout(() => bigBoom.remove(), 1500);
+
+    playMissileSound();
+    setTimeout(playBoomSound, 400);
+    setTimeout(playBoomSound, 800);
 }
 
 // ========== سیستم قیمت‌گذاری شخصی ==========
@@ -1074,7 +1169,7 @@ window.confirmAttack = async function(tid) {
     if (!target) { toast("کشور یافت نشد", true); return; }
     if (target.shieldUntil && ts() < target.shieldUntil) { toast("🛡️ هدف تحت سپر است!", true); return; }
     
-    // افکت و صدا
+    // افکت و صدای واقعی
     playBattleEffect();
     
     let totalPower = 0,
@@ -1392,9 +1487,16 @@ window.launchMissile = async function(tid) {
     const mdDef = getMissileDef(target);
     const ic = Math.min(mdDef, 60),
         isInt = Math.random() * 100 < ic;
-    if (isInt) { toast(`🛡️ موشک ${mn} توسط پدافند رهگیری شد!`, false, "missile");
+    if (isInt) { 
+        toast(`🛡️ موشک ${mn} توسط پدافند رهگیری شد!`, false, "missile");
         await saveCurrent();
-        updateUI(); return; }
+        updateUI(); 
+        return; 
+    }
+    
+    // افکت موشکی ترسناک
+    playMissileEffect();
+    
     const sg = Math.floor((target.gold || 0) * STEAL / 100),
         so = Math.floor((target.oil || 0) * STEAL / 100),
         sm = Math.floor((target.metal || 0) * STEAL / 100);
@@ -1406,14 +1508,14 @@ window.launchMissile = async function(tid) {
     target.metal = Math.max(0, target.metal - sm);
     let defD = 0;
     if (target.base?.defenses) {
-        target.base.defenses.forEach(d => { d.hp = Math.max(0, d.hp - 30); if (d.hp <= 0) defD++; });
+        target.base.defenses.forEach(d => { d.hp = Math.max(0, d.hp - 50); if (d.hp <= 0) defD++; });
         target.base.defenses = target.base.defenses.filter(d => d.hp > 0);
     }
     player.xp = (player.xp || 0) + 5;
     target.shieldUntil = ts() + 15 * 60 * 1000;
     const idx = allPlayers.findIndex(p => p.id === tid);
     if (idx !== -1) allPlayers[idx] = target;
-    toast(`🚀 موشک ${mn} اصابت کرد! 💰 ${sg.toLocaleString()} طلا غارت شد`, false, "missile");
+    toast(`🚀💥 موشک ${mn} اصابت کرد! 💰 ${sg.toLocaleString()} طلا غارت شد 🛡️ ${defD} پدافند نابود شد!`, false, "missile");
     await saveCurrent();
     await queueSave();
     updateUI();
@@ -1471,7 +1573,6 @@ window.removeDefense = async function(idx) {
 // ========== رندرها ==========
 function updateUI() {
     if (!player) return;
-    // اعمال تیک معدن ثانیه‌ای
     const tick = calcMineTick(player);
     if (tick.gold > 0 || tick.metal > 0 || tick.oil > 0) {
         player.gold = (player.gold || 0) + tick.gold;
@@ -1508,12 +1609,8 @@ function renderMine() {
         <div class="section-title">🪙 معدن ثانیه‌ای</div>
         <div class="mine-card">
             <div style="font-size:1.2rem">⛏️</div>
-            <div style="font-size:0.8rem;color:#fbbf24">سطح: ${player.mineLevel || 1}</div>
             <div style="font-size:0.7rem;color:#94a3b8">💰 تولید: ۵۰۰ طلا/ثانیه | ⛏️ ۳۰۰ فلز/ثانیه | 🛢️ ۲۰۰ نفت/ثانیه</div>
             <div style="font-size:0.7rem;color:#4ade80">📦 سقف نامحدود</div>
-            <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">
-                <button class="btn-gold" onclick="upgradeMine()">⬆️ ارتقا (${((player.mineLevel || 1) * 2000).toLocaleString()} طلا)</button>
-            </div>
             <div style="font-size:0.5rem;color:#94a3b8;margin-top:4px">⏳ دریافت خودکار هر ثانیه (فقط هنگام آنلاین بودن)</div>
         </div>
     `;
@@ -1783,21 +1880,6 @@ window.claimDailyXP = async function() {
     await saveCurrent();
     updateUI();
     toast("⭐ ۱ XP دریافت شد!");
-};
-
-window.upgradeMine = async function() {
-    if (!player) return;
-    const cost = (player.mineLevel || 1) * 2000;
-    if ((player.gold || 0) < cost) {
-        toast(`💰 ${cost.toLocaleString()} طلا برای ارتقا نیاز است`, true);
-        return;
-    }
-    player.gold -= cost;
-    player.mineLevel = (player.mineLevel || 1) + 1;
-    toast(`⬆️ معدن به سطح ${player.mineLevel} ارتقا یافت! (+${player.mineLevel * 500} طلا/ثانیه, +${player.mineLevel * 300} فلز/ثانیه, +${player.mineLevel * 200} نفت/ثانیه)`, false, "peace");
-    await saveCurrent();
-    renderMine();
-    updateUI();
 };
 
 window.upgradeBase = async function() {
