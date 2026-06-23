@@ -40,7 +40,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans Arabic',sans-se
 .pb{height:6px;background:var(--bg);border-radius:6px;margin:3px 0;overflow:hidden}.pf{height:100%;border-radius:6px;transition:width .5s}.pf-g{background:linear-gradient(90deg,var(--gdd),var(--gl))}.pf-h{background:linear-gradient(90deg,var(--grn),#e67e22,var(--red))}.pf-un{background:linear-gradient(90deg,var(--un),#2563eb)}
 .st{color:var(--gd);margin:10px 0 5px;font-size:.55rem;border-bottom:1px solid var(--bd);padding-bottom:3px;font-weight:700}
 .em{text-align:center;padding:20px;color:var(--tx2);font-size:.6rem}
-.spb{background:linear-gradient(135deg,#1a0a0a,#0d0b07);padding:8px;text-align:center;border-bottom:1px solid var(--red);color:#fca5a5;font-size:.55rem}
+.spb{padding:8px;text-align:center;border-bottom:1px solid var(--red);color:#fca5a5;font-size:.55rem}
 .bg{background:var(--gd);color:var(--bg);padding:2px 8px;border-radius:10px;font-size:.4rem;font-weight:700}
 .cig{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;max-height:50vh;overflow-y:auto;padding:3px}
 .cc{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:6px 3px;text-align:center;cursor:pointer;transition:.2s;font-size:.45rem}.cc:active{transform:scale(.95)}.cc.tk{opacity:.3;cursor:not-allowed}
@@ -55,7 +55,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans Arabic',sans-se
 .brt{color:var(--tx);font-size:.75rem;text-align:center;margin-top:8px;max-width:85%;line-height:1.7}
 .sk{animation:sk .4s}@keyframes sk{10%,90%{transform:translateX(-1px)}30%,50%,70%{transform:translateX(-3px)}40%,60%{transform:translateX(3px)}}
 .bl{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:6px;max-height:250px;overflow-y:auto;font-size:.45rem}.bl .le{padding:4px 0;border-bottom:1px solid var(--bg2);line-height:1.5}
-.at{color:#fca5a5}.df{color:#7dd3fc}.lt{color:#4ade80}.ls{color:#ef4444}.untx{color:#93c5fd}
+.at{color:#fca5a5}.df{color:#7dd3fc}.lt{color:#4ade80}.ls{color:#ef4444}.untx{color:#93c5fd}.alc{color:#c084fc}
 .fb{display:flex;gap:3px;margin-bottom:6px;overflow-x:auto;scrollbar-width:none;padding:1px}.fb::-webkit-scrollbar{display:none}
 .fbt{padding:3px 8px;border-radius:10px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx2);font-size:.4rem;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:inherit}.fbt.on{background:var(--gdd);color:var(--bg);border-color:var(--gd)}
 .sel{background:var(--bg2);border:1px solid var(--bd);color:var(--tx);padding:5px 8px;border-radius:8px;width:100%;margin:2px 0;font-size:.48rem;font-family:inherit}
@@ -63,6 +63,13 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans Arabic',sans-se
 .rt{font-size:.42rem;color:var(--red);margin-top:2px}.wt{font-size:.4rem;color:var(--un);font-weight:bold}
 .tier{font-size:.35rem;padding:1px 6px;border-radius:6px;display:inline-block;margin-bottom:3px}
 .tier-w{background:#444;color:#aaa}.tier-b{background:#1e40af;color:#93c5fd}.tier-a{background:#7c2d12;color:#fdba74}.tier-s{background:#6b21a8;color:#d8b4fe}
+.cd-timer{font-size:.38rem;color:var(--tx2);text-align:center;padding:4px;background:var(--bg);border-radius:8px;margin:3px 0;border:1px solid var(--bd)}
+.ally-box{background:linear-gradient(135deg,rgba(192,132,252,.05),var(--bg2));border:1px solid rgba(192,132,252,.2);border-radius:10px;padding:8px;margin-bottom:6px}
+.ally-box .ab-title{font-size:.5rem;color:#c084fc;font-weight:700;margin-bottom:4px}
+.ally-box .ab-member{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:.42rem;border-bottom:1px solid rgba(192,132,252,.1)}
+.war-info{font-size:.38rem;padding:3px 6px;border-radius:6px;margin:2px 0}
+.stat-a{color:#fca5a5}.stat-d{color:#7dd3fc}
+.locked-notice{background:linear-gradient(135deg,rgba(192,57,43,.08),var(--bg2));border:1px solid rgba(192,57,43,.2);border-radius:10px;padding:8px;text-align:center;margin-bottom:8px;font-size:.45rem;color:#fca5a5}
 </style>
 </head>
 <body>
@@ -75,349 +82,169 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans Arabic',sans-se
 <input type="password" id="pPass" placeholder="رمز عبور (حداقل ۴ حرف)">
 <button onclick="doLogin()"><i class="fas fa-crown"></i> ورود به عصر تمدن‌ها</button>
 </div>
-<div class="spb" id="specBar" style="display:none"><i class="fas fa-eye"></i> حالت تماشاگر - از تب نقشه کشورها اقدام کنید</div>
+<div class="spb" id="specBar" style="display:none"></div>
 <div id="gameUI" style="display:none">
 <div class="rb" id="resBar"></div>
 <div class="tabs" id="tabsBar"></div>
 <div id="panels"></div>
 </div>
 </div>
-<div class="bov" id="battleOv"><div class="bm" id="boomIco">💥</div><div class="bst" id="bStatus"></div><div class="brt" id="bResult"></div></div>
-
+<div class="bov" id="battleOv"><div class="bm" id="boomIco"></div><div class="bst" id="bStatus"></div><div class="brt" id="bResult"></div></div>
 <script>
-const TK="8909027468:AAFLHya_9KhgazMKK1N6GG9RBRBuPH_T-5o",CH="@PudgyParty7",DK="AOC_V6_FIX",SYNC=5000,RENT=14*24*3600*1000,UN_LIM=24*3600*1000;
+var TK="8909027468:AAFLHya_9KhgazMKK1N6GG9RBRBuPH_T-5o",CH="@PudgyParty7",DK="AOC_V9",SYNC=5000;
+var RENT=7*24*3600*1000,UN_LIM=24*3600*1000,ATK_CD=120000,MAX_ALLY_ATK=2,ALLY_DEF_BONUS=0.1;
 
-/* === جنگنده‌ها === */
-const FDB={
-SPIT:{n:"Spitfire",p:10,cg:500,co:300,cm:200,r:0,tier:"w"},
-ME109:{n:"Bf 109",p:12,cg:600,co:400,cm:250,r:0,tier:"w"},
-ZERO:{n:"A6M Zero",p:8,cg:400,co:250,cm:150,r:0,tier:"w"},
-A4:{n:"A-4 Skyhawk",p:20,cg:1000,co:700,cm:500,r:1,tier:"b"},
-F5:{n:"F-5 Tiger",p:30,cg:1500,co:1000,cm:700,r:1,tier:"b"},
-M21:{n:"MiG-21",p:35,cg:1800,co:1200,cm:800,r:2,tier:"b"},
-F16:{n:"F-16 Falcon",p:130,cg:6000,co:2000,cm:1200,r:4,tier:"a"},
-M29:{n:"MiG-29",p:180,cg:8000,co:2500,cm:1500,r:5,tier:"a"},
-SU35:{n:"Su-35",p:260,cg:14000,co:4000,cm:2500,r:6,tier:"a"},
-F16I:{n:"F-16I Sufa",p:200,cg:12000,co:3500,cm:2000,r:5,tier:"a"},
-LAVI:{n:"Lavi",p:320,cg:22000,co:6000,cm:3500,r:7,tier:"s"},
-F35I:{n:"F-35I Adir",p:420,cg:30000,co:8500,cm:5000,r:8,tier:"s"},
-F35:{n:"F-35 Lightning",p:380,cg:28000,co:8000,cm:4500,r:7,tier:"s"},
-F22:{n:"F-22 Raptor",p:550,cg:40000,co:12000,cm:9000,r:9,tier:"s"},
-B21:{n:"B-21 Raider",p:700,cg:55000,co:15000,cm:12000,r:10,tier:"s"}
-};
+var FDB={SPIT:{n:"Spitfire",p:10,d:8,cg:500,co:300,cm:200,r:0,tier:"w"},ME109:{n:"Bf 109",p:12,d:10,cg:600,co:400,cm:250,r:0,tier:"w"},ZERO:{n:"A6M Zero",p:8,d:7,cg:400,co:250,cm:150,r:0,tier:"w"},A4:{n:"A-4 Skyhawk",p:20,d:15,cg:1000,co:700,cm:500,r:1,tier:"b"},F5:{n:"F-5 Tiger",p:30,d:22,cg:1500,co:1000,cm:700,r:1,tier:"b"},M21:{n:"MiG-21",p:35,d:25,cg:1800,co:1200,cm:800,r:2,tier:"b"},F16:{n:"F-16 Falcon",p:130,d:85,cg:6000,co:2000,cm:1200,r:4,tier:"a"},M29:{n:"MiG-29",p:180,d:120,cg:8000,co:2500,cm:1500,r:5,tier:"a"},SU35:{n:"Su-35",p:260,d:170,cg:14000,co:4000,cm:2500,r:6,tier:"a"},F16I:{n:"F-16I Sufa",p:200,d:140,cg:12000,co:3500,cm:2000,r:5,tier:"a"},SU57:{n:"Su-57",p:480,d:300,cg:48000,co:14000,cm:11000,r:9,tier:"s"},LAVI:{n:"Lavi",p:320,d:200,cg:22000,co:6000,cm:3500,r:7,tier:"s"},F35I:{n:"F-35I Adir",p:420,d:260,cg:30000,co:8500,cm:5000,r:8,tier:"s"},F35:{n:"F-35 Lightning",p:380,d:240,cg:28000,co:8000,cm:4500,r:7,tier:"s"},F22:{n:"F-22 Raptor",p:550,d:320,cg:40000,co:12000,cm:9000,r:9,tier:"s"},B21:{n:"B-21 Raider",p:700,d:180,cg:55000,co:15000,cm:12000,r:10,tier:"s"}};
 
-const DDB={K15:{n:"خرداد-۱۵",cg:6000,co:1500,cm:1000,df:60,hp:100},B37:{n:"باور-۳۷۳",cg:12000,co:3500,cm:2500,df:100,hp:150},PAT:{n:"Patriot",cg:18000,co:5000,cm:3500,df:130,hp:180},S400:{n:"S-400",cg:25000,co:7000,cm:5500,df:160,hp:220}};
+var DDB={K15:{n:"خرداد-۱۵",cg:6000,co:1500,cm:1000,df:60,hp:100},B37:{n:"باور-۳۷۳",cg:12000,co:3500,cm:2500,df:100,hp:150},PAT:{n:"Patriot",cg:18000,co:5000,cm:3500,df:130,hp:180},S400:{n:"S-400",cg:25000,co:7000,cm:5500,df:160,hp:220},IRD:{n:"کوبه آهنین",cg:8000,co:2000,cm:1500,df:70,hp:80,nat:"il"},DSD:{n:"فلاخ داوود",cg:14000,co:4000,cm:3000,df:110,hp:120,nat:"il"},IRIS:{n:"آیریس-تی",cg:10000,co:3000,cm:2000,df:90,hp:130,nat:"de"},GEP:{n:"گپارد",cg:8500,co:2500,cm:1800,df:75,hp:100,nat:"de"},THAD:{n:"ثاد",cg:22000,co:6500,cm:5000,df:150,hp:200,nat:"us"},SENT:{n:"سنترینال",cg:26000,co:7500,cm:6000,df:180,hp:170,nat:"us"}};
 
-/* تیر نام‌ها */
-const TIER_NAMES={w:"جنگ جهانی دوم",b:"کلاسیک",a:"پیشرفته",s:"فوق‌پیشرفته"};
-const TIER_CSS={w:"tier-w",b:"tier-b",a:"tier-a",s:"tier-s"};
+var TIER_NAMES={w:"جنگ جهانی دوم",b:"کلاسیک",a:"پیشرفته",s:"فوق‌پیشرفته"};
+var TIER_CSS={w:"tier-w",b:"tier-b",a:"tier-a",s:"tier-s"};
 
-/* ۲۲۵ کشور فشرده */
-const R="DZ|الجزایر|نفت گاز|3,AO|آنگولا|نفت الماس|2,BJ|بنین|پنبه|1,BW|بوتسوانا|الماس|2,BF|بورکینافاسو|پنبه طلا|0,BI|بوروندی|قهوه|0,CM|کامرون|نفت چوب|1,CV|کیپ ورد|ماهی|1,CF|آفریقای مرکزی|الماس|0,TD|چاد|نفت|0,KM|کومور|وانیل|0,CG|کنگو|نفت|1,CD|کنگو دم|کبالت|1,CI|ساحل عاج|کاکائو|1,DJ|جیبوتی|بندر|1,EG|مصر|نفت گاز|4,GQ|گینه استوایی|نفت|3,ER|اریتره|مس|0,SZ|اسواتینی|شکر|1,ET|اتیوپی|قهوه|1,GA|گابن|نفت|3,GM|گامبیا|بادام|0,GE|گرجستان|شراب|2,GH|غنا|طلا|2,GN|گینه|بوکسیت|1,GW|گینه بیسائو|کاشو|0,KE|کنیا|چای|2,LS|لسوتو|الماس|0,LR|لیبریا|آهن|0,LY|لیبی|نفت|3,MG|ماداگاسکار|وانیل|1,MW|مالاوی|توباکو|0,ML|مالی|طلا|0,MR|موریتانی|آهن|0,MU|موریس|شکر|2,MA|مراکش|فوسفات|2,MZ|موزامبیک|گاز|1,NA|نامیبیا|الماس|2,NE|نیجر|اورانیوم|0,NG|نیجریه|نفت|3,RW|رواندا|قهوه|1,ST|سائوتومه|کاکائو|0,SN|سنگال|فوسفات|1,SC|سیشل|توریسم|2,SL|سیرالئون|الماس|0,SO|سومالی|ماهی|0,ZA|آفریقای جنوبی|طلا پلاتین|4,SS|سودان جنوبی|نفت|0,SD|سودان|نفت|1,TZ|تانزانیا|طلا|1,TG|توگو|فوسفات|0,TN|تونس|زیتون|2,UG|اوگاندا|قهوه|1,ZM|زامبیا|مس|1,ZW|زیمبابوه|پلاتین|1,AF|افغانستان|لیتیوم|0,AM|ارمنستان|مس|1,AZ|آذربایجان|نفت|3,BH|بحرین|نفت|4,BD|بنگلادش|پارچه|1,BT|بوتان|برق آبی|1,BN|برونئی|نفت|5,KH|کامبوج|پارچه|0,CN|چین|تکنولوژی|5,IN|هند|فناوری|4,ID|اندونزی|نیکل|3,IR|ایران|نفت گاز|3,IQ|عراق|نفت|3,IL|اسرائیل|فناوری|5,JP|ژاپن|الکترونیک|5,JO|اردن|فوسفات|1,KZ|قزاقستان|نفت|3,KW|کویت|نفت|5,KG|قرقیزستان|طلا|0,LA|لائوس|مس|0,LB|لبنان|خدمات|1,MY|مالزی|پالم|3,MV|مالدیو|توریسم|3,MN|مغولستان|مس|1,MM|میانمار|گاز|1,NP|نپال|توریسم|0,KP|کره شمالی|ذغال|0,KR|کره جنوبی|الکترونیک|5,OM|عمان|نفت|3,PK|پاکستان|پنبه|1,PS|فلسطین|کشاورزی|0,PH|فیلیپین|نیکل|2,QA|قطر|گاز|5,SA|عربستان|نفت|5,SG|سنگاپور|مالی|5,LK|سریلانکا|چای|1,SY|سوریه|نفت|0,TW|تایوان|نیمه هادی|5,TJ|تاجیکستان|آلومینیوم|0,TH|تایلند|برنج|3,TL|تیمور شرقی|نفت|0,TR|ترکیه|خودرو|3,TM|ترکمنستان|گاز|2,AE|امارات|نفت|5,UZ|ازبکستان|گاز|2,VN|ویتنام|برنج|2,YE|یمن|نفت|0,AL|آلبانی|کروم|1,AD|آندورا|توریسم|2,AT|اتریش|ماشین آلات|4,BY|بلاروس|پتاشیم|1,BE|بلژیک|شیمیایی|4,BA|بوسنی|ذغال|1,BG|بلغارستان|مس|2,HR|کرواسی|توریسم|2,CZ|چک|خودرو|4,DK|دانمارک|ماهی|5,EE|استونی|فناوری|3,FI|فنلاند|موبایل|4,FR|فرانسه|هوافضا|5,DE|آلمان|خودرو|5,GR|یونان|کشتیرانی|3,HU|مجارستان|خودرو|3,IS|ایسلند|ماهی|3,IE|ایرلند|فناوری|4,IT|ایتالیا|مد|4,XK|کوزوو|معدن|0,LV|لتونی|چوب|2,LI|لیختن اشتاین|مالی|4,LT|لیتوانی|شیمی|2,LU|لوکزامبورگ|مالی|5,MK|مقدونیه|فولاد|1,MT|مالت|توریسم|3,MD|مولداوی|شراب|0,MC|موناکو|مالی|5,ME|مونته نگرو|آلومینیوم|1,NL|هلند|گاز|5,NO|نروژ|نفت|5,PL|لهستان|فولاد|3,PT|پرتغال|شراب|2,RO|رومانی|نفت|2,RU|روسیه|نفت گاز|4,SM|سان مارینو|توریسم|2,RS|صربستان|مس|1,SK|اسلواکی|خودرو|3,SI|اسلوونی|فلزات|3,ES|اسپانیا|توریسم|4,SE|سوئد|آهن|5,CH|سوئیس|بانک|5,UA|اوکراین|گندم|2,GB|بریتانیا|مالی|5,VA|واتیکان|توریسم|0,AR|آرژانتین|گندم|3,BO|بولیوی|لیتیوم|1,BR|برزیل|سویا|4,CL|شیلی|مس|3,CO|کلمبیا|نفت|2,CR|کاستاریکا|قهوه|2,CU|کوبا|نیکل|1,EC|اکوادور|نفت|2,SV|السالوادور|قهوه|0,GT|گواتمالا|قهوه|0,GY|گویان|طلا|1,HN|هندوراس|موز|0,HT|هائیتی|پالم|0,MX|مکزیک|نفت|3,NI|نیکاراگوئه|قهوه|0,PA|پاناما|کانال|3,PY|پاراگوئه|سویا|1,PE|پرو|مس|2,DO|جمهوری دومینیکن|شکر|1,SR|سورینام|طلا|1,TT|ترینیداد|نفت|3,UY|اروگوئه|گوشت|2,VE|ونزوئلا|نفت|2,US|آمریکا|فناوری|5,CA|کانادا|نفت|5,GL|گرینلند|ماهی|1,AU|استرالیا|آهن|5,NZ|نیوزیلند|لبنیات|3,FJ|فیجی|شکر|1,PG|پاپوا|مس|1,SB|سلیمان|چوب|0,VU|وانواتو|کوپرا|0,WS|ساموآ|کوپرا|0,TO|تونگا|ماهی|0,MH|مارشال|کوپرا|0,FM|میکرونزی|ماهی|0,PW|پالائو|توریسم|0,NR|نائورو|فسفات|0,KI|کیریباتی|کوپرا|0,TV|تووالو|کوپرا|0";
+var R="DZ|الجزایر|نفت گاز|3,AO|آنگولا|نفت الماس|2,BJ|بنین|پنبه|1,BW|بوتسوانا|الماس|2,BF|بورکینافاسو|پنبه طلا|0,BI|بوروندی|قهوه|0,CM|کامرون|نفت چوب|1,CV|کیپ ورد|ماهی|1,CF|آفریقای مرکزی|الماس|0,TD|چاد|نفت|0,KM|کومور|وانیل|0,CG|کنگو|نفت|1,CD|کنگو دم|کبالت|1,CI|ساحل عاج|کاکائو|1,DJ|جیبوتی|بندر|1,EG|مصر|نفت گاز|4,GQ|گینه استوایی|نفت|3,ER|اریتره|مس|0,SZ|اسواتینی|شکر|1,ET|اتیوپی|قهوه|1,GA|گابن|نفت|3,GM|گامبیا|بادام|0,GE|گرجستان|شراب|2,GH|غنا|طلا|2,GN|گینه|بوکسیت|1,GW|گینه بیسائو|کاشو|0,KE|کنیا|چای|2,LS|لسوتو|الماس|0,LR|لیبریا|آهن|0,LY|لیبی|نفت|3,MG|ماداگاسکار|وانیل|1,MW|مالاوی|توباکو|0,ML|مالی|طلا|0,MR|موریتانی|آهن|0,MU|موریس|شکر|2,MA|مراکش|فوسفات|2,MZ|موزامبیک|گاز|1,NA|نامیبیا|الماس|2,NE|نیجر|اورانیوم|0,NG|نیجریه|نفت|3,RW|رواندا|قهوه|1,ST|سائوتومه|کاکائو|0,SN|سنگال|فوسفات|1,SC|سیشل|توریسم|2,SL|سیرالئون|الماس|0,SO|سومالی|ماهی|0,ZA|آفریقای جنوبی|طلا پلاتین|4,SS|سودان جنوبی|نفت|0,SD|سودان|نفت|1,TZ|تانزانیا|طلا|1,TG|توگو|فوسفات|0,TN|تونس|زیتون|2,UG|اوگاندا|قهوه|1,ZM|زامبیا|مس|1,ZW|زیمبابوه|پلاتین|1,AF|افغانستان|لیتیوم|0,AM|ارمنستان|مس|1,AZ|آذربایجان|نفت|3,BH|بحرین|نفت|4,BD|بنگلادش|پارچه|1,BT|بوتان|برق آبی|1,BN|برونئی|نفت|5,KH|کامبوج|پارچه|0,CN|چین|تکنولوژی|5,IN|هند|فناوری|4,ID|اندونزی|نیکل|3,IR|ایران|نفت گاز|3,IQ|عراق|نفت|3,IL|اسرائیل|فناوری|5,JP|ژاپن|الکترونیک|5,JO|اردن|فوسفات|1,KZ|قزاقستان|نفت|3,KW|کویت|نفت|5,KG|قرقیزستان|طلا|0,LA|لائوس|مس|0,LB|لبنان|خدمات|1,MY|مالزی|پالم|3,MV|مالدیو|توریسم|3,MN|مغولستان|مس|1,MM|میانمار|گاز|1,NP|نپال|توریسم|0,KP|کره شمالی|ذغال|0,KR|کره جنوبی|الکترونیک|5,OM|عمان|نفت|3,PK|پاکستان|پنبه|1,PS|فلسطین|کشاورزی|0,PH|فیلیپین|نیکل|2,QA|قطر|گاز|5,SA|عربستان|نفت|5,SG|سنگاپور|مالی|5,LK|سریلانکا|چای|1,SY|سوریه|نفت|0,TW|تایوان|نیمه هادی|5,TJ|تاجیکستان|آلومینیوم|0,TH|تایلند|برنج|3,TL|تیمور شرقی|نفت|0,TR|ترکیه|خودرو|3,TM|ترکمنستان|گاز|2,AE|امارات|نفت|5,UZ|ازبکستان|گاز|2,VN|ویتنام|برنج|2,YE|یمن|نفت|0,AL|آلبانی|کروم|1,AD|آندورا|توریسم|2,AT|اتریش|ماشین آلات|4,BY|بلاروس|پتاشیم|1,BE|بلژیک|شیمیایی|4,BA|بوسنی|ذغال|1,BG|بلغارستان|مس|2,HR|کرواسی|توریسم|2,CZ|چک|خودرو|4,DK|دانمارک|ماهی|5,EE|استونی|فناوری|3,FI|فنلاند|موبایل|4,FR|فرانسه|هوافضا|5,DE|آلمان|خودرو|5,GR|یونان|کشتیرانی|3,HU|مجارستان|خودرو|3,IS|ایسلند|ماهی|3,IE|ایرلند|فناوری|4,IT|ایتالیا|مد|4,XK|کوزووو|معدن|0,LV|لتونی|چوب|2,LI|لیختن اشتاین|مالی|4,LT|لیتوانی|شیمی|2,LU|لوکزامبورگ|مالی|5,MK|مقدونیه|فولاد|1,MT|مالت|توریسم|3,MD|مولداوی|شراب|0,MC|موناکو|مالی|5,ME|مونته نگرو|آلومینیوم|1,NL|هلند|گاز|5,NO|نروژ|نفت|5,PL|لهستان|فولاد|3,PT|پرتغال|شراب|2,RO|رومانی|نفت|2,RU|روسیه|نفت گاز|4,SM|سان مارینو|توریسم|2,RS|صربستان|مس|1,SK|اسلواکی|خودرو|3,SI|اسلوونی|فلزات|3,ES|اسپانیا|توریسم|4,SE|سوئد|آهن|5,CH|سوئیس|بانک|5,UA|اوکراین|گندم|2,GB|بریتانیا|مالی|5,VA|واتیکان|توریسم|0,AR|آرژانتین|گندم|3,BO|بولیوی|لیتیوم|1,BR|برزیل|سویا|4,CL|شیلی|مس|3,CO|کلمبیا|نفت|2,CR|کاستاریکا|قهوه|2,CU|کوبا|نیکل|1,EC|اکوادور|نفت|2,SV|السالوادور|قهوه|0,GT|گواتمالا|قهوه|0,GY|گویان|طلا|1,HN|هندوراس|موز|0,HT|هائیتی|پالم|0,MX|مکزیک|نفت|3,NI|نیکاراگوئه|قهوه|0,PA|پاناما|کانال|3,PY|پاراگوئه|سویا|1,PE|پرو|مس|2,DO|جمهوری دومینیکن|شکر|1,SR|سورینام|طلا|1,TT|ترینیداد|نفت|3,UY|اروگوئه|گوشت|2,VE|ونزوئلا|نفت|2,US|آمریکا|فناوری|5,CA|کانادا|نفت|5,GL|گرینلند|ماهی|1,AU|استرالیا|آهن|5,NZ|نیوزیلند|لبنیات|3,FJ|فیجی|شکر|1,PG|پاپوا|مس|1,SB|سلیمان|چوب|0,VU|وانواتو|کوپرا|0,WS|ساموآ|کوپرا|0,TO|تونگا|ماهی|0,MH|مارشال|کوپرا|0,FM|میکرونزی|ماهی|0,PW|پالائو|توریسم|0,NR|نائورو|فسفات|0,KI|کیریباتی|کوپرا|0,TV|تووالو|کوپرا|0";
 
-const CDB={};
-R.split(',').forEach((s,i)=>{const p=s.split('|');if(p.length<4)return;const c=p[0],nm=p[1],ec=p[2],ev=parseInt(p[3]||0);const ml=1+ev*0.5;CDB[c]={c,n:nm,e:ec,ev,g:Math.floor((800+ev*600)*ml),o:Math.floor((200+ev*1200)*ml),m:Math.floor((300+ev*400)*ml),pop:Math.floor(5+ev*20+Math.sin(i)*10),area:Math.floor(50+ev*200+Math.cos(i*2)*30)};});
-function flag(c){return c.length<=2?String.fromCodePoint(...[...c].map(x=>0x1F1E6+x.charCodeAt(0)-65)):c;}
-Object.keys(CDB).forEach(k=>CDB[k].f=flag(k));
-const CKEYS=Object.keys(CDB);
-const CONT={AF:0,DZ:0,AO:0,BJ:0,BW:0,BF:0,BI:0,CM:0,CV:0,CF:0,TD:0,KM:0,CG:0,CD:0,CI:0,DJ:0,EG:0,GQ:0,ER:0,SZ:0,ET:0,GA:0,GM:0,GH:0,GN:0,GW:0,KE:0,LS:0,LR:0,LY:0,MG:0,MW:0,ML:0,MR:0,MU:0,MA:0,MZ:0,NA:0,NE:0,NG:0,RW:0,ST:0,SN:0,SC:0,SL:0,SO:0,ZA:0,SS:0,SD:0,TZ:0,TG:0,TN:0,UG:0,ZM:0,ZW:0,AM:1,AZ:1,BH:1,BD:1,BT:1,BN:1,KH:1,CN:1,IN:1,ID:1,IR:1,IQ:1,IL:1,JP:1,JO:1,KZ:1,KW:1,KG:1,LA:1,LB:1,MY:1,MV:1,MN:1,MM:1,NP:1,KP:1,KR:1,OM:1,PK:1,PS:1,PH:1,QA:1,SA:1,SG:1,LK:1,SY:1,TW:1,TJ:1,TH:1,TL:1,TR:1,TM:1,AE:1,UZ:1,VN:1,YE:1,AL:2,AD:2,AT:2,BY:2,BE:2,BA:2,BG:2,HR:2,CZ:2,DK:2,EE:2,FI:2,FR:2,DE:2,GR:2,HU:2,IS:2,IE:2,IT:2,LV:2,LI:2,LT:2,LU:2,MK:2,MT:2,MD:2,MC:2,ME:2,NL:2,NO:2,PL:2,PT:2,RO:2,RU:2,SM:2,RS:2,SK:2,SI:2,ES:2,SE:2,CH:2,UA:2,GB:2,VA:2,AR:3,BO:3,BR:3,CL:3,CO:3,CR:3,CU:3,EC:3,SV:3,GT:3,GY:3,HN:3,HT:3,MX:3,NI:3,PA:3,PY:3,PE:3,DO:3,SR:3,TT:3,UY:3,VE:3,US:3,CA:3,AU:4,NZ:4,FJ:4,PG:4,SB:4,VU:4,WS:4,TO:4,MH:4,FM:4,PW:4,NR:4,KI:4,TV:4,GL:4};
-const CNAMES=["آفریقا","آسیا","اروپا","آمریکا","اقیانوسیه"];
+var CDB={};
+R.split(',').forEach(function(s,i){var p=s.split('|');if(p.length<4)return;var c=p[0],nm=p[1],ec=p[2],ev=parseInt(p[3]||0);var ml=1+ev*0.5;CDB[c]={c:c,n:nm,e:ec,ev:ev,g:Math.floor((800+ev*600)*ml),o:Math.floor((200+ev*1200)*ml),m:Math.floor((300+ev*400)*ml),pop:Math.floor(5+ev*20+Math.sin(i)*10),area:Math.floor(50+ev*200+Math.cos(i*2)*30)};});
+function flag(c){return c.length<=2?String.fromCodePoint.apply(null,[...c].map(function(x){return 0x1F1E6+x.charCodeAt(0)-65;})):c;}
+Object.keys(CDB).forEach(function(k){CDB[k].f=flag(k);});
+var CKEYS=Object.keys(CDB);
+var CONT={AF:0,DZ:0,AO:0,BJ:0,BW:0,BF:0,BI:0,CM:0,CV:0,CF:0,TD:0,KM:0,CG:0,CD:0,CI:0,DJ:0,EG:0,GQ:0,ER:0,SZ:0,ET:0,GA:0,GM:0,GH:0,GN:0,GW:0,KE:0,LS:0,LR:0,LY:0,MG:0,MW:0,ML:0,MR:0,MU:0,MA:0,MZ:0,NA:0,NE:0,NG:0,RW:0,ST:0,SN:0,SC:0,SL:0,SO:0,ZA:0,SS:0,SD:0,TZ:0,TG:0,TN:0,UG:0,ZM:0,ZW:0,AM:1,AZ:1,BH:1,BD:1,BT:1,BN:1,KH:1,CN:1,IN:1,ID:1,IR:1,IQ:1,IL:1,JP:1,JO:1,KZ:1,KW:1,KG:1,LA:1,LB:1,MY:1,MV:1,MN:1,MM:1,NP:1,KP:1,KR:1,OM:1,PK:1,PS:1,PH:1,QA:1,SA:1,SG:1,LK:1,SY:1,TW:1,TJ:1,TH:1,TL:1,TR:1,TM:1,AE:1,UZ:1,VN:1,YE:1,AL:2,AD:2,AT:2,BY:2,BE:2,BA:2,BG:2,HR:2,CZ:2,DK:2,EE:2,FI:2,FR:2,DE:2,GR:2,HU:2,IS:2,IE:2,IT:2,LV:2,LI:2,LT:2,LU:2,MK:2,MT:2,MD:2,MC:2,ME:2,NL:2,NO:2,PL:2,PT:2,RO:2,RU:2,SM:2,RS:2,SK:2,SI:2,ES:2,SE:2,CH:2,UA:2,GB:2,VA:2,AR:3,BO:3,BR:3,CL:3,CO:3,CR:3,CU:3,EC:3,SV:3,GT:3,GY:3,HN:3,HT:3,MX:3,NI:3,PA:3,PY:3,PE:3,DO:3,SR:3,TT:3,UY:3,VE:3,US:3,CA:3,AU:4,NZ:4,FJ:4,PG:4,SB:4,VU:4,WS:4,TO:4,MH:4,FM:4,PW:4,NR:4,KI:4,TV:4,GL:4};
+var CNAMES=["آفریقا","آسیا","اروپا","آمریکا","اقیانوسیه"];
 
-let P=null,allP=[],mkt=[],logs=[],wars=[],connected=false,msgId=null,isSpec=false;
-const ts=()=>Date.now();
-const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-function toast(m,t=""){const d=document.createElement("div");d.className="tt "+t;d.innerHTML=m;document.body.appendChild(d);setTimeout(()=>d.remove(),3800);}
-function fmtT(ms){if(ms<=0)return "منقضی";const d=Math.floor(ms/86400000),h=Math.floor(ms%86400000/3600000),mi=Math.floor(ms%3600000/60000);return d+" روز "+h+" س "+mi+" د";}
+var P=null,allP=[],mkt=[],logs=[],wars=[],connected=false,msgId=null,isSpec=false,dirty=false;
+var ts=function(){return Date.now();};
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");};
+function toast(m,t){var d=document.createElement("div");d.className="tt "+(t||"");d.innerHTML=m;document.body.appendChild(d);setTimeout(function(){d.remove();},3800);}
+function fmtT(ms){if(ms<=0)return "منقضی";var d=Math.floor(ms/86400000),h=Math.floor(ms%86400000/3600000),mi=Math.floor(ms%3600000/60000);return d+" روز "+h+" س "+mi+" د";}
+function fmtS(ms){if(ms<=0)return "0";return Math.ceil(ms/1000)+"";}
+function getFgCount(p,k){return(p.fg&&p.fg[k])?p.fg[k]:0;}
+function getDevId(){var id=localStorage.getItem("aoc_d");if(!id){id="D_"+Math.random().toString(36).substr(2,10);localStorage.setItem("aoc_d",id);}return id;}
+function getDevLink(){var v=localStorage.getItem("aoc_l");if(v){try{return JSON.parse(v);}catch(e){}return null;}}
+function setDevLink(pid){localStorage.setItem("aoc_l",JSON.stringify({d:getDevId(),p:pid}));}
+function clearDevLink(){localStorage.removeItem("aoc_l");}
 
-function getFgCount(p, k){ return (p.fg && p.fg[k]) ? p.fg[k] : 0; }
+async function api(m,p,r){try{var res=await fetch("https://api.telegram.org/bot"+TK+"/"+m,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)});var d=await res.json();if(!d.ok&&d.error_code===429&&(r||0)<2){await new Promise(function(x){setTimeout(x,1500);});return api(m,p,(r||0)+1);}return d;}catch(e){if((r||0)<1){await new Promise(function(x){setTimeout(x,1000);});return api(m,p,(r||0)+1);}return{ok:false};}}
 
-async function api(m,p={},r=0){try{const res=await fetch("https://api.telegram.org/bot"+TK+"/"+m,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)});const d=await res.json();if(!d.ok&&d.error_code===429&&r<2){await new Promise(x=>setTimeout(x,1500));return api(m,p,r+1);}return d;}catch(e){if(r<1){await new Promise(x=>setTimeout(x,1000));return api(m,p,r+1);}return{ok:false};}}
+async function initTG(){upS("اتصال...","wr");var b=await api("getMe",{});if(!b.ok){upS("خطا","off",1);return false;}var c=await api("getChat",{chat_id:CH});if(c.ok&&c.result){if(c.result.pinned_message&&c.result.pinned_message.text&&c.result.pinned_message.text.indexOf(DK)===0){msgId=c.result.pinned_message.message_id;}else{var s=await api("sendMessage",{chat_id:CH,text:DK+"\n{}"});if(s.ok){msgId=s.result.message_id;await api("pinChatMessage",{chat_id:CH,message_id:msgId});}}connected=true;upS("آنلاین","on");return true;}upS("خطا","off",1);return false;}
 
-async function initTG(){
-upS("اتصال...","wr");
-const b=await api("getMe");if(!b.ok){upS("خطا","off",1);return false;}
-const c=await api("getChat",{chat_id:CH});
-if(c.ok&&c.result){
-if(c.result.pinned_message?.text?.includes(DK))msgId=c.result.pinned_message.message_id;
-else{const s=await api("sendMessage",{chat_id:CH,text:DK+"\n{}"});if(s.ok){msgId=s.result.message_id;await api("pinChatMessage",{chat_id:CH,message_id:msgId});}}
-connected=true;upS("آنلاین","on");return true;
-}
-upS("ربات ادمین نیست","off",1);return false;
-}
-function upS(t,s,rc=0){document.getElementById("syncTxt").innerText=t;const o=document.getElementById("onBar");o.className="ob "+s;document.getElementById("onTxt").innerText=t;document.getElementById("reconnBtn").style.display=rc?"inline-block":"none";}
+function upS(t,s,rc){document.getElementById("syncTxt").innerText=t;var o=document.getElementById("onBar");o.className="ob "+s;document.getElementById("onTxt").innerText=t;document.getElementById("reconnBtn").style.display=rc?"inline-block":"none";}
+
 window.forceReconn=async function(){if(await initTG()){await loadAll();upAll();}};
 
-function compP(p){return{i:p.id,n:p.name,ps:p.pass,cc:p.cc,g:p.g,o:p.o,m:p.m,x:p.xp,ml:p.ml,lc:p.lc,r:[p.res.mil,p.res.eco,p.res.air],f:p.fg||{},d:p.df||[],at:p.at};}
-function decompP(c){return{id:c.i,name:c.n,pass:c.ps,cc:c.cc||null,g:c.g||0,o:c.o||0,m:c.m||0,xp:c.x||0,ml:c.ml||1,lc:c.lc||ts(),res:{mil:c.r?.[0]||0,eco:c.r?.[1]||0,air:c.r?.[2]||0},fg:c.f||{},df:c.d||[],at:c.at||ts()};}
-function pack(){
-const d={k:DK,p:allP.map(compP),m:mkt,l:logs.slice(-3),w:wars};
-let s=JSON.stringify(d);
-if(s.length>3900){d.l=[];s=JSON.stringify(d);}
-return s;
-}
-async function saveAll(){
-if(!connected||!msgId)return false;
-const r=await api("editMessageText",{chat_id:CH,message_id:msgId,text:DK+"\n"+pack()});
-if(r?.ok){upS("ذخیره","on");return true;}
-upS("خطا ذخیره","off",1);return false;
-}
-async function loadAll(){
-if(!connected)if(!await initTG())return false;
-const c=await api("getChat",{chat_id:CH});
-if(c.ok&&c.result?.pinned_message?.text){
-try{const t=c.result.pinned_message.text.replace(DK+"\n",""),j=JSON.parse(t);
-if(j.k===DK){allP=(j.p||[]).map(decompP);mkt=j.m||[];logs=j.l||[];wars=j.w||[];return true;}}catch(e){}
-}
-return false;
-}
+function compP(p){var fg={};if(p.fg)for(var k in p.fg)if(p.fg[k]>0)fg[k]=p.fg[k];var df=(p.df||[]).filter(function(d){return d.h>0;});return{i:p.id,n:p.name,ps:p.pass,cc:p.cc,g:Math.floor(p.g),o:Math.floor(p.o),m:Math.floor(p.m),x:p.xp,ml:p.ml,lc:p.lc,r:[p.res.mil,p.res.eco,p.res.air],f:fg,d:df,at:p.at};}
 
-function getOwner(cc){return allP.find(p=>p.cc===cc);}
+function decompP(c){return{id:c.i,name:c.n,pass:c.ps,cc:c.cc||null,g:c.g||0,o:c.o||0,m:c.m||0,xp:c.x||0,ml:c.ml||1,lc:c.lc||ts(),res:{mil:c.r?(c.r[0]||0):0,eco:c.r?(c.r[1]||0):0,air:c.r?(c.r[2]||0):0},fg:c.f||{},df:c.d||[],at:c.at||ts()};}
+
+function pack(){var d={k:DK,p:allP.map(compP),m:mkt,l:logs,w:wars};var s=JSON.stringify(d);if(s.length>3900){d.l=d.l.slice(-5);s=JSON.stringify(d);}if(s.length>3900){d.m=d.m.slice(-8);s=JSON.stringify(d);}if(s.length>3900){d.w=d.w.filter(function(w){return w.s==="active"||w.s==="peace_req";});s=JSON.stringify(d);}return s;}
+
+async function saveAll(){if(!connected||!msgId)return false;var r=await api("editMessageText",{chat_id:CH,message_id:msgId,text:DK+"\n"+pack()});if(r&&r.ok){upS("ذخیره","on");dirty=false;return true;}upS("خطا ذخیره","off",1);return false;}
+
+async function loadAll(){if(!connected)if(!await initTG())return false;var c=await api("getChat",{chat_id:CH});if(c.ok&&c.result&&c.result.pinned_message&&c.result.pinned_message.text){try{var t=c.result.pinned_message.text;if(t.indexOf(DK)===0){var j=JSON.parse(t.substring(DK.length+1));if(j.k===DK){allP=(j.p||[]).map(decompP);mkt=j.m||[];logs=j.l||[];wars=j.w||[];return true;}}}catch(e){}}return false;}
+
+function getOwner(cc){return allP.find(function(p){return p.cc===cc;});}
 function rentLeft(p){if(!p||!p.cc)return 0;return RENT-(ts()-p.at);}
-function isFree(cc){const o=getOwner(cc);if(!o)return true;return rentLeft(o)<=0;}
-function freeExpired(){allP.forEach(p=>{if(p.cc&&rentLeft(p)<=0){logs.push({t:ts(),x:" "+esc(p.name)+" اجاره "+CDB[p.cc]?.n+" منقضی شد."});p.cc=null;p.at=ts();}});}
-function getMyWars(id){return wars.filter(w=>(w.a===id||w.d===id)&&w.s!=="end");}
-function getWarWith(id1,id2){return wars.find(w=>((w.a===id1&&w.d===id2)||(w.a===id2&&w.d===id1))&&w.s!=="end");}
+function isFree(cc){var o=getOwner(cc);if(!o)return true;return rentLeft(o)<=0;}
+
+function freeExpired(){allP.forEach(function(p){if(p.cc&&rentLeft(p)<=0){logs.push({t:ts(),x:" "+esc(p.name)+" اجاره "+CDB[p.cc].n+" منقضی شد."});p.cc=null;p.at=ts();dirty=true;}});}
+
+function getMyWars(id){return wars.filter(function(w){return(w.a===id||w.d===id)&&w.s!=="end";});}
+function getWarWith(id1,id2){return wars.find(function(w){return((w.a===id1&&w.d===id2)||(w.a===id2&&w.d===id1))&&w.s!=="end";});}
 function unTimeLeft(w){return UN_LIM-(ts()-w.st);}
-function checkUN(){wars.forEach(w=>{if(w.s==="active"&&unTimeLeft(w)<=0){w.s="un_end";logs.push({t:ts(),x:" <span class='untx'>سازمان ملل</span> جنگ بین "+esc(allP.find(p=>p.id===w.a)?.name||"?")+" و "+esc(allP.find(p=>p.id===w.d)?.name||"?")+" را متوقف کرد."});}});}
+function atkCdLeft(w){return ATK_CD-(ts()-(w.la||0));}
+
+function checkUN(){wars.forEach(function(w){if(w.s==="active"&&unTimeLeft(w)<=0){w.s="un_end";dirty=true;logs.push({t:ts(),x:" <span class='untx'>سازمان ملل</span> جنگ متوقف شد."});}});}
+
+function getPlayerCont(pid){var p=allP.find(function(x){return x.id===pid;});if(!p||!p.cc)return -1;var ci=CONT[p.cc];return(ci!==undefined)?ci:-1;}
+
+function getMyAlliance(pid){var ci=getPlayerCont(pid);if(ci<0)return null;var me=allP.find(function(x){return x.id===pid;});var members=allP.filter(function(x){return x.id!==pid&&x.cc&&CONT[x.cc]===ci;});return{cont:ci,name:CNAMES[ci],members:members};}
+
+function countAllyAttackers(allianceCont,targetId){if(allianceCont<0)return 0;return allP.filter(function(p){if(!p.cc||CONT[p.cc]!==allianceCont)return false;var w=getWarWith(p.id,targetId);return w&&w.a===p.id&&w.s!=="end"&&w.s!=="un_end";}).length;}
+
+function getAllyAlerts(pid){var ci=getPlayerCont(pid);if(ci<0)return [];var alerts=[];allP.forEach(function(p){if(p.id===pid||!p.cc||CONT[p.cc]!==ci)return;var underAttack=wars.some(function(w){return(w.d===p.id||w.a===p.id)&&w.s==="active";});if(underAttack)alerts.push(p);});return alerts;}
+
 function makeP(nm,ps){return{id:nm+"_"+ts().toString(36),name:nm,pass:ps,cc:null,g:0,o:0,m:0,xp:0,ml:1,lc:ts(),res:{mil:0,eco:0,air:0},fg:{},df:[],at:ts()};}
 
-function calcAtk(p){
-if(!p)return 0;
-let pw=0;
-for(const[k,f]of Object.entries(FDB)){
-const cnt=getFgCount(p,k);
-if(cnt>0) pw+=f.p*cnt;
-}
-return Math.floor(pw);
-}
-function calcDef(p){if(!p)return 0;let pw=calcAtk(p)*0.4;if(p.df)p.df.forEach(d=>{if(DDB[d.t]&&d.h>0)pw+=DDB[d.t].df*(d.h/d.mh);});return Math.floor(pw);}
+function calcAtk(p){if(!p)return 0;var pw=0;for(var k in FDB){var cnt=getFgCount(p,k);if(cnt>0)pw+=FDB[k].p*cnt;}return Math.floor(pw);}
+
+function calcDef(p,checkAlliance){if(!p)return 0;var pw=0;for(var k in FDB){var cnt=getFgCount(p,k);if(cnt>0)pw+=FDB[k].d*cnt;}if(p.df)p.df.forEach(function(d){if(DDB[d.t]&&d.h>0)pw+=DDB[d.t].df*(d.h/d.mh);});if(checkAlliance&&p.cc){var ci=CONT[p.cc];if(ci!==undefined){var allyCount=allP.filter(function(x){return x.id!==p.id&&x.cc&&CONT[x.cc]===ci;}).length;if(allyCount>0)pw=Math.floor(pw*(1+ALLY_DEF_BONUS));}}return Math.floor(pw);}
 
 window.doLogin=async function(){
-const nm=document.getElementById("pName").value.trim(),ps=document.getElementById("pPass").value.trim();
+var nm=document.getElementById("pName").value.trim(),ps=document.getElementById("pPass").value.trim();
 if(nm.length<3||ps.length<4)return toast("نام حداقل ۳ و رمز حداقل ۴ حرف","er");
-let ex=allP.find(p=>p.name===nm);
-if(ex){if(ex.pass!==ps)return toast("رمز اشتباه","er");P=ex;}
-else{P=makeP(nm,ps);allP.push(P);await saveAll();}
-document.getElementById("loginBox").style.display="none";
-freeExpired();checkUN();
-if(P.cc&&rentLeft(P)<=0){P.cc=null;await saveAll();}
-isSpec=!P.cc;
-document.getElementById("gameUI").style.display="block";
-document.getElementById("specBar").style.display=isSpec?"block":"none";
-buildTabs();upAll();toast("ورود موفق","pe");
+var did=getDevId(),dl=getDevLink();
+if(dl&&dl.d===did){var ex=allP.find(function(p){return p.id===dl.p;});if(ex){if(ex.pass!==ps){return toast("این دستگاه قبلاً با نام \""+esc(ex.name)+"\" ثبت شده. رمز اشتباه.","er");}P=ex;setDevLink(ex.id);document.getElementById("loginBox").style.display="none";freeExpired();checkUN();if(P.cc&&rentLeft(P)<=0){P.cc=null;await saveAll();}isSpec=!P.cc;document.getElementById("gameUI").style.display="block";upSpecBar();buildTabs();upAll();toast("ورود موفق","pe");return;}}
+P=makeP(nm,ps);allP.push(P);setDevLink(P.id);dirty=true;await saveAll();
+document.getElementById("loginBox").style.display="none";freeExpired();checkUN();isSpec=!P.cc;document.getElementById("gameUI").style.display="block";upSpecBar();buildTabs();upAll();toast("ثبت نام موفق - دستگاه ثبت شد","pe");
 };
 
-function getTabs(){
-const t=[{id:"select",n:" نقشه",i:"fa-globe-americas"}];
-if(!isSpec)t.push({id:"country",n:" کشور",i:"fa-landmark"},{id:"diplo",n:" دیپلماسی",i:"fa-handshake"},{id:"mine",n:" معدن",i:"fa-gem"},{id:"mil",n:" نظامی",i:"fa-fighter-jet"},{id:"war",n:" جنگ",i:"fa-crosshairs"},{id:"mkt",n:" بازار",i:"fa-store"},{id:"res",n:" تحقیق",i:"fa-flask"});
-t.push({id:"rank",n:" رتبه",i:"fa-trophy"},{id:"blog",n:" گزارش",i:"fa-scroll"});
-return t;
-}
-function buildTabs(){
-const T=getTabs();let h="",ph="";
-T.forEach((t,i)=>{h+=`<div class="tab${i===0?' on':''}" data-t="${t.id}"><i class="fas ${t.i}"></i>${t.n}</div>`;ph+=`<div class="pnl${i===0?' on':''}" id="p_${t.id}"></div>`;});
-document.getElementById("tabsBar").innerHTML=h;document.getElementById("panels").innerHTML=ph;
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>swTab(t.dataset.t));
-renderTab();
-}
-function swTab(id){document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.t===id));document.querySelectorAll(".pnl").forEach(p=>p.classList.toggle("on",p.id==="p_"+id));renderTab();}
-function renderTab(){const on=document.querySelector(".tab.on");if(!on)return;const id=on.dataset.t;const fn={select:rSelect,country:rCountry,diplo:rDiplo,mine:rMine,mil:rMil,war:rWar,mkt:rMkt,res:rRes,rank:rRank,blog:rBlog};if(fn[id])fn[id]();}
+function upSpecBar(){var sb=document.getElementById("specBar");if(!isSpec){sb.style.display="none";return;}sb.style.display="block";sb.innerHTML='<i class="fas fa-globe"></i> از نقشه یک کشور انتخاب کنید - بعد از انتخاب فقط با تموم تمدید می‌توانید تغییر دهید';sb.style.borderColor="var(--red)";sb.style.color="#fca5a5";sb.style.background="linear-gradient(135deg,#1a0a0a,#0d0b07)";}
 
-function upRes(){
-if(!P)return;const c=P.cc?CDB[P.cc]:null;
-document.getElementById("resBar").innerHTML=`<div class="ri">💰<b>${Math.floor(P.g).toLocaleString("fa-IR")}</b></div><div class="ri">🛢️<b>${Math.floor(P.o).toLocaleString("fa-IR")}</b></div><div class="ri">⛏️<b>${Math.floor(P.m).toLocaleString("fa-IR")}</b></div><div class="ri">⭐<b>${P.xp}</b></div>${c?`<div class="ri">${c.f}<b>${c.n}</b></div>`:`<div class="ri" style="color:var(--red)">بدون کشور</div>`}`;
-}
+function getTabs(){var t=[{id:"select",n:" نقشه",i:"fa-globe-americas"}];if(!isSpec)t.push({id:"country",n:" کشور",i:"fa-landmark"},{id:"diplo",n:" دیپلماسی",i:"fa-handshake"},{id:"mine",n:" معدن",i:"fa-gem"},{id:"mil",n:" نظامی",i:"fa-fighter-jet"},{id:"war",n:" جنگ",i:"fa-crosshairs"},{id:"mkt",n:" بازار",i:"fa-store"},{id:"res",n:" تحقیق",i:"fa-flask"});t.push({id:"rank",n:" رتبه",i:"fa-trophy"},{id:"blog",n:" گزارش",i:"fa-scroll"});return t;}
 
-let selC="همه";
-function rSelect(){
-freeExpired();let h=`<div class="fb">`;
-["همه",...CNAMES].forEach(c=>{h+=`<div class="fbt${selC===c?' on':''}" onclick="selC='${c}';rSelect()">${c}</div>`;});
-h+=`</div><div class="cig">`;
-CKEYS.forEach(k=>{const c=CDB[k],ci=CONT[k]??-1;if(selC!=="همه"&&CNAMES[ci]!==selC)return;const o=getOwner(k),tk=!isFree(k),isMe=P&&P.cc===k;h+=`<div class="cc${tk&&!isMe?' tk':''}" ${tk&&!isMe?"":`onclick="pickC('${k}')"`}><div class="fl">${c.f}</div><div class="cn">${c.n}</div><div class="ce">${c.e}</div>${isMe?`<div class="cf">کشور شما</div>`:tk?`<div class="co">${esc(o?.name||"?")} - ${fmtT(rentLeft(o))}</div>`:`<div class="cf">آزاد</div>`}</div>`;});
-h+=`</div>`;document.getElementById("p_select").innerHTML=h;
-}
-window.pickC=async function(cc){if(!P)return;if(!isFree(cc))return toast("کشور گرفته شده","er");const c=CDB[cc];P.cc=cc;P.at=ts();P.g=c.g;P.o=c.o;P.m=c.m;isSpec=false;document.getElementById("specBar").style.display="none";logs.push({t:ts(),x:" "+esc(P.name)+" کشور "+c.n+" را انتخاب کرد."});await saveAll();buildTabs();upAll();toast(c.f+" "+c.n+" به امپراتوری شما اضافه شد!","pe");};
+function buildTabs(){var T=getTabs(),h="",ph="";T.forEach(function(t,i){h+='<div class="tab'+(i===0?' on':'')+'" data-t="'+t.id+'"><i class="fas '+t.i+'"></i>'+t.n+'</div>';ph+='<div class="pnl'+(i===0?' on':'')+'" id="p_'+t.id+'"></div>';});document.getElementById("tabsBar").innerHTML=h;document.getElementById("panels").innerHTML=ph;document.querySelectorAll(".tab").forEach(function(t){t.onclick=function(){swTab(t.dataset.t);};});});renderTab();}
 
-function rCountry(){
-if(!P||!P.cc){document.getElementById("p_country").innerHTML=`<div class="em"><i class="fas fa-globe" style="font-size:2rem;color:var(--gdd);display:block;margin-bottom:10px"></i>کشوری ندارید<br><small>از تب نقشه اقدام کنید</small></div>`;return;}
-const c=CDB[P.cc],rl=rentLeft(P),rp=Math.max(0,Math.min(100,rl/RENT*100));
-document.getElementById("p_country").innerHTML=`<div class="ci"><div class="cih"><div class="cif">${c.f}</div><div><div class="cin">${c.n}</div><div class="cio">${c.e}</div></div></div><div class="cis"><div class="cisv">👥 ${c.pop}M</div><div class="cisv">📐 ${c.area}K km²</div><div class="cisv">⭐ ${"★".repeat(c.ev)}${"☆".repeat(5-c.ev)}</div><div class="cisv">⚔️${calcAtk(P)} 🛡️${calcDef(P)}</div></div><div style="margin-top:6px"><div style="font-size:.4rem;color:var(--tx2);margin-bottom:2px">اجاره</div><div class="pb"><div class="pf pf-h" style="width:${rp}%"></div></div><div class="rt">${fmtT(rl)}</div></div></div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="bt bt-r" onclick="leaveC()"><i class="fas fa-door-open"></i> ترک</button><button class="bt bt-g" onclick="extRent()"><i class="fas fa-clock"></i> تمدید</button></div>`;
-}
-window.leaveC=async function(){if(!P||!P.cc)return;logs.push({t:ts(),x:" "+esc(P.name)+" کشور "+CDB[P.cc]?.n+" را ترک کرد."});P.cc=null;P.at=ts();isSpec=true;document.getElementById("specBar").style.display="block";await saveAll();buildTabs();upAll();toast("کشور ترک شد","er");};
-window.extRent=async function(){if(!P||!P.cc)return;P.at=ts();await saveAll();rCountry();toast("تمدید ۲ هفته","pe");};
+function swTab(id){document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("on",t.dataset.t===id);});document.querySelectorAll(".pnl").forEach(function(p){p.classList.toggle("on",p.id==="p_"+id);});renderTab();}
 
-function rDiplo(){
-if(!P||!P.cc){document.getElementById("p_diplo").innerHTML=`<div class="em">کشوری ندارید</div>`;return;}
-const myW=getMyWars(P.id);let h=`<div class="st"><i class="fas fa-handshake"></i> روابط دیپلماتیک</div><div style="font-size:.5rem;color:var(--tx2);margin-bottom:6px">جنگ‌های فعال: ${myW.length}</div>`;
-if(myW.length===0)h+=`<div class="em" style="padding:15px">در هیچ جنگی نیستید</div>`;
-myW.forEach(w=>{const isA=w.a===P.id,otherId=isA?w.d:w.a,other=allP.find(p=>p.id===otherId),oc=other?CDB[other.cc]:null,utl=unTimeLeft(w),isUW=utl<6*3600000;
-if(w.s==="un_end"){h+=`<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--un)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${oc?.f||"🏳️"} ${esc(other?.name||"?")}</span><span class="bg" style="background:var(--un)">متوقف شده</span></div></div>`;}
-else if(w.s==="peace_req"&&w.pr===P.id){
-/* درخواست صلحی که خودم فرستادم - فقط نمایش وضعیت */
-h+=`<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--grn)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${oc?.f||"🏳️"} ${esc(other?.name||"?")}</span><span class="bg" style="background:var(--grn)">در انتظار پاسخ</span></div><div style="font-size:.4rem;color:var(--grn);margin-top:2px"><i class="fas fa-hourglass-half"></i> درخواست صلح شما ارسال شده - منتظر تایید طرف مقابل</div><button class="bt bt-d bt-s" style="margin-top:4px" onclick="cancelPeace('${w.a}','${w.d}')"><i class="fas fa-times"></i> لغو درخواست</button></div>`;}
-else if(w.s==="peace_req"&&w.pr!==P.id){
-/* درخواست صلحی که طرف مقابل فرستاده - من میتونم قبول/رد کنم */
-h+=`<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--grn)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${oc?.f||"🏳️"} ${esc(other?.name||"?")}</span><span class="bg" style="background:var(--blu)">درخواست صلح</span></div><div style="font-size:.4rem;color:var(--blu);margin-top:2px"><i class="fas fa-dove"></i> ${esc(other?.name||"?")} درخواست صلح داده</div><div style="display:flex;gap:4px;margin-top:4px"><button class="bt bt-gr bt-s" onclick="accPeace('${w.a}','${w.d}')"><i class="fas fa-check"></i> قبول</button><button class="bt bt-r bt-s" onclick="rejPeace('${w.a}','${w.d}')"><i class="fas fa-times"></i> رد</button></div></div>`;}
-else{h+=`<div class="pr" style="flex-direction:column;align-items:stretch;${isUW?'border-color:var(--un)':''}"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${oc?.f||"🏳️"} ${esc(other?.name||"?")}</span><span class="bg" style="background:${isA?'var(--red)':'var(--blu)'}">${isA?'حمله‌کننده':'مدافع'}</span></div><div style="font-size:.4rem;color:var(--tx2);margin-top:2px">حملات: ${w.ac||0}</div><div style="margin-top:3px"><div class="pb"><div class="pf pf-un" style="width:${Math.max(0,utl/UN_LIM*100)}%"></div></div><div class="wt">${isUW?'⚠️ ':'🇺🇳 '}${fmtT(utl)}</div></div>${w.s==="active"?`<button class="bt bt-gr bt-s" style="margin-top:4px" onclick="reqPeace('${w.a}','${w.d}')"><i class="fas fa-dove"></i> درخواست صلح</button>`:''}</div>`;}
-});
+function renderTab(){var on=document.querySelector(".tab.on");if(!on)return;var id=on.dataset.t;var fn={select:rSelect,country:rCountry,diplo:rDiplo,mine:rMine,mil:rMil,war:rWar,mkt:rMkt,res:rRes,rank:rRank,blog:rBlog};if(fn[id])fn[id]();}
 
-/* حذف بخش جداگانه درخواست صلح - الان بالا خودش handle میشه */
-const peaceReqs=wars.filter(w=>(w.d===P.id||w.a===P.id)&&w.s==="peace_req"&&w.pr!==P.id);
-/* اگر باز هم درخواستی مونده که بالا نمایش داده نشده (احتیاط) */
-if(peaceReqs.length>0){
-const shown=new Set();
-myW.forEach(w=>{if(w.s==="peace_req")shown.add(w.a+"_"+w.d);});
-const missed=peaceReqs.filter(w=>!shown.has(w.a+"_"+w.d));
-if(missed.length>0){
-h+=`<div class="st"><i class="fas fa-dove"></i> درخواست صلح دریافتی</div>`;
-missed.forEach(w=>{const oId=w.a===P.id?w.d:w.a,other=allP.find(p=>p.id===oId);h+=`<div class="pr" style="border-color:var(--grn)"><span style="font-size:.5rem">${esc(other?.name||"?")} صلح خواسته</span><div><button class="bt bt-gr bt-s" onclick="accPeace('${w.a}','${w.d}')">قبول</button><button class="bt bt-r bt-s" onclick="rejPeace('${w.a}','${w.d}')">رد</button></div></div>`;});
-}
-}
+function upRes(){if(!P)return;var c=P.cc?CDB[P.cc]:null;document.getElementById("resBar").innerHTML='<div class="ri">💰<b>'+Math.floor(P.g).toLocaleString("fa-IR")+'</b></div><div class="ri">🛢️<b>'+Math.floor(P.o).toLocaleString("fa-IR")+'</b></div><div class="ri">⛏️<b>'+Math.floor(P.m).toLocaleString("fa-IR")+'</b></div><div class="ri">⭐<b>'+P.xp+'</b></div>'+(c?'<div class="ri">'+c.f+'<b>'+c.n+'</b></div>':'<div class="ri" style="color:var(--red)">بدون کشور</div>');}
 
-if(getMyWars(P.id).filter(w=>w.s==="active").length<3){h+=`<div class="st"><i class="fas fa-crosshairs"></i> اعلام جنگ</div>`;const targets=allP.filter(p=>p.id!==P.id&&p.cc&&!getWarWith(P.id,p.id));if(targets.length===0)h+=`<div class="em">هدفی نیست</div>`;targets.forEach(t=>{const c=CDB[t.cc];h+=`<div class="pr"><span style="font-size:.5rem">${c?.f||"🏳️"} ${esc(t.name)} | 🛡️${calcDef(t)}</span><button class="bt bt-r bt-s" onclick="declWar('${t.id}')"><i class="fas fa-bolt"></i> جنگ</button></div>`;});}
-else h+=`<div class="em">حداکثر ۳ جنگ</div>`;
-document.getElementById("p_diplo").innerHTML=h;
-}
-window.declWar=async function(tid){if(!P||!P.cc)return;if(getWarWith(P.id,tid))return toast("قبلاً جنگ دارید","er");if(getMyWars(P.id).filter(w=>w.s==="active").length>=3)return toast("حداکثر ۳ جنگ","er");const t=allP.find(p=>p.id===tid);if(!t?.cc)return;wars.push({a:P.id,d:tid,st:ts(),s:"active",ac:0,pr:null});logs.push({t:ts(),x:" <span class='ls'>⚔️</span> "+esc(P.name)+" به "+esc(t.name)+" اعلام جنگ کرد."});await saveAll();upAll();toast("جنگ اعلام شد!","er");};
-window.reqPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="active");if(!w)return;w.pr=P.id;w.s="peace_req";await saveAll();upAll();toast("درخواست صلح ارسال شد","pe");};
-/* رفع باگ: فقط طرف مقابل می‌تواند درخواست صلح را قبول کند */
-window.accPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="peace_req");if(!w)return;if(w.pr===P.id)return toast("فقط طرف مقابل می‌تواند قبول کند","er");w.s="end";const otherId=w.a===P.id?w.d:w.a;const other=allP.find(p=>p.id===otherId);logs.push({t:ts(),x:" <span class='lt'>🕊️ صلح</span> بین "+esc(P.name)+" و "+esc(other?.name||"?")+" برقرار شد."});await saveAll();upAll();toast("صلح برقرار شد","pe");};
-window.rejPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="peace_req");if(!w)return;if(w.pr===P.id)return toast("این درخواست متعلق به شماست","er");w.s="active";w.pr=null;await saveAll();upAll();toast("درخواست صلح رد شد","er");};
-/* لغو درخواست صلح خودتان */
-window.cancelPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="peace_req");if(!w)return;if(w.pr!==P.id)return toast("نمی‌توانید درخواست دیگران را لغو کنید","er");w.s="active";w.pr=null;await saveAll();upAll();toast("درخواست صلح لغو شد","er");};
+var selC="همه";
+function rSelect(){freeExpired();var h='<div class="fb">';["همه"].concat(CNAMES).forEach(function(c){h+='<div class="fbt'+(selC===c?' on':'')+'" onclick="selC=\''+c+'\';rSelect()">'+c+'</div>';});h+='</div><div class="cig">';CKEYS.forEach(function(k){var c=CDB[k],ci=CONT[k];if(ci===undefined)ci=-1;if(selC!=="همه"&&CNAMES[ci]!==selC)return;var o=getOwner(k),tk=!isFree(k),isMe=P&&P.cc===k;h+='<div class="cc'+(tk&&!isMe?' tk':'')+'" '+(tk&&!isMe?'':'onclick="pickC(\''+k+'\')"')+'><div class="fl">'+c.f+'</div><div class="cn">'+c.n+'</div><div class="ce">'+c.e+'</div>'+(isMe?'<div class="cf">کشور شما</div>':tk?'<div class="co">'+esc(o?o.name:"?")+' - '+fmtT(rentLeft(o))+'</div>':'<div class="cf">آزاد</div>')+'</div>';});h+='</div>';document.getElementById("p_select").innerHTML=h;}
 
-function rMine(){
-if(!P||!P.cc){document.getElementById("p_mine").innerHTML=`<div class="em">کشوری ندارید</div>`;return;}
-const mn=calcMine(P),upC=P.ml*12000;
-document.getElementById("p_mine").innerHTML=`<div class="cd"><div class="ic">⛏️</div><div class="nm">معدن سطح ${P.ml}</div><div class="cs">ظرفیت: ${mn.cap.toLocaleString("fa-IR")}</div><div style="margin-top:6px;text-align:right;font-size:.5rem"><div style="display:flex;justify-content:space-between"><span>💰 طلا</span><span style="color:var(--gl)">${mn.g}/${mn.cap}</span></div><div class="pb"><div class="pf pf-g" style="width:${Math.min(100,mn.g/mn.cap*100)}%"></div></div><div style="display:flex;justify-content:space-between"><span>🛢️ نفت</span><span style="color:var(--gl)">${mn.o}/${mn.cap}</span></div><div class="pb"><div class="pf pf-g" style="width:${Math.min(100,mn.o/mn.cap*100)}%"></div></div><div style="display:flex;justify-content:space-between"><span>⛏️ فلز</span><span style="color:var(--gl)">${mn.m}/${mn.cap}</span></div><div class="pb"><div class="pf pf-g" style="width:${Math.min(100,mn.m/mn.cap*100)}%"></div></div></div><button class="bt bt-g bt-f" style="margin-top:8px" onclick="colMine()"><i class="fas fa-gem"></i> استخراج</button><hr style="border-color:var(--bd);margin:8px 0"><div class="cs">ارتقا: ${upC.toLocaleString("fa-IR")} طلا</div><button class="bt bt-gr bt-f" ${P.g<upC?"disabled":""} onclick="upgM()"><i class="fas fa-arrow-up"></i> ارتقا</button></div>`;
-}
-function calcMine(p){if(!p)return{g:0,o:0,m:0,cap:0};const b=p.cc?1+(CDB[p.cc]?.ev||0)*0.2:1;const s=Math.min((ts()-(p.lc||ts()))/1000,3600);const c=p.ml*500*b,r=p.ml*0.4*b,e=p.res.eco*0.1;return{g:Math.min(c,Math.floor((r*2+e)*s)),o:Math.min(c,Math.floor((r+e*0.5)*s)),m:Math.min(c,Math.floor((r*1.5+e*0.7)*s)),cap:c};}
-window.colMine=async function(){const mn=calcMine(P);P.g+=mn.g;P.o+=mn.o;P.m+=mn.m;P.lc=ts();await saveAll();upRes();rMine();toast("استخراج شد","pe");};
-window.upgM=async function(){const c=P.ml*12000;if(P.g<c)return toast("طلا کم","er");P.g-=c;P.ml++;await saveAll();upRes();rMine();toast("ارتقا یافت","pe");};
+window.pickC=async function(cc){if(!P)return;if(!isFree(cc))return toast("کشور گرفته شده","er");var c=CDB[cc];P.cc=cc;P.at=ts();P.g=c.g;P.o=c.o;P.m=c.m;isSpec=false;upSpecBar();dirty=true;logs.push({t:ts(),x:" "+esc(P.name)+" کشور "+c.n+" را انتخاب کرد."});await saveAll();buildTabs();upAll();toast(c.f+" "+c.n+" به امپراتوری شما اضافه شد!","pe");};
 
-/* نظامی - تمام جنگنده‌ها در یک لیست */
-function rMil(){
-if(!P||!P.cc){document.getElementById("p_mil").innerHTML=`<div class="em">کشوری ندارید</div>`;return;}
-let h=`<div class="st"><i class="fas fa-fighter-jet"></i> جنگنده‌ها</div><div class="g2">`;
-for(const[k,f]of Object.entries(FDB)){
-const has=P.res.air>=f.r, af=P.g>=f.cg&&P.o>=f.co&&P.m>=f.cm;
-const cnt=getFgCount(P,k);
-const tierLabel=TIER_NAMES[f.tier]||"";
-const tierCss=TIER_CSS[f.tier]||"";
-h+=`<div class="cd" style="opacity:${has?1:0.4}"><div class="ic">✈️</div><span class="tier ${tierCss}">${tierLabel}</span><div class="nm">${f.n}</div><div class="cs">قدرت:${f.p}${f.r?" | هوانوردی:"+f.r:""}</div><div class="cs">💰${f.cg} 🛢️${f.co} ⛏️${f.cm}</div><div class="bg">دارید: ${cnt}</div><button class="bt bt-b bt-s" ${(!has||!af)?"disabled":""} onclick="bldF('${k}')">ساخت</button></div>`;
-}
-h+=`</div>`;
-h+=`<div class="st"><i class="fas fa-shield-alt"></i> پدافند</div><div class="g2">`;
-for(const[k,d]of Object.entries(DDB)){const af=P.g>=d.cg&&P.o>=d.co&&P.m>=d.cm;h+=`<div class="cd"><div class="ic">🛡️</div><div class="nm">${d.n}</div><div class="cs">دفاع:${d.df} HP:${d.hp}</div><div class="cs">💰${d.cg} 🛢️${d.co} ⛏️${d.cm}</div><button class="bt bt-gr bt-s" ${!af?"disabled":""} onclick="bldD('${k}')">ساخت</button></div>`;}
-h+=`</div>`;
-if(P.df&&P.df.length>0){h+=`<div class="st"><i class="fas fa-wrench"></i> مستقر</div>`;P.df.forEach(d=>{const info=DDB[d.t],hp=Math.max(0,d.h),pct=hp/d.mh*100,dmg=d.mh-hp,cost=dmg*12;h+=`<div class="pr" style="flex-direction:column;align-items:stretch"><div style="display:flex;justify-content:space-between;font-size:.5rem"><span>🛡️ ${info.n}</span><span style="color:${pct>50?'#4ade80':'#ef4444'}">${hp}/${d.mh}</span></div><div class="pb"><div class="pf pf-h" style="width:${pct}%"></div></div>${dmg>0?`<button class="bt bt-g bt-s" ${P.g<cost?"disabled":""} onclick="repD('${d.id}')">تعمیر (${cost}💰)</button>`:`<div style="text-align:center;color:#4ade80;font-size:.4rem">آماده</div>`}</div>`;});}
-document.getElementById("p_mil").innerHTML=h;
-}
-window.bldF=async function(k){const f=FDB[k];if(P.g<f.cg||P.o<f.co||P.m<f.cm)return toast("منابع کم","er");P.g-=f.cg;P.o-=f.co;P.m-=f.cm;if(!P.fg)P.fg={};P.fg[k]=(P.fg[k]||0)+1;await saveAll();upRes();rMil();toast(f.n+" ساخته شد","pe");};
-window.bldD=async function(k){const d=DDB[k];if(P.g<d.cg||P.o<d.co||P.m<d.cm)return toast("منابع کم","er");P.g-=d.cg;P.o-=d.co;P.m-=d.cm;if(!P.df)P.df=[];P.df.push({id:ts().toString(36),t:k,h:d.hp,mh:d.hp});await saveAll();upRes();rMil();};
-window.repD=async function(id){const d=(P.df||[]).find(x=>x.id===id);if(!d)return;const dmg=d.mh-d.h,cost=dmg*12;if(P.g<cost)return toast("طلا کم","er");P.g-=cost;d.h=d.mh;await saveAll();upRes();rMil();toast("تعمیر شد","pe");};
+function rCountry(){if(!P||!P.cc){document.getElementById("p_country").innerHTML='<div class="em"><i class="fas fa-globe" style="font-size:2rem;color:var(--gdd);display:block;margin-bottom:10px"></i>کشوری ندارید<br><small>از تب نقشه اقدام کنید</small></div>';return;}var c=CDB[P.cc],rl=rentLeft(P),rp=Math.max(0,Math.min(100,rl/RENT*100)),myA=calcAtk(P),myD=calcDef(P,true);document.getElementById("p_country").innerHTML='<div class="ci"><div class="cih"><div class="cif">'+c.f+'</div><div><div class="cin">'+c.n+'</div><div class="cio">'+c.e+'</div></div></div><div class="cis"><div class="cisv">👥 '+c.pop+'M</div><div class="cisv">📐 '+c.area+'K km²</div><div class="cisv">⭐ '+"★".repeat(c.ev)+"☆".repeat(5-c.ev)+'</div><div class="cisv" style="font-size:.38rem"><span class="stat-a">⚔️'+myA+'</span> <span class="stat-d">🛡️'+myD+'</span></div></div><div style="margin-top:6px"><div style="font-size:.4rem;color:var(--tx2);margin-bottom:2px">اجاره (۷ روزه - قفل)</div><div class="pb"><div class="pf pf-h" style="width:'+rp+'%"></div></div><div class="rt">'+fmtT(rl)+'</div></div></div><div class="locked-notice"><i class="fas fa-lock"></i> بعد از انتخاب کشور، ترک تا زمان تموم اجاره امکان‌پذیر نیست</div><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="bt bt-g" onclick="extRent()"><i class="fas fa-clock"></i> تمدید ۷ روز</button></div>';}
 
-function rWar(){
-if(!P||!P.cc){document.getElementById("p_war").innerHTML=`<div class="em">کشوری ندارید</div>`;return;}
-const myA=calcAtk(P);
-let h=`<div style="background:var(--bg2);padding:6px 10px;border-radius:10px;margin-bottom:8px;font-size:.5rem;border:1px solid var(--bd);text-align:center">⚔️ قدرت حمله: <b style="color:var(--gl)">${myA}</b> | 🛡️ دفاع: <b style="color:var(--gl)">${calcDef(P)}</b></div>`;
-if(myA<=0)h+=`<div class="em">برای حمله جنگنده بسازید!</div>`;
-const myW=getMyWars(P.id).filter(w=>w.s==="active");
-h+=`<div class="st"><i class="fas fa-bomb"></i> اهداف جنگی</div>`;
-if(myW.length===0)h+=`<div class="em">ابتدا از دیپلماسی جنگ اعلام کنید</div>`;
-myW.forEach(w=>{const otherId=w.a===P.id?w.d:w.a;const t=allP.find(p=>p.id===otherId);if(!t?.cc)return;const c=CDB[t.cc],td=calcDef(t),utl=unTimeLeft(w);if(utl<=0)return;h+=`<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--red)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${c?.f||"🏳️"} ${esc(t.name)}</span><span style="font-size:.4rem">🛡️${td}</span></div><div class="wt" style="margin:3px 0">🇺🇳 ${fmtT(utl)}</div><button class="bt bt-r bt-f" ${myA<=0?"disabled":""} onclick="doAttack('${w.a}','${w.d}')"><i class="fas fa-bomb"></i> حمله تمام‌عیار</button></div>`;});
-document.getElementById("p_war").innerHTML=h;
-}
+window.extRent=async function(){if(!P||!P.cc)return;P.at=ts();dirty=true;await saveAll();rCountry();toast("تمدید ۷ روز","pe");};
 
-window.doAttack=async function(aid,did){
-const w=wars.find(x=>x.a===aid&&x.d===did&&x.s==="active");if(!w)return toast("جنگ فعال نیست","er");
-if(unTimeLeft(w)<=0)return toast("سازمان ملل متوقف کرده","er");
-const otherId=w.a===P.id?w.d:w.a;
-const t=allP.find(p=>p.id===otherId);if(!t)return toast("هدف یافت نشد","er");
-const myA=calcAtk(P);if(myA<=0)return toast("جنگنده بسازید","er");
-const eD=calcDef(t);
-w.ac=(w.ac||0)+1;
+function rDiplo(){if(!P||!P.cc){document.getElementById("p_diplo").innerHTML='<div class="em">کشوری ندارید</div>';return;}var myW=getMyWars(P.id);var h='<div class="st"><i class="fas fa-handshake"></i> روابط دیپلماتیک</div><div style="font-size:.5rem;color:var(--tx2);margin-bottom:6px">جنگ‌های فعال: '+myW.length+'</div>';if(myW.length===0)h+='<div class="em" style="padding:15px">در هیچ جنگی نیستید</div>';myW.forEach(function(w){var isA=w.a===P.id,otherId=isA?w.d:w.a,other=allP.find(function(p){return p.id===otherId;}),oc=other?CDB[other.cc]:null,utl=unTimeLeft(w),isUW=utl<6*3600000;if(w.s==="un_end"){h+='<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--un)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">'+(oc?oc.f:"🏳️")+' '+esc(other?other.name:"?")+'</span><span class="bg" style="background:var(--un)">متوقف شده</span></div></div>';}else if(w.s==="peace_req"&&w.pr===P.id){h+='<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--grn)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">'+(oc?oc.f:"🏳️")+' '+esc(other?other.name:"?")+'</span><span class="bg" style="background:var(--grn)">در انتظار</span></div><div style="font-size:.4rem;color:var(--grn);margin-top:2px">منتظر تایید طرف مقابل</div><button class="bt bt-d bt-s" style="margin-top:4px" onclick="cancelPeace(\''+w.a+'\',\''+w.d+'\')"><i class="fas fa-times"></i> لغو</button></div>';}else if(w.s==="peace_req"&&w.pr!==P.id){h+='<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--grn)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">'+(oc?oc.f:"🏳️")+' '+esc(other?other.name:"?")+'</span><span class="bg" style="background:var(--blu)">درخواست صلح</span></div><div style="font-size:.4rem;color:var(--blu);margin-top:2px"><i class="fas fa-dove"></i> '+esc(other?other.name:"?")+' درخواست صلح داده</div><div style="display:flex;gap:4px;margin-top:4px"><button class="bt bt-gr bt-s" onclick="accPeace(\''+w.a+'\',\''+w.d+'\')"><i class="fas fa-check"></i> قبول</button><button class="bt bt-r bt-s" onclick="rejPeace(\''+w.a+'\',\''+w.d+'\')"><i class="fas fa-times"></i> رد</button></div></div>';}else{h+='<div class="pr" style="flex-direction:column;align-items:stretch;'+(isUW?'border-color:var(--un)':'')+'"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">'+(oc?oc.f:"🏳️")+' '+esc(other?other.name:"?")+'</span><span class="bg" style="background:'+(isA?'var(--red)':'var(--blu')+'">'+(isA?'حمله‌کننده':'مدافع')+'</span></div><div style="font-size:.4rem;color:var(--tx2);margin-top:2px">حملات: '+(w.ac||0)+'</div><div style="margin-top:3px"><div class="pb"><div class="pf pf-un" style="width:'+Math.max(0,utl/UN_LIM*100)+'%"></div></div><div class="wt">'+(isUW?'⚠️ ':'🇺🇳 ')+fmtT(utl)+'</div></div>'+(w.s==="active"?'<button class="bt bt-gr bt-s" style="margin-top:4px" onclick="reqPeace(\''+w.a+'\',\''+w.d+'\')"><i class="fas fa-dove"></i> درخواست صلح</button>':'')+'</div>';}});
+var al=getMyAlliance(P.id);if(al){h+='<div class="ally-box"><div class="ab-title"><i class="fas fa-users"></i> اتحاد '+al.name+' ('+(al.members.length+1)+' نفر)</div>';if(al.members.length===0)h+='<div style="font-size:.4rem;color:var(--tx2);text-align:center;padding:4px">متحدی ندارید</div>';al.members.forEach(function(m){var mc=CDB[m.cc];h+='<div class="ab-member"><span>'+(mc?mc.f:"🏳️")+' '+esc(m.name)+'</span><span style="color:var(--tx2)"><span class="stat-a">⚔️'+calcAtk(m)+'</span> <span class="stat-d">🛡️'+calcDef(m,true)+'</span></span></div>';});var alerts=getAllyAlerts(P.id);if(alerts.length>0){h+='<div style="margin-top:6px;padding:4px 6px;border-radius:6px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);font-size:.4rem;color:#fca5a5"><i class="fas fa-exclamation-triangle"></i> آلارم اتحاد:<br>';alerts.forEach(function(a){var ac=CDB[a.cc];h+=(ac?ac.f:"")+' '+esc(a.name)+' تحت حمله است<br>';});h+='</div>';}h+='</div>';}
+var activeWars=getMyWars(P.id).filter(function(w){return w.s==="active";});if(activeWars.length<3){h+='<div class="st"><i class="fas fa-crosshairs"></i> اعلام جنگ</div>';var targets=allP.filter(function(p){return p.id!==P.id&&p.cc&&!getWarWith(P.id,p.id);});if(targets.length===0)h+='<div class="em">هدفی نیست</div>';targets.forEach(function(t){var c=CDB[t.cc],myCont=getPlayerCont(P.id),allyAtk=countAllyAttackers(myCont,t.id),blocked=allyAtk>=MAX_ALLY_ATK;h+='<div class="pr"'+(blocked?' style="opacity:.5"':'')+'><span style="font-size:.5rem">'+(c?c.f:"🏳️")+' '+esc(t.name)+' | <span class="stat-d">🛡️'+calcDef(t,true)+'</span></span>'+(blocked?'<span style="font-size:.35rem;color:var(--un)">اتحاد پر</span>':'<button class="bt bt-r bt-s" onclick="declWar(\''+t.id+'\')"><i class="fas fa-bolt"></i> جنگ</button>')+'</div>';if(blocked)h+='<div class="war-info" style="color:var(--un);background:rgba(74,144,226,.05);border:1px solid rgba(74,144,226,.15)"><i class="fas fa-shield-alt"></i> '+allyAtk+' نفر از اتحاد '+CNAMES[myCont]+' قبلا حمله کرده — حداکثر '+MAX_ALLY_ATK+' نفر</div>';});}else{h+='<div class="em">حداکثر ۳ جنگ</div>';}document.getElementById("p_diplo").innerHTML=h;}
 
-document.getElementById("app").classList.add("sk");
-const ov=document.getElementById("battleOv"),st=document.getElementById("bStatus"),rs=document.getElementById("bResult"),bm=document.getElementById("boomIco");
-ov.classList.add("on");st.innerText="قفل هدف: "+t.name;rs.innerHTML="";bm.innerText="🚀";st.style.color="";
-await new Promise(r=>setTimeout(r,800));
-document.getElementById("app").classList.remove("sk");st.innerText="اصابت!";bm.innerText="💥";document.getElementById("app").classList.add("sk");
-await new Promise(r=>setTimeout(r,1000));
-document.getElementById("app").classList.remove("sk");
+window.declWar=async function(tid){if(!P||!P.cc)return;if(getWarWith(P.id,tid))return toast("قبلاً جنگ دارید","er");if(getMyWars(P.id).filter(function(w){return w.s==="active";}).length>=3)return toast("حداکثر ۳ جنگ","er");var t=allP.find(function(p){return p.id===tid;});if(!t||!t.cc)return;var myCont=getPlayerCont(P.id);if(myCont>=0){var allyAtk=countAllyAttackers(myCont,tid);if(allyAtk>=MAX_ALLY_ATK)return toast('حداکثر '+MAX_ALLY_ATK+' نفر از اتحاد '+CNAMES[myCont]+' حمله کنند',"er");}wars.push({a:P.id,d:tid,st:ts(),s:"active",ac:0,pr:null,la:0});dirty=true;logs.push({t:ts(),x:" <span class='ls'>⚔️</span> "+esc(P.name)+" به "+esc(t.name)+" اعلام جنگ کرد."});await saveAll();upAll();toast("جنگ اعلام شد!","er");};
+window.reqPeace=async function(a,d){var w=wars.find(function(x){return x.a===a&&x.d===d&&x.s==="active";});if(!w)return;w.pr=P.id;w.s="peace_req";dirty=true;await saveAll();upAll();toast("درخواست صلح ارسال شد","pe");};
+window.accPeace=async function(a,d){var w=wars.find(function(x){return x.a===a&&x.d===d&&x.s==="peace_req";});if(!w)return;if(w.pr===P.id)return toast("فقط طرف مقابل می‌تواند قبول کند","er");w.s="end";dirty=true;var oId=w.a===P.id?w.d:w.a;var other=allP.find(function(p){return p.id===oId;});logs.push({t:ts(),x:" <span class='lt'>🕊️ صلح</span> بین "+esc(P.name)+" و "+esc(other?other.name:"?")+" برقرار شد."});await saveAll();upAll();toast("صلح برقرار شد","pe");};
+window.rejPeace=async function(a,d){var w=wars.find(function(x){return x.a===a&&x.d===d&&x.s==="peace_req";});if(!w)return;if(w.pr===P.id)return toast("این درخواست متعلق به شماست","er");w.s="active";w.pr=null;dirty=true;await saveAll();upAll();toast("رد شد","er");};
+window.cancelPeace=async function(a,d){var w=wars.find(function(x){return x.a===a&&x.d===d&&x.s==="peace_req";});if(!w)return;if(w.pr!==P.id)return toast("نمی‌توانید لغو کنید","er");w.s="active";w.pr=null;dirty=true;await saveAll();upAll();toast("لغو شد","er");};
 
-let msg="",res="";const ratio=myA/(eD||1);
-if(ratio>1.3){
-const lr=0.25+Math.min(0.1,(ratio-1.3)*0.05);const lg={g:Math.floor(t.g*lr),o:Math.floor(t.o*lr),m:Math.floor(t.m*lr)};
-t.g-=lg.g;t.o-=lg.o;t.m-=lg.m;P.g+=lg.g;P.o+=lg.o;P.m+=lg.m;P.xp+=25;t.xp+=5;
-let al=0;for(const[k,v]of Object.entries(P.fg)){const l=Math.ceil(v*0.15);P.fg[k]=Math.max(0,v-l);al+=l;}
-let dl=0;if(t.fg)for(const[k,v]of Object.entries(t.fg)){const l=Math.ceil(v*0.7);t.fg[k]=Math.max(0,v-l);dl+=l;}
-let dd=t.df?.length||0;if(t.df)t.df.forEach(d=>d.h=0);if(t.df)t.df=t.df.filter(d=>d.h>0);else t.df=[];
-msg=`<span class="at">${esc(P.name)}</span> به <span class="df">${esc(t.name)}</span> حمله کرد و <b>پیروز شد</b>! <span class="lt">غارت: ${lg.g}💰 ${lg.o}🛢️ ${lg.m}⛏️</span> | تلفات: <span class="ls">${al}</span> | دشمن: <span class="ls">${dl} جنگنده، ${dd} پدافند</span>`;
-res=`<div style="color:#4ade80;font-size:1.1rem;font-weight:900;margin-bottom:6px">پیروزی قاطع!</div>غارت: ${lg.g}💰 ${lg.o}🛢️ ${lg.m}⛏️<br>تلفات شما: ${al}<br>XP: +25`;st.style.color="#4ade80";
-} else if(ratio>0.8){
-const lr=0.08+Math.min(0.07,(ratio-0.8)*0.3);const lg={g:Math.floor(t.g*lr),o:Math.floor(t.o*lr),m:Math.floor(t.m*lr)};
-t.g-=lg.g;t.o-=lg.o;t.m-=lg.m;P.g+=lg.g;P.o+=lg.o;P.m+=lg.m;P.xp+=15;t.xp+=10;
-let al=0;for(const[k,v]of Object.entries(P.fg)){const l=Math.ceil(v*0.45);P.fg[k]=Math.max(0,v-l);al+=l;}
-let dl=0;if(t.fg)for(const[k,v]of Object.entries(t.fg)){const l=Math.ceil(v*0.5);t.fg[k]=Math.max(0,v-l);dl+=l;}
-if(t.df)t.df.forEach(d=>{d.h=Math.max(0,d.h-40);});if(t.df)t.df=t.df.filter(d=>d.h>0);else t.df=[];
-msg=`<span class="at">${esc(P.name)}</span> به <span class="df">${esc(t.name)}</span> حمله کرد - <b>نبرد نزدیک!</b> <span class="lt">غارت: ${lg.g}💰 ${lg.o}🛢️ ${lg.m}⛏️</span> | تلفات: <span class="ls">${al}</span> | دشمن: <span class="ls">${dl} جنگنده</span>`;
-res=`<div style="color:#fbbf24;font-size:1.1rem;font-weight:900;margin-bottom:6px">نبرد نزدیک!</div>غارت کم: ${lg.g}💰 ${lg.o}🛢️ ${lg.m}⛏️<br>تلفات سنگین: ${al}<br>XP: +15`;st.style.color="#fbbf24";
-} else {
-P.xp+=3;t.xp+=20;
-let al=0;for(const[k,v]of Object.entries(P.fg)){const l=Math.ceil(v*0.8);P.fg[k]=Math.max(0,v-l);al+=l;}
-let dl=0;if(t.fg)for(const[k,v]of Object.entries(t.fg)){const l=Math.ceil(v*0.15);t.fg[k]=Math.max(0,v-l);dl+=l;}
-if(t.df)t.df.forEach(d=>{d.h=Math.max(0,d.h-20);});if(t.df)t.df=t.df.filter(d=>d.h>0);else t.df=[];
-msg=`<span class="at">${esc(P.name)}</span> به <span class="df">${esc(t.name)}</span> حمله کرد و <b>شکست خورد!</b> <span class="ls">تلفات: ${al} نیرو</span> | دشمن: <span class="ls">${dl}</span>`;
-res=`<div style="color:#ef4444;font-size:1.1rem;font-weight:900;margin-bottom:6px">شکست!</div>نیروها نابود شدند<br>تلفات دشمن: ${dl}<br>XP: +3`;st.style.color="#fca5a5";
-}
-rs.innerHTML=res;logs.push({t:ts(),x:msg});if(logs.length>6)logs=logs.slice(-6);
-await saveAll();await new Promise(r=>setTimeout(r,2200));ov.classList.remove("on");upAll();
-};
+function rMine(){if(!P||!P.cc){document.getElementById("p_mine").innerHTML='<div class="em">کشوری ندارید</div>';return;}var mn=calcMine(P),upC=P.ml*12000;document.getElementById("p_mine").innerHTML='<div class="cd"><div class="ic">⛏️</div><div class="nm">معدن سطح '+P.ml+'</div><div class="cs">ظرفیت: '+mn.cap.toLocaleString("fa-IR")+'</div><div style="margin-top:6px;text-align:right;font-size:.5rem"><div style="display:flex;justify-content:space-between"><span>💰 طلا</span><span style="color:var(--gl)">'+mn.g+'/'+mn.cap+'</span></div><div class="pb"><div class="pf pf-g" style="width:'+Math.min(100,mn.g/mn.cap*100)+'%"></div></div><div style="display:flex;justify-content:space-between"><span>🛢️ نفت</span><span style="color:var(--gl)">'+mn.o+'/'+mn.cap+'</span></div><div class="pb"><div class="pf pf-g" style="width:'+Math.min(100,mn.o/mn.cap*100)+'%"></div></div><div style="display:flex;justify-content:space-between"><span>⛏️ فلز</span><span style="color:var(--gl)">'+mn.m+'/'+mn.cap+'</span></div><div class="pb"><div class="pf pf-g" style="width:'+Math.min(100,mn.m/mn.cap*100)+'%"></div></div></div><button class="bt bt-g bt-f" style="margin-top:8px" onclick="colMine()"><i class="fas fa-gem"></i> استخراج</button><hr style="border-color:var(--bd);margin:8px 0"><div class="cs">ارتقا: '+upC.toLocaleString("fa-IR")+' طلا</div><button class="bt bt-gr bt-f" '+(P.g<upC?"disabled":"")+' onclick="upgM()"><i class="fas fa-arrow-up"></i> ارتقا</button></div>';}
 
-function rMkt(){
-if(!P)return;const rn={g:"💰طلا",o:"🛢️نفت",m:"⛏️فلز"};
-let h=`<div class="cd" style="text-align:right"><div class="nm" style="text-align:center;margin-bottom:6px"><i class="fas fa-store"></i> فروش</div><select class="sel" id="mg"><option value="g">💰 طلا</option><option value="o">🛢️ نفت</option><option value="m">⛏️ فلز</option></select><input class="nmb" type="number" id="mga" placeholder="مقدار" min="1"><select class="sel" id="mr"><option value="g">💰 طلا</option><option value="o">🛢️ نفت</option><option value="m">⛏️ فلز</option></select><input class="nmb" type="number" id="mra" placeholder="مقدار" min="1"><button class="bt bt-g bt-f" onclick="mkOf()"><i class="fas fa-plus"></i> ثبت</button></div><div class="st">بازار</div>`;
-if(mkt.length===0)h+=`<div class="em">خالی</div>`;
-mkt.forEach(o=>{h+=`<div class="pr"><span style="font-size:.5rem">${esc(o.sn)}: ${o.ga} ${rn[o.gv]} ➡️ ${o.rv} ${rn[o.rq]}</span>${o.si===P.id?'<span class="bg">شما</span>':`<button class="bt bt-gr bt-s" onclick="buyOf('${o.id}')">خرید</button>`}</div>`;});
-document.getElementById("p_mkt").innerHTML=h;
-}
-window.mkOf=async function(){const gv=document.getElementById("mg").value,ga=parseInt(document.getElementById("mga").value),rq=document.getElementById("mr").value,ra=parseInt(document.getElementById("mra").value);if(!ga||!ra||ga<=0||ra<=0)return toast("مقدار نامعتبر","er");const k={g:"g",o:"o",m:"m"}[gv];if(P[k]<ga)return toast("منابع کم","er");P[k]-=ga;mkt.push({id:ts().toString(36),sn:P.name,si:P.id,gv,ga,rq,rv:ra});await saveAll();upRes();rMkt();toast("ثبت شد","pe");};
-window.buyOf=async function(oid){const o=mkt.find(x=>x.id===oid);if(!o||o.si===P.id)return;const rk={g:"g",o:"o",m:"m"}[o.rq];if(P[rk]<o.rv)return toast("منابع کم","er");P[rk]-=o.rv;const sk={g:"g",o:"o",m:"m"}[o.gv];P[sk]+=o.ga;const s=allP.find(p=>p.id===o.si);if(s)s[rk]+=o.rv;mkt=mkt.filter(x=>x.id!==oid);await saveAll();upRes();rMkt();toast("معامله موفق","pe");};
+function calcMine(p){if(!p)return{g:0,o:0,m:0,cap:0};var b=p.cc?1+(CDB[p.cc].ev||0)*0.2:1;var s=Math.min((ts()-(p.lc||ts()))/1000,3600);var c=p.ml*500*b,r=p.ml*0.4*b,e=p.res.eco*0.1;return{g:Math.min(c,Math.floor((r*2+e)*s)),o:Math.min(c,Math.floor((r+e*0.5)*s)),m:Math.min(c,Math.floor((r*1.5+e*0.7)*s)),cap:c};}
 
-function rRes(){
-if(!P)return;const br=[{k:"mil",n:"نظامی",i:"fa-shield-halved"},{k:"eco",n:"اقتصاد",i:"fa-coins"},{k:"air",n:"هوانوردی",i:"fa-plane"}];
-let h=`<div style="text-align:center;margin-bottom:8px;font-size:.55rem;color:var(--gl)">XP: <b>${P.xp}</b></div><div class="g3">`;
-br.forEach(b=>{const lv=P.res[b.k],c=(lv+1)*18;h+=`<div class="cd"><div class="ic"><i class="fas ${b.i}"></i></div><div class="nm" style="font-size:.65rem">${b.n}</div><div class="cs">سطح: ${lv}</div><div class="cs">هزینه: ${c} XP</div><button class="bt bt-p bt-s" ${P.xp<c?"disabled":""} onclick="upgR('${b.k}')">ارتقا</button></div>`;});
-document.getElementById("p_res").innerHTML=h+`</div>`;
-}
-window.upgR=async function(k){const c=(P.res[k]+1)*18;if(P.xp<c)return toast("XP کم","er");P.xp-=c;P.res[k]++;await saveAll();upRes();rRes();toast("ارتقا یافت","pe");};
+window.colMine=async function(){var mn=calcMine(P);P.g+=mn.g;P.o+=mn.o;P.m+=mn.m;P.lc=ts();dirty=true;await saveAll();upRes();rMine();toast("استخراج شد","pe");};
+window.upgM=async function(){var c=P.ml*12000;if(P.g<c)return toast("طلا کم","er");P.g-=c;P.ml++;dirty=true;await saveAll();upRes();rMine();toast("ارتقا یافت","pe");};
 
-function rRank(){
-let h=`<div class="st"><i class="fas fa-trophy"></i> امپراتوری‌ها</div>`;
-const s=[...allP].filter(p=>p.cc).sort((a,b)=>(b.xp||0)-(a.xp||0));
-if(s.length===0)h+=`<div class="em">ثبت نشده</div>`;
-s.forEach((p,i)=>{const c=CDB[p.cc],cr=i===0?"👑":i===1?"🥈":i===2?"🥉":"",st=i<3?"color:var(--gl);font-weight:900;text-shadow:0 0 8px rgba(212,160,23,.4)":"";h+=`<div class="pr"><span style="${st}">${cr}#${i+1} ${c?.f||""} ${esc(p.name)}</span><span style="font-size:.45rem">⭐${p.xp}|${c?.n||"?"}</span></div>`;});
-h+=`<div class="st">آزاد: ${CKEYS.filter(k=>isFree(k)).length}/${CKEYS.length}</div>`;
-document.getElementById("p_rank").innerHTML=h;
-}
+function rMil(){if(!P||!P.cc){document.getElementById("p_mil").innerHTML='<div class="em">کشوری ندارید</div>';return;}var h='<div class="st"><i class="fas fa-fighter-jet"></i> جنگنده‌ها</div><div class="g2">';for(var k in FDB){var f=FDB[k],has=P.res.air>=f.r,af=P.g>=f.cg&&P.o>=f.co&&P.m>=f.cm,cnt=getFgCount(P,k);h+='<div class="cd" style="opacity:'+(has?1:0.4)+'"><div class="ic">✈️</div><span class="tier '+(TIER_CSS[f.tier]||'')+'">'+(TIER_NAMES[f.tier]||'')+'</span><div class="nm">'+f.n+'</div><div class="cs"><span class="stat-a">حمله:'+f.p+'</span> | <span class="stat-d">دفاع:'+f.d+'</span>'+(f.r?' | هوانوردی:'+f.r:'')+'</div><div class="cs">💰'+f.cg+' 🛢️'+f.co+' ⛏️'+f.cm+'</div><div class="bg">دارید: '+cnt+'</div><button class="bt bt-b bt-s" '+((!has||!af)?'disabled':'')+' onclick="bldF(\''+k+'\')">ساخت</button></div>';}h+='</div><div class="st"><i class="fas fa-shield-alt"></i> پدافند</div><div class="g2">';for(var dk in DDB){var d=DDB[dk],daf=P.g>=d.cg&&P.o>=d.co&&P.m>=d.cm;var natLabel=d.nat?d.nat:"";h+='<div class="cd"><div class="ic">🛡️</div><div class="nm">'+d.n+'</div><div class="cs">دفاع:'+d.df+' HP:'+d.hp+(nat?' ('+natLabel+')':'')+'</div><div class="cs">💰'+d.cg+' 🛢️'+d.co+' ⛏️'+d.cm+'</div><button class="bt bt-gr bt-s" '+(daf?'':'disabled')+' onclick="bldD(\''+dk+'\')">ساخت</button></div>';}h+='</div>';if(P.df&&P.df.length>0){h+='<div class="st"><i class="fas fa-wrench"></i> مستقر</div>';P.df.forEach(function(d){var info=DDB[d.t],hp=Math.max(0,d.h),pct=hp/d.mh*100,dmg=d.mh-hp,cost=dmg*12;h+='<div class="pr" style="flex-direction:column;align-items:stretch"><div style="display:flex;justify-content:space-between;font-size:.5rem"><span>🛡️ '+info.n+'</span><span style="color:'+(pct>50?'#4ade80':'#ef4444')+'">'+hp+'/'+d.mh+'</span></div><div class="pb"><div class="pf pf-h" style="width:'+pct+'%"></div></div>'+(dmg>0?'<button class="bt bt-g bt-s" '+(P.g<cost?"disabled":"")+' onclick="repD(\''+d.id+'\')">تعمیر ('+cost+'💰)</button>':'<div style="text-align:center;color:#4ade80;font-size:.4rem">آماده</div>')+'</div>';});}document.getElementById("p_mil").innerHTML=h;}
 
-function rBlog(){
-let h=`<div class="st"><i class="fas fa-scroll"></i> رویدادها</div><div class="bl">`;
-if(logs.length===0)h+=`<div class="em">رویدادی نیست</div>`;
-logs.slice().reverse().forEach(l=>{h+=`<div class="le">${l.x}<br><small style="color:var(--tx2)">${new Date(l.t).toLocaleString("fa-IR")}</small></div>`;});
-document.getElementById("p_blog").innerHTML=h+`</div>`;
-}
+window.bldF=async function(k){var f=FDB[k];if(P.g<f.cg||P.o<f.co||P.m<f.cm)return toast("منابع کم","er");P.g-=f.cg;P.o-=f.co;P.m-=f.cm;if(!P.fg)P.fg={};P.fg[k]=(P.fg[k]||0)+1;dirty=true;await saveAll();upRes();rMil();toast(f.n+" ساخته شد","pe");};
+window.bldD=async function(k){var d=DDB[k];if(P.g<d.cg||P.o<d.co||P.m<d.cm)return toast("منابع کم","er");P.g-=d.cg;P.o-=d.co;P.m-=d.cm;if(!P.df)P.df=[];P.df.push({id:ts().toString(36),t:k,h:d.hp,mh:d.hp});dirty=true;await saveAll();upRes();rMil();};
+window.repD=async function(id){var d=(P.df||[]).find(function(x){return x.id===id;});if(!d)return;var dmg=d.mh-d.h,cost=dmg*12;if(P.g<cost)return toast("طلا کم","er");P.g-=cost;d.h=d.mh;dirty=true;await saveAll();upRes();rMil();toast("تعمیر شد","pe");};
 
-function upAll(){upRes();renderTab();}
-async function syncLoop(){
-if(!connected)return;
-await loadAll();freeExpired();checkUN();
-if(P){const me=allP.find(p=>p.id===P.id);if(me){if(P.cc&&rentLeft(me)<=0){me.cc=null;me.at=ts();isSpec=true;document.getElementById("specBar").style.display="block";buildTabs();}P=me;upRes();}}
-}
-async function init(){
-if(await initTG()){await loadAll();document.getElementById("loginBox").style.display="flex";setInterval(syncLoop,SYNC);setInterval(()=>{if(P&&P.cc)rCountry();},30000);}
-}
+function rWar(){if(!P||!P.cc){document.getElementById("p_war").innerHTML='<div class="em">کشوری ندارید</div>';return;}var myA=calcAtk(P),myCont=getPlayerCont(P.id);var h='<div style="background:var(--bg2);padding:6px 10px;border-radius:10px;margin-bottom:8px;font-size:.5rem;border:1px solid var(--bd);text-align:center"><span class="stat-a">⚔️ حمله: <b>'+myA+'</b></span> | <span class="stat-d">🛡️ دفاع: <b>'+calcDef(P,true)+'</b></span></div>';if(myA<=0)h+='<div class="em">برای حمله جنگنده بسازید!</div>';var myW=getMyWars(P.id).filter(function(w){return w.s==="active";});h+='<div class="st"><i class="fas fa-bomb"></i> اهداف جنگی</div>';if(myW.length===0)h+='<div class="em">ابتدا از دیپلماسی جنگ اعلام کنید</div>';myW.forEach(function(w){var otherId=w.a===P.id?w.d:w.a;var t=allP.find(function(p){return p.id===otherId;});if(!t||!t.cc)return;var c=CDB[t.cc],td=calcDef(t,true),utl=unTimeLeft(w);if(utl<=0)return;var cd=atkCdLeft(w),inCd=cd>0;var allyInfo="";if(myCont>=0){var ac=countAllyAttackers(myCont,otherId);if(ac>0)allyInfo='<div class="war-info" style="color:var(--alc);background:rgba(192,132,252,.05);border:1px solid rgba(192,132,252,.15)"><i class="fas fa-users"></i> '+ac+' متحد از اتحاد '+CNAMES[myCont]+' نیز در جنگ</div>';}h+='<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--red)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">'+(c?c.f:"🏳️")+' '+esc(t.name)+'</span><span style="font-size:.4rem"><span class="stat-d">🛡️'+td+'</span></span></div><div class="wt" style="margin:3px 0">🇺🇳 '+fmtT(utl)+'</div>'+allyInfo+(inCd?'<div class="cd-timer" style="color:var(--red);border-color:rgba(192,57,43,.3)"><i class="fas fa-clock"></i> کول‌داون: '+fmtS(cd)+' ثانیه</div>':'')+'<button class="bt bt-r bt-f" '+((myA<=0||inCd)?'disabled':'')+' onclick="doAttack(\''+w.a+'\',\''+w.d+'\')"><i class="fas fa-bomb"></i> '+(inCd?'کول‌داون '+fmtS(cd)+' ثانیه':'حمله تمام‌عیار')+'</button></div>';});document.getElementById("p_war").innerHTML=h;}
+
+window.doAttack=async function(aid,did){var w=wars.find(function(x){return x.a===aid&&x.d===did&&x.s==="active";});if(!w)return toast("جنگ فعال نیست","er");if(unTimeLeft(w)<=0)return toast("سازمان ملل متوقف کرده","er");var cd=atkCdLeft(w);if(cd>0)return toast("کول‌داون: "+fmtS(cd)+" ثانیه","er");var otherId=w.a===P.id?w.d:w.a;var t=allP.find(function(p){return p.id===otherId;});if(!t)return toast("هدف یافت نشد","er");var myA=calcAtk(P);if(myA<=0)return toast("جنگنده بسازید","er");var eD=calcDef(t,true);w.ac=(w.ac||0)+1;w.la=ts();dirty=true;document.getElementById("app").classList.add("sk");var ov=document.getElementById("battleOv"),st=document.getElementById("bStatus"),rs=document.getElementById("bResult"),bm=document.getElementById("boomIco");ov.classList.add("on");st.innerText="قفل هدف: "+t.name;rs.innerHTML="";bm.innerText="🚀";st.style.color="";await new Promise(function(r){setTimeout(r,800);});document.getElementById("app").classList.remove("sk");st.innerText="اصابت!";bm.innerText="💥";document.getElementById("app").classList.add("sk");await new Promise(function(r){setTimeout(r,1000);});document.getElementById("app").classList.remove("sk");var msg="",res="",ratio=myA/(eD||1);
+if(ratio>1.3){var lr=0.25+Math.min(0.1,(ratio-1.3)*0.05);var lg={g:Math.floor(t.g*lr),o:Math.floor(t.o*lr),m:Math.floor(t.m*lr)};t.g-=lg.g;t.o-=lg.o;t.m-=lg.m;P.g+=lg.g;P.o+=lg.o;P.m+=lg.m;P.xp+=25;t.xp+=5;var al=0;for(var k in P.fg){var l=Math.ceil(P.fg[k]*0.15);P.fg[k]=Math.max(0,P.fg[k]-l);al+=l;}var dl=0;if(t.fg)for(var k2 in t.fg){var l2=Math.ceil(t.fg[k2]*0.7);t.fg[k2]=Math.max(0,t.fg[k2]-l2);dl+=l2;}var dd=t.df?t.df.length:0;if(t.df)t.df.forEach(function(d){d.h=0;});if(t.df)t.df=t.df.filter(function(d){return d.h>0;});else t.df=[];msg='<span class="at">'+esc(P.name)+'</span> به <span class="df">'+esc(t.name)+'</span> حمله کرد و <b>پیروز شد</b>! <span class="lt">غارت: '+lg.g+'💰 '+lg.o+'🛢️ '+lg.m+'⛏️</span> | تلفات: <span class="ls">'+al+'</span> | دشمن: <span class="ls">'+dl+' جنگنده، '+dd+' پدافند</span>';res='<div style="color:#4ade80;font-size:1.1rem;font-weight:900;margin-bottom:6px">پیروزی قاطع!</div>غارت: '+lg.g+'💰 '+lg.o+'🛢️ '+lg.m+'⛏️<br>تلفات شما: '+al+'<br>XP: +25';st.style.color="#4ade80";}else if(ratio>0.8){var lr2=0.08+Math.min(0.07,(ratio-0.8)*0.3);var lg2={g:Math.floor(t.g*lr2),o:Math.floor(t.o*lr2),m:Math.floor(t.m*lr2)};t.g-=lg2.g;t.o-=lg2.o;t.m-=lg2.m;P.g+=lg2.g;P.o+=lg2.o;P.m+=lg2.m;P.xp+=15;t.xp+=10;var al2=0;for(var k3 in P.fg){var l3=Math.ceil(P.fg[k3]*0.45);P.fg[k3]=Math.max(0,P.fg[k3]-l3);al2+=l3;}var dl2=0;if(t.fg)for(var k4 in t.fg){var l4=Math.ceil(t.fg[k4]*0.5);t.fg[k4]=Math.max(0,t.fg[k4]-l4);dl2+=l4;}if(t.df)t.df.forEach(function(d){d.h=Math.max(0,d.h-40);});if(t.df)t.df=t.df.filter(function(d){return d.h>0;});else t.df=[];msg='<span class="at">'+esc(P.name)+'</span> به <span class="df">'+esc(t.name)+'</span> حمله کرد - <b>نبرد نزدیک!</b> <span class="lt">غارت: '+lg2.g+'💰 '+lg2.o+'🛢️ '+lg2.m+'⛏️</span> | تلفات: <span class="ls">'+al2+'</span>';res='<div style="color:#fbbf24;font-size:1.1rem;font-weight:900;margin-bottom:6px">نبرد نزدیک!</div>غارت کم: '+lg2.g+'💰 '+lg2.o+'🛢️ '+lg2.m+'⛏️<br>تلفات سنگین: '+al2+'<br>XP: +15';st.style.color="#fbbf24";}else{P.xp+=3;t.xp+=20;var al5=0;for(var k5 in P.fg){var l5=Math.ceil(P.fg[k5]*0.8);P.fg[k5]=Math.max(0,P.fg[k5]-l5);al5+=l5;}var dl5=0;if(t.fg)for(var k6 in t.fg){var l6=Math.ceil(t.fg[k6]*0.15);t.fg[k6]=Math.max(0,t.fg[k6]-l6);dl5+=l6;}if(t.df)t.df.forEach(function(d){d.h=Math.max(0,d.h-20);});if(t.df)t.df=t.df.filter(function(d){return d.h>0;});else t.df=[];msg='<span class="at">'+esc(P.name)+'</span> به <span class="df">'+esc(t.name)+'</span> حمله کرد و <b>شکست خورد!</b> <span class="ls">تلفات: '+al5+' نیرو</span>';res='<div style="color:#ef4444;font-size:1.1rem;font-weight:900;margin-bottom:6px">شکست!</div>نیروها نابود شدند<br>تلفات دشمن: '+dl5+'<br>XP: +3';st.style.color="#fca5a5";}rs.innerHTML=res;logs.push({t:ts(),x:msg});if(logs.length>10)logs=logs.slice(-10);dirty=true;await saveAll();await new Promise(function(r){setTimeout(r,2200);});ov.classList.remove("on");upAll();};
+
+function rMkt(){if(!P)return;var rn={g:"💰طلا",o:"🛢️نفت",m:"⛏️فلز"};var h='<div class="cd" style="text-align:right"><div class="nm" style="text-align:center;margin-bottom:6px"><i class="fas fa-store"></i> فروش</div><select class="sel" id="mg"><option value="g">💰 طلا</option><option value="o">🛢️ نفت</option><option value="m">⛏️ فلز</option></select><input class="nmb" type="number" id="mga" placeholder="مقدار" min="1"><select class="sel" id="mr"><option value="g">💰 طلا</option><option value="o">🛢️ نفت</option><option value="m">⛏️ فلز</option></select><input class="nmb" type="number" id="mra" placeholder="مقدار" min="1"><button class="bt bt-g bt-f" onclick="mkOf()"><i class="fas fa-plus"></i> ثبت</button></div><div class="st">بازار</div>';if(mkt.length===0)h+='<div class="em">خالی</div>';mkt.forEach(function(o){h+='<div class="pr"><span style="font-size:.5rem">'+esc(o.sn)+': '+o.ga+' '+rn[o.gv]+' ➡️ '+o.rv+' '+rn[o.rq]+'</span>'+(o.si===P.id?'<span class="bg">شما</span>':'<button class="bt bt-gr bt-s" onclick="buyOf(\''+o.id+'\')">خرید</button>')+'</div>';});document.getElementById("p_mkt").innerHTML=h;}
+
+window.mkOf=async function(){var gv=document.getElementById("mg").value,ga=parseInt(document.getElementById("mga").value),rq=document.getElementById("mr").value,ra=parseInt(document.getElementById("mra").value);if(!ga||!ra||ga<=0||ra<=0)return toast("مقدار نامعتبر","er");var km={g:"g",o:"o",m:"m"}[gv];if(P[km]<ga)return toast("منابع کم","er");P[km]-=ga;mkt.push({id:ts().toString(36),sn:P.name,si:P.id,gv:gv,ga:ga,rq:rq,rv:ra});dirty=true;await saveAll();upRes();rMkt();toast("ثبت شد","pe");};
+window.buyOf=async function(oid){var o=mkt.find(function(x){return x.id===oid;});if(!o||o.si===P.id)return;var rk={g:"g",o:"o",m:"m"}[o.rq];if(P[rk]<o.rv)return toast("منابع کم","er");P[rk]-=o.rv;var sk={g:"g",o:"o",m:"m"}[o.gv];P[sk]+=o.ga;var s=allP.find(function(p){return p.id===o.si;});if(s)s[rk]+=o.rv;mkt=mkt.filter(function(x){return x.id!==oid;});dirty=true;await saveAll();upRes();rMkt();toast("معامله موفق","pe");};
+
+function rRes(){if(!P)return;var br=[{k:"mil",n:"نظامی",i:"fa-shield-halved"},{k:"eco",n:"اقتصاد",i:"fa-coins"},{k:"air",n:"هوانوردی",i:"fa-plane"}];var h='<div style="text-align:center;margin-bottom:8px;font-size:.55rem;color:var(--gl)">XP: <b>'+P.xp+'</b></div><div class="g3">';br.forEach(function(b){var lv=P.res[b.k],c=(lv+1)*18;h+='<div class="cd"><div class="ic"><i class="fas '+b.i+'"></i></div><div class="nm" style="font-size:.65rem">'+b.n+'</div><div class="cs">سطح: '+lv+'</div><div class="cs">هزینه: '+c+' XP</div><button class="bt bt-p bt-s" '+(P.xp<c?"disabled":"")+' onclick="upgR(\''+b.k+'\')">ارتقا</button></div>';});document.getElementById("p_res").innerHTML=h+'</div>';}
+window.upgR=async function(k){var c=(P.res[k]+1)*18;if(P.xp<c)return toast("XP کم","er");P.xp-=c;P.res[k]++;dirty=true;await saveAll();upRes();rRes();toast("ارتقا یافت","pe");};
+
+function rRank(){var h='<div class="st"><i class="fas fa-trophy"></i> امپراتوری‌ها</div>';var s=allP.filter(function(p){return p.cc;}).sort(function(a,b){return(b.xp||0)-(a.xp||0);});if(s.length===0)h+='<div class="em">ثبت نشده</div>';s.forEach(function(p,i){var c=CDB[p.cc],cr=i===0?"👑":i===1?"🥈":i===2?"🥉":"",st=i<3?"color:var(--gl);font-weight:900;text-shadow:0 0 8px rgba(212,160,23,.4)":"";h+='<div class="pr"><span style="'+st+'">'+cr+'#'+(i+1)+' '+(c?c.f:"")+' '+esc(p.name)+'</span><span style="font-size:.45rem">⭐'+p.xp+'|'+(c?c.n:"?")+'</span></div>';});h+='<div class="st">آزاد: '+CKEYS.filter(function(k){return isFree(k);}).length+'/'+CKEYS.length+'</div>';document.getElementById("p_rank").innerHTML=h;}
+
+function rBlog(){var h='<div class="st"><i class="fas fa-scroll"></i> رویدادها</div><div class="bl">';if(logs.length===0)h+='<div class="em">رویدادی نیست</div>';logs.slice().reverse().forEach(function(l){h+='<div class="le">'+l.x+'<br><small style="color:var(--tx2)">'+new Date(l.t).toLocaleString("fa-IR")+'</small></div>';});document.getElementById("p_blog").innerHTML=h+'</div>';}
+
+function upAll(){upRes();upSpecBar();renderTab();}
+async function syncLoop(){if(!connected)return;await loadAll();freeExpired();checkUN();if(P){var me=allP.find(function(p){return p.id===P.id;});if(me){if(P.cc&&rentLeft(me)<=0){me.cc=null;me.at=ts();isSpec=true;upSpecBar();buildTabs();dirty=true;}P=me;upRes();}upSpecBar();}if(dirty)await saveAll();}
+
+var warTimer=null;
+function startWarTimer(){if(warTimer)clearInterval(warTimer);warTimer=setInterval(function(){var on=document.querySelector(".tab.on");if(on&&on.dataset.t==="war")rWar();},1000);}
+
+async function init(){if(await initTG()){await loadAll();document.getElementById("loginBox").style.display="flex";setInterval(syncLoop,SYNC);setInterval(function(){if(P&&P.cc)rCountry();},30000);startWarTimer();}}
 init();
 </script>
 </body>
