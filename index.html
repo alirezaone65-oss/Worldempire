@@ -87,31 +87,30 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans Arabic',sans-se
 <script>
 const TK="8909027468:AAFLHya_9KhgazMKK1N6GG9RBRBuPH_T-5o",CH="@PudgyParty7",DK="AOC_V6_FIX",SYNC=5000,RENT=14*24*3600*1000,UN_LIM=24*3600*1000;
 
-/* === جنگنده‌های جدید === */
+/* === جنگنده‌ها === */
 const FDB={
-/* جنگ جهانی دوم (ضعیف، ارزان، بدون نیاز به تحقیق) */
 SPIT:{n:"Spitfire",p:10,cg:500,co:300,cm:200,r:0,tier:"w"},
 ME109:{n:"Bf 109",p:12,cg:600,co:400,cm:250,r:0,tier:"w"},
 ZERO:{n:"A6M Zero",p:8,cg:400,co:250,cm:150,r:0,tier:"w"},
-/* کلاسیک (سطح پایین) */
 A4:{n:"A-4 Skyhawk",p:20,cg:1000,co:700,cm:500,r:1,tier:"b"},
 F5:{n:"F-5 Tiger",p:30,cg:1500,co:1000,cm:700,r:1,tier:"b"},
 M21:{n:"MiG-21",p:35,cg:1800,co:1200,cm:800,r:2,tier:"b"},
-/* پیشرفته (نیاز به تحقیق متوسط) */
 F16:{n:"F-16 Falcon",p:130,cg:6000,co:2000,cm:1200,r:4,tier:"a"},
 M29:{n:"MiG-29",p:180,cg:8000,co:2500,cm:1500,r:5,tier:"a"},
 SU35:{n:"Su-35",p:260,cg:14000,co:4000,cm:2500,r:6,tier:"a"},
-/* اسرائیلی (سخت و گران) */
 F16I:{n:"F-16I Sufa",p:200,cg:12000,co:3500,cm:2000,r:5,tier:"a"},
 LAVI:{n:"Lavi",p:320,cg:22000,co:6000,cm:3500,r:7,tier:"s"},
 F35I:{n:"F-35I Adir",p:420,cg:30000,co:8500,cm:5000,r:8,tier:"s"},
-/* آمریکایی فوق‌پیشرفته (بسیار سخت) */
 F35:{n:"F-35 Lightning",p:380,cg:28000,co:8000,cm:4500,r:7,tier:"s"},
 F22:{n:"F-22 Raptor",p:550,cg:40000,co:12000,cm:9000,r:9,tier:"s"},
 B21:{n:"B-21 Raider",p:700,cg:55000,co:15000,cm:12000,r:10,tier:"s"}
 };
 
 const DDB={K15:{n:"خرداد-۱۵",cg:6000,co:1500,cm:1000,df:60,hp:100},B37:{n:"باور-۳۷۳",cg:12000,co:3500,cm:2500,df:100,hp:150},PAT:{n:"Patriot",cg:18000,co:5000,cm:3500,df:130,hp:180},S400:{n:"S-400",cg:25000,co:7000,cm:5500,df:160,hp:220}};
+
+/* تیر نام‌ها */
+const TIER_NAMES={w:"جنگ جهانی دوم",b:"کلاسیک",a:"پیشرفته",s:"فوق‌پیشرفته"};
+const TIER_CSS={w:"tier-w",b:"tier-b",a:"tier-a",s:"tier-s"};
 
 /* ۲۲۵ کشور فشرده */
 const R="DZ|الجزایر|نفت گاز|3,AO|آنگولا|نفت الماس|2,BJ|بنین|پنبه|1,BW|بوتسوانا|الماس|2,BF|بورکینافاسو|پنبه طلا|0,BI|بوروندی|قهوه|0,CM|کامرون|نفت چوب|1,CV|کیپ ورد|ماهی|1,CF|آفریقای مرکزی|الماس|0,TD|چاد|نفت|0,KM|کومور|وانیل|0,CG|کنگو|نفت|1,CD|کنگو دم|کبالت|1,CI|ساحل عاج|کاکائو|1,DJ|جیبوتی|بندر|1,EG|مصر|نفت گاز|4,GQ|گینه استوایی|نفت|3,ER|اریتره|مس|0,SZ|اسواتینی|شکر|1,ET|اتیوپی|قهوه|1,GA|گابن|نفت|3,GM|گامبیا|بادام|0,GE|گرجستان|شراب|2,GH|غنا|طلا|2,GN|گینه|بوکسیت|1,GW|گینه بیسائو|کاشو|0,KE|کنیا|چای|2,LS|لسوتو|الماس|0,LR|لیبریا|آهن|0,LY|لیبی|نفت|3,MG|ماداگاسکار|وانیل|1,MW|مالاوی|توباکو|0,ML|مالی|طلا|0,MR|موریتانی|آهن|0,MU|موریس|شکر|2,MA|مراکش|فوسفات|2,MZ|موزامبیک|گاز|1,NA|نامیبیا|الماس|2,NE|نیجر|اورانیوم|0,NG|نیجریه|نفت|3,RW|رواندا|قهوه|1,ST|سائوتومه|کاکائو|0,SN|سنگال|فوسفات|1,SC|سیشل|توریسم|2,SL|سیرالئون|الماس|0,SO|سومالی|ماهی|0,ZA|آفریقای جنوبی|طلا پلاتین|4,SS|سودان جنوبی|نفت|0,SD|سودان|نفت|1,TZ|تانزانیا|طلا|1,TG|توگو|فوسفات|0,TN|تونس|زیتون|2,UG|اوگاندا|قهوه|1,ZM|زامبیا|مس|1,ZW|زیمبابوه|پلاتین|1,AF|افغانستان|لیتیوم|0,AM|ارمنستان|مس|1,AZ|آذربایجان|نفت|3,BH|بحرین|نفت|4,BD|بنگلادش|پارچه|1,BT|بوتان|برق آبی|1,BN|برونئی|نفت|5,KH|کامبوج|پارچه|0,CN|چین|تکنولوژی|5,IN|هند|فناوری|4,ID|اندونزی|نیکل|3,IR|ایران|نفت گاز|3,IQ|عراق|نفت|3,IL|اسرائیل|فناوری|5,JP|ژاپن|الکترونیک|5,JO|اردن|فوسفات|1,KZ|قزاقستان|نفت|3,KW|کویت|نفت|5,KG|قرقیزستان|طلا|0,LA|لائوس|مس|0,LB|لبنان|خدمات|1,MY|مالزی|پالم|3,MV|مالدیو|توریسم|3,MN|مغولستان|مس|1,MM|میانمار|گاز|1,NP|نپال|توریسم|0,KP|کره شمالی|ذغال|0,KR|کره جنوبی|الکترونیک|5,OM|عمان|نفت|3,PK|پاکستان|پنبه|1,PS|فلسطین|کشاورزی|0,PH|فیلیپین|نیکل|2,QA|قطر|گاز|5,SA|عربستان|نفت|5,SG|سنگاپور|مالی|5,LK|سریلانکا|چای|1,SY|سوریه|نفت|0,TW|تایوان|نیمه هادی|5,TJ|تاجیکستان|آلومینیوم|0,TH|تایلند|برنج|3,TL|تیمور شرقی|نفت|0,TR|ترکیه|خودرو|3,TM|ترکمنستان|گاز|2,AE|امارات|نفت|5,UZ|ازبکستان|گاز|2,VN|ویتنام|برنج|2,YE|یمن|نفت|0,AL|آلبانی|کروم|1,AD|آندورا|توریسم|2,AT|اتریش|ماشین آلات|4,BY|بلاروس|پتاشیم|1,BE|بلژیک|شیمیایی|4,BA|بوسنی|ذغال|1,BG|بلغارستان|مس|2,HR|کرواسی|توریسم|2,CZ|چک|خودرو|4,DK|دانمارک|ماهی|5,EE|استونی|فناوری|3,FI|فنلاند|موبایل|4,FR|فرانسه|هوافضا|5,DE|آلمان|خودرو|5,GR|یونان|کشتیرانی|3,HU|مجارستان|خودرو|3,IS|ایسلند|ماهی|3,IE|ایرلند|فناوری|4,IT|ایتالیا|مد|4,XK|کوزوو|معدن|0,LV|لتونی|چوب|2,LI|لیختن اشتاین|مالی|4,LT|لیتوانی|شیمی|2,LU|لوکزامبورگ|مالی|5,MK|مقدونیه|فولاد|1,MT|مالت|توریسم|3,MD|مولداوی|شراب|0,MC|موناکو|مالی|5,ME|مونته نگرو|آلومینیوم|1,NL|هلند|گاز|5,NO|نروژ|نفت|5,PL|لهستان|فولاد|3,PT|پرتغال|شراب|2,RO|رومانی|نفت|2,RU|روسیه|نفت گاز|4,SM|سان مارینو|توریسم|2,RS|صربستان|مس|1,SK|اسلواکی|خودرو|3,SI|اسلوونی|فلزات|3,ES|اسپانیا|توریسم|4,SE|سوئد|آهن|5,CH|سوئیس|بانک|5,UA|اوکراین|گندم|2,GB|بریتانیا|مالی|5,VA|واتیکان|توریسم|0,AR|آرژانتین|گندم|3,BO|بولیوی|لیتیوم|1,BR|برزیل|سویا|4,CL|شیلی|مس|3,CO|کلمبیا|نفت|2,CR|کاستاریکا|قهوه|2,CU|کوبا|نیکل|1,EC|اکوادور|نفت|2,SV|السالوادور|قهوه|0,GT|گواتمالا|قهوه|0,GY|گویان|طلا|1,HN|هندوراس|موز|0,HT|هائیتی|پالم|0,MX|مکزیک|نفت|3,NI|نیکاراگوئه|قهوه|0,PA|پاناما|کانال|3,PY|پاراگوئه|سویا|1,PE|پرو|مس|2,DO|جمهوری دومینیکن|شکر|1,SR|سورینام|طلا|1,TT|ترینیداد|نفت|3,UY|اروگوئه|گوشت|2,VE|ونزوئلا|نفت|2,US|آمریکا|فناوری|5,CA|کانادا|نفت|5,GL|گرینلند|ماهی|1,AU|استرالیا|آهن|5,NZ|نیوزیلند|لبنیات|3,FJ|فیجی|شکر|1,PG|پاپوا|مس|1,SB|سلیمان|چوب|0,VU|وانواتو|کوپرا|0,WS|ساموآ|کوپرا|0,TO|تونگا|ماهی|0,MH|مارشال|کوپرا|0,FM|میکرونزی|ماهی|0,PW|پالائو|توریسم|0,NR|نائورو|فسفات|0,KI|کیریباتی|کوپرا|0,TV|تووالو|کوپرا|0";
@@ -130,9 +129,6 @@ const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"
 function toast(m,t=""){const d=document.createElement("div");d.className="tt "+t;d.innerHTML=m;document.body.appendChild(d);setTimeout(()=>d.remove(),3800);}
 function fmtT(ms){if(ms<=0)return "منقضی";const d=Math.floor(ms/86400000),h=Math.floor(ms%86400000/3600000),mi=Math.floor(ms%3600000/60000);return d+" روز "+h+" س "+mi+" د";}
 
-/* === رفع باگ اصلی: دیکشنری جنگنده‌ها سمت کلاینت === */
-/* وقتی دیتابیس فشرده میشه، جنگنده‌های با تعداد 0 حذف میشن. */
-/* حالا هنگام محاسبه، اگر کلید وجود نداشته باشه 0 در نظر گرفته میشه و باگ حمله حل میشه. */
 function getFgCount(p, k){ return (p.fg && p.fg[k]) ? p.fg[k] : 0; }
 
 async function api(m,p={},r=0){try{const res=await fetch("https://api.telegram.org/bot"+TK+"/"+m,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)});const d=await res.json();if(!d.ok&&d.error_code===429&&r<2){await new Promise(x=>setTimeout(x,1500));return api(m,p,r+1);}return d;}catch(e){if(r<1){await new Promise(x=>setTimeout(x,1000));return api(m,p,r+1);}return{ok:false};}}
@@ -151,13 +147,11 @@ upS("ربات ادمین نیست","off",1);return false;
 function upS(t,s,rc=0){document.getElementById("syncTxt").innerText=t;const o=document.getElementById("onBar");o.className="ob "+s;document.getElementById("onTxt").innerText=t;document.getElementById("reconnBtn").style.display=rc?"inline-block":"none";}
 window.forceReconn=async function(){if(await initTG()){await loadAll();upAll();}};
 
-/* فشرده‌سازی - بدون حذف جنگنده‌های صفر برای جلوگیری از باگ */
 function compP(p){return{i:p.id,n:p.name,ps:p.pass,cc:p.cc,g:p.g,o:p.o,m:p.m,x:p.xp,ml:p.ml,lc:p.lc,r:[p.res.mil,p.res.eco,p.res.air],f:p.fg||{},d:p.df||[],at:p.at};}
 function decompP(c){return{id:c.i,name:c.n,pass:c.ps,cc:c.cc||null,g:c.g||0,o:c.o||0,m:c.m||0,xp:c.x||0,ml:c.ml||1,lc:c.lc||ts(),res:{mil:c.r?.[0]||0,eco:c.r?.[1]||0,air:c.r?.[2]||0},fg:c.f||{},df:c.d||[],at:c.at||ts()};}
 function pack(){
 const d={k:DK,p:allP.map(compP),m:mkt,l:logs.slice(-3),w:wars};
 let s=JSON.stringify(d);
-/* فقط در صورت اضطرار فشرده‌سازی کنی اما جنگنده‌ها رو حذف نکن! فقط لاگ‌ها رو کم کن */
 if(s.length>3900){d.l=[];s=JSON.stringify(d);}
 return s;
 }
@@ -187,14 +181,12 @@ function unTimeLeft(w){return UN_LIM-(ts()-w.st);}
 function checkUN(){wars.forEach(w=>{if(w.s==="active"&&unTimeLeft(w)<=0){w.s="un_end";logs.push({t:ts(),x:" <span class='untx'>سازمان ملل</span> جنگ بین "+esc(allP.find(p=>p.id===w.a)?.name||"?")+" و "+esc(allP.find(p=>p.id===w.d)?.name||"?")+" را متوقف کرد."});}});}
 function makeP(nm,ps){return{id:nm+"_"+ts().toString(36),name:nm,pass:ps,cc:null,g:0,o:0,m:0,xp:0,ml:1,lc:ts(),res:{mil:0,eco:0,air:0},fg:{},df:[],at:ts()};}
 
-/* محاسبات قدرت - رفع باگ حمله */
 function calcAtk(p){
 if(!p)return 0;
 let pw=0;
-/* استفاده از تابع امن برای خواندن تعداد جنگنده‌ها */
 for(const[k,f]of Object.entries(FDB)){
-const cnt = getFgCount(p, k);
-if(cnt > 0) pw += f.p * cnt;
+const cnt=getFgCount(p,k);
+if(cnt>0) pw+=f.p*cnt;
 }
 return Math.floor(pw);
 }
@@ -260,18 +252,39 @@ const myW=getMyWars(P.id);let h=`<div class="st"><i class="fas fa-handshake"></i
 if(myW.length===0)h+=`<div class="em" style="padding:15px">در هیچ جنگی نیستید</div>`;
 myW.forEach(w=>{const isA=w.a===P.id,otherId=isA?w.d:w.a,other=allP.find(p=>p.id===otherId),oc=other?CDB[other.cc]:null,utl=unTimeLeft(w),isUW=utl<6*3600000;
 if(w.s==="un_end"){h+=`<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--un)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${oc?.f||"🏳️"} ${esc(other?.name||"?")}</span><span class="bg" style="background:var(--un)">متوقف شده</span></div></div>`;}
+else if(w.s==="peace_req"&&w.pr===P.id){
+/* درخواست صلحی که خودم فرستادم - فقط نمایش وضعیت */
+h+=`<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--grn)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${oc?.f||"🏳️"} ${esc(other?.name||"?")}</span><span class="bg" style="background:var(--grn)">در انتظار پاسخ</span></div><div style="font-size:.4rem;color:var(--grn);margin-top:2px"><i class="fas fa-hourglass-half"></i> درخواست صلح شما ارسال شده - منتظر تایید طرف مقابل</div><button class="bt bt-d bt-s" style="margin-top:4px" onclick="cancelPeace('${w.a}','${w.d}')"><i class="fas fa-times"></i> لغو درخواست</button></div>`;}
+else if(w.s==="peace_req"&&w.pr!==P.id){
+/* درخواست صلحی که طرف مقابل فرستاده - من میتونم قبول/رد کنم */
+h+=`<div class="pr" style="flex-direction:column;align-items:stretch;border-color:var(--grn)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${oc?.f||"🏳️"} ${esc(other?.name||"?")}</span><span class="bg" style="background:var(--blu)">درخواست صلح</span></div><div style="font-size:.4rem;color:var(--blu);margin-top:2px"><i class="fas fa-dove"></i> ${esc(other?.name||"?")} درخواست صلح داده</div><div style="display:flex;gap:4px;margin-top:4px"><button class="bt bt-gr bt-s" onclick="accPeace('${w.a}','${w.d}')"><i class="fas fa-check"></i> قبول</button><button class="bt bt-r bt-s" onclick="rejPeace('${w.a}','${w.d}')"><i class="fas fa-times"></i> رد</button></div></div>`;}
 else{h+=`<div class="pr" style="flex-direction:column;align-items:stretch;${isUW?'border-color:var(--un)':''}"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.55rem">${oc?.f||"🏳️"} ${esc(other?.name||"?")}</span><span class="bg" style="background:${isA?'var(--red)':'var(--blu)'}">${isA?'حمله‌کننده':'مدافع'}</span></div><div style="font-size:.4rem;color:var(--tx2);margin-top:2px">حملات: ${w.ac||0}</div><div style="margin-top:3px"><div class="pb"><div class="pf pf-un" style="width:${Math.max(0,utl/UN_LIM*100)}%"></div></div><div class="wt">${isUW?'⚠️ ':'🇺🇳 '}${fmtT(utl)}</div></div>${w.s==="active"?`<button class="bt bt-gr bt-s" style="margin-top:4px" onclick="reqPeace('${w.a}','${w.d}')"><i class="fas fa-dove"></i> درخواست صلح</button>`:''}</div>`;}
 });
-const peaceReqs=wars.filter(w=>(w.d===P.id||w.a===P.id)&&w.s==="peace_req"&&w.pr===P.id);
-if(peaceReqs.length>0){h+=`<div class="st"><i class="fas fa-dove"></i> درخواست صلح</div>`;peaceReqs.forEach(w=>{const oId=w.a===P.id?w.d:w.a,other=allP.find(p=>p.id===oId);h+=`<div class="pr" style="border-color:var(--grn)"><span style="font-size:.5rem">${esc(other?.name||"?")} صلح خواسته</span><div><button class="bt bt-gr bt-s" onclick="accPeace('${w.a}','${w.d}')">قبول</button><button class="bt bt-r bt-s" onclick="rejPeace('${w.a}','${w.d}')">رد</button></div></div>`;});}
+
+/* حذف بخش جداگانه درخواست صلح - الان بالا خودش handle میشه */
+const peaceReqs=wars.filter(w=>(w.d===P.id||w.a===P.id)&&w.s==="peace_req"&&w.pr!==P.id);
+/* اگر باز هم درخواستی مونده که بالا نمایش داده نشده (احتیاط) */
+if(peaceReqs.length>0){
+const shown=new Set();
+myW.forEach(w=>{if(w.s==="peace_req")shown.add(w.a+"_"+w.d);});
+const missed=peaceReqs.filter(w=>!shown.has(w.a+"_"+w.d));
+if(missed.length>0){
+h+=`<div class="st"><i class="fas fa-dove"></i> درخواست صلح دریافتی</div>`;
+missed.forEach(w=>{const oId=w.a===P.id?w.d:w.a,other=allP.find(p=>p.id===oId);h+=`<div class="pr" style="border-color:var(--grn)"><span style="font-size:.5rem">${esc(other?.name||"?")} صلح خواسته</span><div><button class="bt bt-gr bt-s" onclick="accPeace('${w.a}','${w.d}')">قبول</button><button class="bt bt-r bt-s" onclick="rejPeace('${w.a}','${w.d}')">رد</button></div></div>`;});
+}
+}
+
 if(getMyWars(P.id).filter(w=>w.s==="active").length<3){h+=`<div class="st"><i class="fas fa-crosshairs"></i> اعلام جنگ</div>`;const targets=allP.filter(p=>p.id!==P.id&&p.cc&&!getWarWith(P.id,p.id));if(targets.length===0)h+=`<div class="em">هدفی نیست</div>`;targets.forEach(t=>{const c=CDB[t.cc];h+=`<div class="pr"><span style="font-size:.5rem">${c?.f||"🏳️"} ${esc(t.name)} | 🛡️${calcDef(t)}</span><button class="bt bt-r bt-s" onclick="declWar('${t.id}')"><i class="fas fa-bolt"></i> جنگ</button></div>`;});}
 else h+=`<div class="em">حداکثر ۳ جنگ</div>`;
 document.getElementById("p_diplo").innerHTML=h;
 }
 window.declWar=async function(tid){if(!P||!P.cc)return;if(getWarWith(P.id,tid))return toast("قبلاً جنگ دارید","er");if(getMyWars(P.id).filter(w=>w.s==="active").length>=3)return toast("حداکثر ۳ جنگ","er");const t=allP.find(p=>p.id===tid);if(!t?.cc)return;wars.push({a:P.id,d:tid,st:ts(),s:"active",ac:0,pr:null});logs.push({t:ts(),x:" <span class='ls'>⚔️</span> "+esc(P.name)+" به "+esc(t.name)+" اعلام جنگ کرد."});await saveAll();upAll();toast("جنگ اعلام شد!","er");};
 window.reqPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="active");if(!w)return;w.pr=P.id;w.s="peace_req";await saveAll();upAll();toast("درخواست صلح ارسال شد","pe");};
-window.accPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="peace_req");if(!w)return;w.s="end";logs.push({t:ts(),x:" <span class='lt'>🕊️ صلح</span>"});await saveAll();upAll();toast("صلح برقرار شد","pe");};
-window.rejPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="peace_req");if(!w)return;w.s="active";w.pr=null;await saveAll();upAll();toast("رد شد","er");};
+/* رفع باگ: فقط طرف مقابل می‌تواند درخواست صلح را قبول کند */
+window.accPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="peace_req");if(!w)return;if(w.pr===P.id)return toast("فقط طرف مقابل می‌تواند قبول کند","er");w.s="end";const otherId=w.a===P.id?w.d:w.a;const other=allP.find(p=>p.id===otherId);logs.push({t:ts(),x:" <span class='lt'>🕊️ صلح</span> بین "+esc(P.name)+" و "+esc(other?.name||"?")+" برقرار شد."});await saveAll();upAll();toast("صلح برقرار شد","pe");};
+window.rejPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="peace_req");if(!w)return;if(w.pr===P.id)return toast("این درخواست متعلق به شماست","er");w.s="active";w.pr=null;await saveAll();upAll();toast("درخواست صلح رد شد","er");};
+/* لغو درخواست صلح خودتان */
+window.cancelPeace=async function(a,d){const w=wars.find(x=>x.a===a&&x.d===d&&x.s==="peace_req");if(!w)return;if(w.pr!==P.id)return toast("نمی‌توانید درخواست دیگران را لغو کنید","er");w.s="active";w.pr=null;await saveAll();upAll();toast("درخواست صلح لغو شد","er");};
 
 function rMine(){
 if(!P||!P.cc){document.getElementById("p_mine").innerHTML=`<div class="em">کشوری ندارید</div>`;return;}
@@ -282,22 +295,18 @@ function calcMine(p){if(!p)return{g:0,o:0,m:0,cap:0};const b=p.cc?1+(CDB[p.cc]?.
 window.colMine=async function(){const mn=calcMine(P);P.g+=mn.g;P.o+=mn.o;P.m+=mn.m;P.lc=ts();await saveAll();upRes();rMine();toast("استخراج شد","pe");};
 window.upgM=async function(){const c=P.ml*12000;if(P.g<c)return toast("طلا کم","er");P.g-=c;P.ml++;await saveAll();upRes();rMine();toast("ارتقا یافت","pe");};
 
-/* نظامی با رندر تیرها */
+/* نظامی - تمام جنگنده‌ها در یک لیست */
 function rMil(){
 if(!P||!P.cc){document.getElementById("p_mil").innerHTML=`<div class="em">کشوری ندارید</div>`;return;}
-let h="";
-const tiers={w:{n:"جنگ جهانی دوم",c:"tier-w"},b:{n:"کلاسیک",c:"tier-b"},a:{n:"پیشرفته",c:"tier-a"},s:{n:"فوق‌پیشرفته",c:"tier-s"}};
-for(const[tk,tv]of Object.entries(tiers)){
-const fighters=Object.entries(FDB).filter(([k,f])=>f.tier===tk);
-if(fighters.length===0)continue;
-h+=`<div class="st"><span class="${tv.c}">${tv.n}</span></div><div class="g2">`;
-for(const[k,f]of fighters){
+let h=`<div class="st"><i class="fas fa-fighter-jet"></i> جنگنده‌ها</div><div class="g2">`;
+for(const[k,f]of Object.entries(FDB)){
 const has=P.res.air>=f.r, af=P.g>=f.cg&&P.o>=f.co&&P.m>=f.cm;
 const cnt=getFgCount(P,k);
-h+=`<div class="cd" style="opacity:${has?1:0.4}"><div class="ic">✈️</div><div class="nm">${f.n}</div><div class="cs">قدرت:${f.p}${f.r?" | هوانوردی:"+f.r:""}</div><div class="cs">💰${f.cg} 🛢️${f.co} ⛏️${f.cm}</div><div class="bg">دارید: ${cnt}</div><button class="bt bt-b bt-s" ${(!has||!af)?"disabled":""} onclick="bldF('${k}')">ساخت</button></div>`;
+const tierLabel=TIER_NAMES[f.tier]||"";
+const tierCss=TIER_CSS[f.tier]||"";
+h+=`<div class="cd" style="opacity:${has?1:0.4}"><div class="ic">✈️</div><span class="tier ${tierCss}">${tierLabel}</span><div class="nm">${f.n}</div><div class="cs">قدرت:${f.p}${f.r?" | هوانوردی:"+f.r:""}</div><div class="cs">💰${f.cg} 🛢️${f.co} ⛏️${f.cm}</div><div class="bg">دارید: ${cnt}</div><button class="bt bt-b bt-s" ${(!has||!af)?"disabled":""} onclick="bldF('${k}')">ساخت</button></div>`;
 }
 h+=`</div>`;
-}
 h+=`<div class="st"><i class="fas fa-shield-alt"></i> پدافند</div><div class="g2">`;
 for(const[k,d]of Object.entries(DDB)){const af=P.g>=d.cg&&P.o>=d.co&&P.m>=d.cm;h+=`<div class="cd"><div class="ic">🛡️</div><div class="nm">${d.n}</div><div class="cs">دفاع:${d.df} HP:${d.hp}</div><div class="cs">💰${d.cg} 🛢️${d.co} ⛏️${d.cm}</div><button class="bt bt-gr bt-s" ${!af?"disabled":""} onclick="bldD('${k}')">ساخت</button></div>`;}
 h+=`</div>`;
